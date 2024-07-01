@@ -1,0 +1,16 @@
+services:
+  backend:
+    restart: always
+    networks:
+      - default
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+networks:
+  default:
+    driver: bridge
