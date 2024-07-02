@@ -36,8 +36,8 @@ ENV/
 .vscode/
 
 # Docker
-Dockerfile
-docker-compose.yml
+# Dockerfile
+# docker-compose.yml
 docker-compose.override.yml
 
 # Secrets
