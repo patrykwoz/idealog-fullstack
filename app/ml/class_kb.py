@@ -4,6 +4,7 @@ import wikipedia
 import json
 import pdb
 import time
+from fastapi.encoders import jsonable_encoder
 
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -151,7 +152,7 @@ class KB():
             "relations": self.relations,
             "sources": self.sources
         }
-        return json.dumps(kb_data, indent=4)
+        return jsonable_encoder(kb_data)
 
 def from_text_to_kb(text, article_url, span_length=128, article_title=None,
                     article_publish_date=None, verbose=False):
