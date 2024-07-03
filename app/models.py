@@ -1,6 +1,6 @@
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
-
+from sqlalchemy.types import Text
 
 # Shared properties
 class UserBase(SQLModel):
@@ -53,3 +53,31 @@ class UserPublic(UserBase):
 class UsersPublic(SQLModel):
     data: list[UserPublic]
     count: int
+
+#IDEAS
+
+class IdeaBase(SQLModel):
+    title: str = Field(default=None, max_length=255)
+    description: str = Field(default=None, sa_column=Text)
+    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
+    owner: User | None = Relationship(back_populates="items")
+
+# Generic message
+class Message(SQLModel):
+    message: str
+
+
+# JSON payload containing access token
+class Token(SQLModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+# Contents of JWT token
+class TokenPayload(SQLModel):
+    sub: int | None = None
+
+
+class NewPassword(SQLModel):
+    token: str
+    new_password: str = Field(min_length=8, max_length=40)
