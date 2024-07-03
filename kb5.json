@@ -1,0 +1,69 @@
+{
+    "entities": {
+        "Architectural geometry": {
+            "url": " ",
+            "summary": " "
+        },
+        "applied geometry": {
+            "url": " ",
+            "summary": " "
+        },
+        "geometry": {
+            "url": " ",
+            "summary": " "
+        }
+    },
+    "relations": [
+        {
+            "head": "Architectural geometry",
+            "type": "subclass of",
+            "tail": "applied geometry",
+            "meta": {
+                "https://en.wikipedia.org/wiki/Architectural_geometry": {
+                    "spans": [
+                        [
+                            0,
+                            128
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "head": "applied geometry",
+            "type": "has part",
+            "tail": "Architectural geometry",
+            "meta": {
+                "https://en.wikipedia.org/wiki/Architectural_geometry": {
+                    "spans": [
+                        [
+                            0,
+                            128
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "head": "applied geometry",
+            "type": "part of",
+            "tail": "geometry",
+            "meta": {
+                "https://en.wikipedia.org/wiki/Architectural_geometry": {
+                    "spans": [
+                        [
+                            0,
+                            128
+                        ]
+                    ]
+                }
+            }
+        }
+    ],
+    "sources": {
+        "https://en.wikipedia.org/wiki/Architectural_geometry": {
+            "article_title": "Architectural Geometry",
+            "article_publish_date": null
+        }
+    }
+}
