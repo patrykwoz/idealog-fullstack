@@ -1,1 +1,1 @@
-#IdeaLog Project - Development
+#IdeaLog API Project - Development

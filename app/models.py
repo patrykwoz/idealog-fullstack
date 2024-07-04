@@ -59,9 +59,37 @@ class UsersPublic(SQLModel):
 class IdeaBase(SQLModel):
     title: str = Field(default=None, max_length=255)
     description: str = Field(default=None, sa_column=Text)
-    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
-    owner: User | None = Relationship(back_populates="items")
 
+# Properties to receive on idea creation
+class IdeaCreate(IdeaBase):
+    title: str = Field(min_length=1, max_length=255)
+
+
+# Properties to receive on idea update
+class IdeaUpdate(IdeaBase):
+    title: str | None = Field(default=None, min_length=1, max_length=255)  # type: ignore
+
+
+# Database model, database table inferred from class name
+class Idea(IdeaBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(max_length=255)
+    owner_id: int | None = Field(default=None, foreign_key="user.id", nullable=False)
+    owner: User | None = Relationship(back_populates="ideas")
+
+
+# Properties to return via API, id is always required
+class IdeaPublic(IdeaBase):
+    id: int
+    owner_id: int
+
+
+class IdeasPublic(SQLModel):
+    data: list[IdeaPublic]
+    count: int
+
+
+# UTILITY MODELS
 # Generic message
 class Message(SQLModel):
     message: str
