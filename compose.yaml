@@ -1,5 +1,20 @@
 services:
+  db:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    restart: always
+    networks:
+      - default
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   backend:
+    env_file:
+        - .env
     restart: always
     networks:
       - default
@@ -7,10 +22,15 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealog
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     ports:  
       - "8000:8000"
+    depends_on:
+      - db
 
 networks:
   default:
     driver: bridge
+
+volumes:
+  postgres_data:
