@@ -1,4 +1,3 @@
-from app.core.config import settings
 from neo4j import GraphDatabase
 
 class Neo4jDriver:
