@@ -4,8 +4,7 @@ from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
 from app.models import (User, UserCreate, UserUpdate, UserBase, UserPublic, UserUpdateMe, UsersPublic,
-                        UserRegister, UpdatePassword, Message, Token, NewPassword,
-                        IdeaBase, Idea, IdeaCreate, IdeaUpdate, IdeaPublic, IdeasPublic)
+                        UserRegister, UpdatePassword, Message, Token, NewPassword)
 
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
