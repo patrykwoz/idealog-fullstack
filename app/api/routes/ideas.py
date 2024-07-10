@@ -1,20 +1,36 @@
-from typing import Any
+from typing import Any, Annotated
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, FastAPI, Query
 from sqlmodel import func, select
 from fastapi.encoders import jsonable_encoder
 
-from app.api.deps import Neo4jDriverDep
+from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.ideas import IdeaDAO
 
 router = APIRouter()
 
 @router.get("/")
-def read_ideas(driver:Neo4jDriverDep) -> Any:
+def read_ideas(
+    driver:Neo4jDriverDep,
+    sort: Annotated[str | None, Query(max_length=50)] = "label",
+    order: Annotated[str | None, Query] ="ASC",
+    limit: int | None = 10,
+    skip: int | None = 0) -> Any:
     dao = IdeaDAO(driver)
-    output = dao.all()
+    output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
-    
+
+#create an idea
+@router.post("/")
+def create_idea(
+    driver:Neo4jDriverDep,
+    label: str,
+    description: str,
+    user_id: int) -> Any:
+    """Create an idea."""
+    dao = IdeaDAO(driver)
+    output = dao.create(label, description, user_id)
+    return jsonable_encoder(output)
 
 # @router.get("/", response_model=IdeasPublic)
 # def read_ideas(
