@@ -4,21 +4,15 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 from fastapi.encoders import jsonable_encoder
 
-from app.api.deps import CurrentUser, SessionDep
+from app.api.deps import Neo4jDriverDep
 from app.dao.ideas import IdeaDAO
-from app.core.neo4j_db import neo4j_driver
-
 
 router = APIRouter()
 
 @router.get("/")
-def read_ideas() -> Any:
-    dao = IdeaDAO(neo4j_driver.get_driver())
-
-    # Retrieve a paginated list of movies
+def read_ideas(driver:Neo4jDriverDep) -> Any:
+    dao = IdeaDAO(driver)
     output = dao.all()
-
-    # Return as JSON
     return jsonable_encoder(output)
     
 
