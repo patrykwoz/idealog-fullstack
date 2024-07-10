@@ -11,6 +11,7 @@ from sqlmodel import Session
 from app.core import security
 from app.core.config import settings
 from app.core.db import engine
+from app.core.neo4j_db import neo4j_driver
 from app.models import TokenPayload, User
 
 reusable_oauth2 = OAuth2PasswordBearer(
@@ -21,7 +22,13 @@ def get_db() -> Generator[Session, None, None]:
     with Session(engine) as session:
         yield session
 
+def get_neo4j_driver() -> Generator:
+    driver = neo4j_driver.get_driver()
+    with driver.session() as session:
+         yield session
+
 SessionDep = Annotated[Session, Depends(get_db)]
+Neo4jDriverDep = Annotated[None, Depends(get_neo4j_driver)]
 TokenDep = Annotated[str, Depends(reusable_oauth2)]
 
 def get_current_user(session: SessionDep, token: TokenDep) -> User:
