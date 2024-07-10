@@ -12,10 +12,10 @@ class IdeaDAO:
     - sort: the property to sort the ideas by
     - order: the order to sort the ideas by
     - limit: the maximum number of ideas to return
-    - user_id: the ID of the user to filter the ideas by (optional)
+    - owner_id: the ID of the user to filter the ideas by (optional)
     """
-    def all(self, sort, order, limit=10, skip=0, user_id=None):
-        def get_ideas(tx, sort, order, limit, skip, user_id):
+    def all(self, sort, order, limit=10, skip=0, owner_id=None):
+        def get_ideas(tx, sort, order, limit, skip, owner_id):
             cypher = """
                 MATCH (idea:Idea)
                 WHERE idea.`{0}` IS NOT NULL
@@ -30,11 +30,11 @@ class IdeaDAO:
             result = tx.run(cypher,
                             limit=limit,
                             skip=skip,
-                            user_id=user_id)
+                            owner_id=owner_id)
             return [record["idea"] for record in result]
         
         with self.driver.session() as session:
-            return session.execute_read(get_ideas, sort, order, limit, skip, user_id)
+            return session.execute_read(get_ideas, sort, order, limit, skip, owner_id)
     
     
     def get(self, idea_id):
@@ -51,24 +51,30 @@ class IdeaDAO:
         with self.driver.session() as session:
             return session.execute_read(get_idea)
     
-    def create(self, label, description, user_id):
+    def create(self, label, description, owner_id):
         """
         Creates a new idea in the database. It takes the following arguments:
         - label: the label of the idea
         - description: the description of the idea
-        - user_id: the ID of the user creating the idea
+        - owner_id: the ID of the user creating the idea
         """
-        def create_idea(tx, label, description, user_id):
+        def create_idea(tx, label, description, owner_id):
             cypher = """
-                CREATE (idea:Idea)
-                SET idea.label = $label, idea.description = $description, idea.user_id = $user_id
+                CREATE (idea:Idea {
+                    label: $label,
+                    description: $description,
+                    owner_id: $owner_id,
+                    created_at: timestamp(),
+                    updated_at: timestamp()          
+                })
                 WITH idea
-                MATCH (user:User {id: $user_id})
+                MATCH (user:User {id: $owner_id})
                 MERGE (user)-[:OWNS]->(idea)
                 RETURN idea
             """
-            result = tx.run(cypher, label=label, description=description, user_id=user_id)
+            result = tx.run(cypher, label=label, description=description, owner_id=owner_id)
             return result.single()["idea"]
         
         with self.driver.session() as session:
-            return session.execute_write(create_idea, label, description, user_id)
+            return session.execute_write(create_idea, label, description, owner_id)
+        

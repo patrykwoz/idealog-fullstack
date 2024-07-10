@@ -6,6 +6,9 @@ from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.ideas import IdeaDAO
+from app.models import IdeaCreate, IdeaUpdate
+
+from neo4j.exceptions import ConstraintError, CypherTypeError
 
 router = APIRouter()
 
@@ -20,16 +23,37 @@ def read_ideas(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
+@router.get("/{id}")
+def read_idea(
+    driver:Neo4jDriverDep,
+    id:int) -> Any:
+    dao = IdeaDAO(driver)
+    output = dao.get(id)
+    return jsonable_encoder(output)
+
 #create an idea
 @router.post("/")
 def create_idea(
     driver:Neo4jDriverDep,
-    label: str,
-    description: str,
-    user_id: int) -> Any:
+    idea_in: IdeaCreate) -> Any:
     """Create an idea."""
     dao = IdeaDAO(driver)
-    output = dao.create(label, description, user_id)
+    try:
+        output = dao.create(idea_in.label, idea_in.description, idea_in.owner_id)
+    except ConstraintError:
+        raise HTTPException(status_code=400, detail="Idea already exists")
+    except TypeError:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+    return jsonable_encoder(output)
+
+#update an idea
+@router.put("/{id}")
+def update_idea(
+    driver:Neo4jDriverDep,
+    idea_in: IdeaUpdate) -> Any:
+    """Update an idea."""
+    dao = IdeaDAO(driver)
+    output = dao.update(idea_in.id, idea_in.label, idea_in.description, idea_in.owner_id)
     return jsonable_encoder(output)
 
 # @router.get("/", response_model=IdeasPublic)

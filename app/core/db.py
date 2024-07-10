@@ -5,8 +5,7 @@ from app.core.config import settings
 from app.models import (
     UserBase, UserCreate, UserRegister, UpdatePassword,
     User, UserUpdate, UserPublic, UsersPublic,
-    IdeaBase, Idea, IdeaCreate, IdeaUpdate,
-    IdeaPublic, IdeasPublic, Message, Token, TokenPayload, NewPassword
+    Message, Token, TokenPayload, NewPassword
     )
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
