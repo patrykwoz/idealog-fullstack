@@ -1,21 +1,13 @@
 class IdeaDAO:
     """Data Access Object for Idea nodes in the graph database.
-    This constsructor takes a Neo4j driver as an argument, which will be
+    This constructor takes a Neo4j driver as an argument, which will be
     used to interact with the Neo4j database.
     """
     def __init__(self, driver) -> None:
         self.driver = driver
 
-    """
-    This method returns all the ideas in the database. It takes the following
-    arguments:
-    - sort: the property to sort the ideas by
-    - order: the order to sort the ideas by
-    - limit: the maximum number of ideas to return
-    - owner_id: the ID of the user to filter the ideas by (optional)
-    """
-    def all(self, sort, order, limit=10, skip=0, owner_id=None):
-        def get_ideas(tx, sort, order, limit, skip, owner_id):
+    def all(self, sort, order, limit=10, skip=0, owner_email=None):
+        def get_ideas(tx, sort, order, limit, skip, owner_email):
             cypher = """
                 MATCH (idea:Idea)
                 WHERE idea.`{0}` IS NOT NULL
@@ -30,53 +22,88 @@ class IdeaDAO:
             result = tx.run(cypher,
                             limit=limit,
                             skip=skip,
-                            owner_id=owner_id)
+                            owner_email=owner_email)
             return [record["idea"] for record in result]
         
         with self.driver.session() as session:
-            return session.execute_read(get_ideas, sort, order, limit, skip, owner_id)
-    
-    
-    def get(self, label):
-        """
-        This method returns a single idea by its ID. It takes the following arguments:
-        - idea_id: the ID of the idea to return
-        If the idea is not found, this method will return None.
-        """
+            return session.execute_read(get_ideas, sort, order, limit, skip, owner_email)
+        
+    def get(self, name):
         def get_idea(tx):
             cypher = """
-                MATCH (idea:Idea {label: $label})
+                MATCH (idea:Idea {name: $name})
                 RETURN idea"""
-            result = tx.run(cypher, label=label)
+            result = tx.run(cypher, name=name)
             return result.single()["idea"]
         
         with self.driver.session() as session:
             return session.execute_read(get_idea)
     
-    def create(self, label, description, owner_id):
-        """
-        Creates a new idea in the database. It takes the following arguments:
-        - label: the label of the idea
-        - description: the description of the idea
-        - owner_id: the ID of the user creating the idea
-        """
-        def create_idea(tx, label, description, owner_id):
+    def create(self, name, description, owner_email, owner_sql_id):
+        def create_idea(tx, name, description, owner_email, owner_sql_id):
             cypher = """
                 CREATE (idea:Idea {
-                    label: $label,
+                    name: $name,
                     description: $description,
-                    owner_id: $owner_id,
+                    owner_email: $owner_email,
+                    owner_sql_id: $owner_sql_id,
                     created_at: timestamp(),
                     updated_at: timestamp()          
                 })
                 WITH idea
-                MATCH (user:User {id: $owner_id})
+                MATCH (user:User {email: $owner_email})
                 MERGE (user)-[:OWNS]->(idea)
                 RETURN idea
             """
-            result = tx.run(cypher, label=label, description=description, owner_id=owner_id)
+            result = tx.run(
+                cypher,
+                name=name,
+                description=description,
+                owner_email=owner_email,
+                owner_sql_id=owner_sql_id)
             return result.single()["idea"]
         
         with self.driver.session() as session:
-            return session.execute_write(create_idea, label, description, owner_id)
+            return session.execute_write(
+                create_idea,
+                name,
+                description,
+                owner_email,
+                owner_sql_id)
+    
+    def update(self, name, description):
+        def update_idea(tx, name, description):
+            cypher = """
+                MATCH (idea:Idea {name: $name})
+                SET idea.description = $description,
+                    idea.updated_at = timestamp()
+                RETURN idea
+            """
+            result = tx.run(
+                cypher,
+                name=name,
+                description=description)
+            return result.single()["idea"]
         
+        with self.driver.session() as session:
+            return session.execute_write(
+                update_idea,
+                name,
+                description)
+    
+    def delete(self, name):
+        def delete_idea(tx, name):
+            cypher = """
+                MATCH (idea:Idea {name: $name})
+                DETACH DELETE idea
+                RETURN COUNT(idea) AS deleted_count
+            """
+            result = tx.run(cypher, name=name)
+            return result.single()["deleted_count"]
+        
+        with self.driver.session() as session:
+            success = session.execute_write(delete_idea, name)
+            if success:
+                return {"message": "Idea deleted"}
+            else:
+                return {"message": "Idea not found"}

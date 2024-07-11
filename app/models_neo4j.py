@@ -2,15 +2,36 @@ from pydantic import EmailStr, BaseModel
 
 #IDEAS
 class IdeaBase(BaseModel):
-    label: str
+    name: str
     description: str
-    owner_id: int
 
 class IdeaCreate(IdeaBase):
     pass
 
 class IdeaUpdate(IdeaBase):
-    id: int
+    pass
 
 class IdeaPublic(BaseModel):
-    id: int
+    name: str
+
+class Idea(IdeaBase):
+    owner_email: EmailStr
+    owner_id: int
+
+#RELATIONSHIPS
+class RelBase(BaseModel):
+    name: str
+
+
+class RelCreate(RelBase):
+    node1: str
+    node2: str
+    rel_type: str
+
+class RelUpdate(RelBase):
+    noode1: str
+    node2: str
+    rel_type: str
+
+class RelPublic(RelBase):
+    pass

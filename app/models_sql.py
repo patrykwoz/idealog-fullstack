@@ -38,7 +38,7 @@ class UpdatePassword(SQLModel):
     new_password: str = Field(min_length=8, max_length=40)
 
 
-# Database model, database table inferred from class name
+# Database model
 class User(UserBase, table=True):
     __tablename__:str = "users"
     id: int | None = Field(default=None, primary_key=True)
