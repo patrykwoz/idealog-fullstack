@@ -15,7 +15,7 @@ router = APIRouter()
 @router.get("/")
 def read_ideas(
     driver:Neo4jDriverDep,
-    sort: Annotated[str | None, Query(max_length=50)] = "label",
+    sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
     limit: int | None = 10,
     skip: int | None = 0) -> Any:
@@ -23,13 +23,13 @@ def read_ideas(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
-@router.get("/{label}")
+@router.get("/{name}")
 def read_idea(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,
-    label:str) -> Any:
+    name:str) -> Any:
     dao = IdeaDAO(driver)
-    output = dao.get(label)
+    output = dao.get(name)
     return jsonable_encoder(output)
 
 @router.post("/")
@@ -41,7 +41,7 @@ def create_idea(
     dao = IdeaDAO(driver)
     try:
         output = dao.create(
-            idea_in.label,
+            idea_in.name,
             idea_in.description,
             current_user.email,
             current_user.id)
@@ -58,15 +58,15 @@ def update_idea(
     """Update an idea."""
     dao = IdeaDAO(driver)
     output = dao.update(
-        idea_in.label,
+        idea_in.name,
         idea_in.description)
     return jsonable_encoder(output)
 
-@router.delete("/{label}")
+@router.delete("/{name}")
 def delete_idea(
     driver:Neo4jDriverDep,
-    label:str) -> Any:
+    name:str) -> Any:
     """Delete an idea."""
     dao = IdeaDAO(driver)
-    output = dao.delete(label)
+    output = dao.delete(name)
     return jsonable_encoder(output)
