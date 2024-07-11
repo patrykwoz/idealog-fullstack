@@ -6,7 +6,7 @@ from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.ideas import IdeaDAO
-from app.models import IdeaCreate, IdeaUpdate
+from app.models_neo4j import IdeaCreate, IdeaUpdate
 
 from neo4j.exceptions import ConstraintError, CypherTypeError
 
@@ -23,23 +23,25 @@ def read_ideas(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
-@router.get("/{id}")
+@router.get("/{label}")
 def read_idea(
     driver:Neo4jDriverDep,
-    id:int) -> Any:
+    current_user: CurrentUser,
+    label:str) -> Any:
     dao = IdeaDAO(driver)
-    output = dao.get(id)
+    output = dao.get(label)
     return jsonable_encoder(output)
 
 #create an idea
 @router.post("/")
 def create_idea(
     driver:Neo4jDriverDep,
+    current_user: CurrentUser,
     idea_in: IdeaCreate) -> Any:
     """Create an idea."""
     dao = IdeaDAO(driver)
     try:
-        output = dao.create(idea_in.label, idea_in.description, idea_in.owner_id)
+        output = dao.create(idea_in.label, idea_in.description, current_user.id)
     except ConstraintError:
         raise HTTPException(status_code=400, detail="Idea already exists")
     except TypeError:

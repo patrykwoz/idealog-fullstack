@@ -4,14 +4,16 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import col, delete, func, select
 
 from app.crud import user_crud
+from app.dao.users import UserDAO
 from app.api.deps import (
     CurrentUser,
     SessionDep,
+    Neo4jDriverDep,
     get_current_active_superuser,
 )
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
-from app.models import (
+from app.models_sql import (
     Message,
     UpdatePassword,
     User,
@@ -23,6 +25,7 @@ from app.models import (
     UserUpdateMe,
 )
 from app.utils import generate_new_account_email, send_email
+
 
 router = APIRouter()
 
@@ -49,7 +52,7 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
 @router.post(
     "/", dependencies=[Depends(get_current_active_superuser)], response_model=UserPublic
 )
-def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
+def create_user(*, driver:Neo4jDriverDep, session: SessionDep, user_in: UserCreate) -> Any:
     """
     Create new user.
     """
@@ -61,6 +64,9 @@ def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
         )
 
     user = user_crud.create_user(session=session, user_create=user_in)
+    dao = UserDAO(driver)
+    dao.create(user.full_name, user.email)
+
     if settings.emails_enabled and user_in.email:
         email_data = generate_new_account_email(
             email_to=user_in.email, username=user_in.email, password=user_in.password
@@ -132,8 +138,6 @@ def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
         raise HTTPException(
             status_code=403, detail="Super users are not allowed to delete themselves"
         )
-    statement = delete(Idea).where(col(Idea.owner_id) == current_user.id)
-    session.exec(statement)  # type: ignore
     session.delete(current_user)
     session.commit()
     return Message(message="User deleted successfully")
@@ -224,8 +228,6 @@ def delete_user(
         raise HTTPException(
             status_code=403, detail="Super users are not allowed to delete themselves"
         )
-    statement = delete(Idea).where(col(Idea.owner_id) == user_id)
-    session.exec(statement)  # type: ignore
     session.delete(user)
     session.commit()
     return Message(message="User deleted successfully")

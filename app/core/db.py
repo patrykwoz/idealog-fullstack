@@ -2,7 +2,7 @@ from sqlmodel import Session, create_engine, select
 
 from app.crud import user_crud
 from app.core.config import settings
-from app.models import (
+from app.models_sql import (
     UserBase, UserCreate, UserRegister, UpdatePassword,
     User, UserUpdate, UserPublic, UsersPublic,
     Message, Token, TokenPayload, NewPassword
