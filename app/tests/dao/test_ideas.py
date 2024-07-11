@@ -8,8 +8,10 @@ def test_can_get_ideas():
 
     # import pdb
     # pdb.set_trace()
+    sort = "label"
+    order = "ASC"
 
-    output = dao.all()
+    output = dao.all(sort,order)
 
     # Return as JSON
     jsonified_output = jsonable_encoder(output)

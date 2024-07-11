@@ -18,6 +18,7 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     tag = route.tags[0] if route.tags else "default"
     return f"{tag}-{route.name}"
 
+# TODO: Talk with mentor whether this is necessary
 # @asynccontextmanager
 # async def lifespan(app: FastAPI):
 #     neo4j_driver.init_driver(

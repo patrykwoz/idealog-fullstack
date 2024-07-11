@@ -9,7 +9,7 @@ from app.core.db import engine, init_db
 from app.core.neo4j_db import neo4j_driver
 
 from app.main import app
-from app.models import Idea, User
+from app.models_sql import User
 from app.tests.utils.user import authentication_token_from_email
 from app.tests.utils.utils import get_superuser_token_headers
 
@@ -19,8 +19,6 @@ def db() -> Generator[Session, None, None]:
     with Session(engine) as session:
         init_db(session)
         yield session
-        statement = delete(Idea)
-        session.exec(statement)
         statement = delete(User)
         session.exec(statement)
         session.commit()

@@ -37,16 +37,18 @@ class IdeaDAO:
             return session.execute_read(get_ideas, sort, order, limit, skip, owner_id)
     
     
-    def get(self, idea_id):
+    def get(self, label):
         """
         This method returns a single idea by its ID. It takes the following arguments:
         - idea_id: the ID of the idea to return
         If the idea is not found, this method will return None.
         """
         def get_idea(tx):
-            cypher = "MATCH (n) WHERE ID(n) = $idea_id RETURN n"
-            result = tx.run(cypher, idea_id=idea_id)
-            return result.single()["n"]
+            cypher = """
+                MATCH (idea:Idea {label: $label})
+                RETURN idea"""
+            result = tx.run(cypher, label=label)
+            return result.single()["idea"]
         
         with self.driver.session() as session:
             return session.execute_read(get_idea)
