@@ -32,7 +32,6 @@ def read_idea(
     output = dao.get(label)
     return jsonable_encoder(output)
 
-#create an idea
 @router.post("/")
 def create_idea(
     driver:Neo4jDriverDep,
@@ -41,111 +40,33 @@ def create_idea(
     """Create an idea."""
     dao = IdeaDAO(driver)
     try:
-        output = dao.create(idea_in.label, idea_in.description, current_user.id)
+        output = dao.create(
+            idea_in.label,
+            idea_in.description,
+            current_user.email,
+            current_user.id)
     except ConstraintError:
         raise HTTPException(status_code=400, detail="Idea already exists")
     except TypeError:
-        raise HTTPException(status_code=400, detail="Invalid user ID")
+        raise HTTPException(status_code=400, detail="Invalid user ID {current_user.email}")
     return jsonable_encoder(output)
 
-#update an idea
 @router.put("/{id}")
 def update_idea(
     driver:Neo4jDriverDep,
     idea_in: IdeaUpdate) -> Any:
     """Update an idea."""
     dao = IdeaDAO(driver)
-    output = dao.update(idea_in.id, idea_in.label, idea_in.description, idea_in.owner_id)
+    output = dao.update(
+        idea_in.label,
+        idea_in.description)
     return jsonable_encoder(output)
 
-# @router.get("/", response_model=IdeasPublic)
-# def read_ideas(
-#     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
-# ) -> Any:
-#     """
-#     Retrieve ideas.
-#     """
-
-#     if current_user.is_superuser:
-#         count_statement = select(func.count()).select_from(Idea)
-#         count = session.exec(count_statement).one()
-#         statement = select(Idea).offset(skip).limit(limit)
-#         ideas = session.exec(statement).all()
-#     else:
-#         count_statement = (
-#             select(func.count())
-#             .select_from(Idea)
-#             .where(Idea.owner_id == current_user.id)
-#         )
-#         count = session.exec(count_statement).one()
-#         statement = (
-#             select(Idea)
-#             .where(Idea.owner_id == current_user.id)
-#             .offset(skip)
-#             .limit(limit)
-#         )
-#         ideas = session.exec(statement).all()
-
-#     return IdeasPublic(data=ideas, count=count)
-
-
-# @router.get("/{id}", response_model=IdeaPublic)
-# def read_idea(session: SessionDep, current_user: CurrentUser, id: int) -> Any:
-#     """
-#     Get idea by ID.
-#     """
-#     idea = session.get(Idea, id)
-#     if not idea:
-#         raise HTTPException(status_code=404, detail="Idea not found")
-#     if not current_user.is_superuser and (idea.owner_id != current_user.id):
-#         raise HTTPException(status_code=400, detail="Not enough permissions")
-#     return idea
-
-
-# @router.post("/", response_model=IdeaPublic)
-# def create_idea(
-#     *, session: SessionDep, current_user: CurrentUser, idea_in: IdeaCreate
-# ) -> Any:
-#     """
-#     Create new idea.
-#     """
-#     idea = Idea.model_validate(idea_in, update={"owner_id": current_user.id})
-#     session.add(idea)
-#     session.commit()
-#     session.refresh(idea)
-#     return idea
-
-
-# @router.put("/{id}", response_model=IdeaPublic)
-# def update_idea(
-#     *, session: SessionDep, current_user: CurrentUser, id: int, idea_in: IdeaUpdate
-# ) -> Any:
-#     """
-#     Update an idea.
-#     """
-#     idea = session.get(Idea, id)
-#     if not idea:
-#         raise HTTPException(status_code=404, detail="Idea not found")
-#     if not current_user.is_superuser and (idea.owner_id != current_user.id):
-#         raise HTTPException(status_code=400, detail="Not enough permissions")
-#     update_dict = idea_in.model_dump(exclude_unset=True)
-#     idea.sqlmodel_update(update_dict)
-#     session.add(idea)
-#     session.commit()
-#     session.refresh(idea)
-#     return idea
-
-
-# @router.delete("/{id}")
-# def delete_idea(session: SessionDep, current_user: CurrentUser, id: int) -> Message:
-#     """
-#     Delete an idea.
-#     """
-#     idea = session.get(Idea, id)
-#     if not idea:
-#         raise HTTPException(status_code=404, detail="Idea not found")
-#     if not current_user.is_superuser and (idea.owner_id != current_user.id):
-#         raise HTTPException(status_code=400, detail="Not enough permissions")
-#     session.delete(idea)
-#     session.commit()
-#     return Message(message="Idea deleted successfully")
+@router.delete("/{label}")
+def delete_idea(
+    driver:Neo4jDriverDep,
+    label:str) -> Any:
+    """Delete an idea."""
+    dao = IdeaDAO(driver)
+    output = dao.delete(label)
+    return jsonable_encoder(output)

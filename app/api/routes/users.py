@@ -1,6 +1,7 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
+# TODO: move sqlmodel operation to user_crud
 from sqlmodel import col, delete, func, select
 
 from app.crud import user_crud
@@ -65,7 +66,7 @@ def create_user(*, driver:Neo4jDriverDep, session: SessionDep, user_in: UserCrea
 
     user = user_crud.create_user(session=session, user_create=user_in)
     dao = UserDAO(driver)
-    dao.create(user.full_name, user.email)
+    dao.create(user.full_name, user.email, user.id)
 
     if settings.emails_enabled and user_in.email:
         email_data = generate_new_account_email(

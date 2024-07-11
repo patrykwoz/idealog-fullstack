@@ -4,13 +4,16 @@ from pydantic import EmailStr, BaseModel
 class IdeaBase(BaseModel):
     label: str
     description: str
-    owner_id: int
 
 class IdeaCreate(IdeaBase):
     pass
 
 class IdeaUpdate(IdeaBase):
-    id: int
+    pass
 
 class IdeaPublic(BaseModel):
-    id: int
+    label: str
+
+class Idea(IdeaBase):
+    owner_email: EmailStr
+    owner_id: int

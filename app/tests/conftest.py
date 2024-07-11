@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, delete
 
 from app.core.config import settings
+settings.POSTGRES_DB = settings.POSTGRES_DB_TEST
 from app.core.db import engine, init_db
 from app.core.neo4j_db import neo4j_driver
 

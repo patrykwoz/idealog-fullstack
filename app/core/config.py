@@ -52,6 +52,7 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str = ""
+    POSTGRES_DB_TEST: str = ""
 
     NEO4J_URI: str
     NEO4J_USERNAME: str
