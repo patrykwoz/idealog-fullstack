@@ -19,7 +19,7 @@ services:
     networks:
       - default
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealog
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealogapi
     build:
       context: .
       dockerfile: Dockerfile.backend
