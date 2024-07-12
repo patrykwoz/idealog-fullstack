@@ -1,4 +1,5 @@
 # IdeaLog API Project
+**IdeaL**og  is an application designed to capture, track, and organize research ideas, experiments, and projects. It provides users with a platform to build relationships between various objects such as ideas, papers, experiments, and sketches. The goal is to create a comprehensive knowledge graph of interconnected ideas and resources.
 
 ## Technology Stack and Features
 
@@ -18,3 +19,56 @@
 - ✅ Tests with [Pytest](https://pytest.org).
 - 🚢 Deployment instructions using Docker Compose proxy to handle automatic HTTPS certificates.
 - 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+
+## System Design Overview
+
+![Components Diagram](img/SystemOverview.png)
+*System Architecture Diagram: Integrating Next.js frontend with FastAPI backend, utilizing SQL and Neo4j databases, RabbitMQ for messaging, Celery for task queue management, and OpenAI for advanced language processing.*
+
+## Graph Database Design
+
+![Components Diagram](img/GraphModel.png)
+*Graph Model Diagram.*
+
+User -->|OWNS| Idea
+
+User -->|FOLLOWS| User
+
+Idea -->|LINKED_TO| Idea
+
+Idea -->|LINKED_TO| Knowledge Source
+
+Knowledge Source -->|LINKED_TO| Knowledge Source
+
+Idea -->|DERIVED_FROM| Entity
+
+Knowledge Source -->|DERIVED_FROM| Entity
+
+Entity -->|RELATED| Entity
+
+## Getting Started
+Download Docker Desktop for Windows. Docker Compose will be automatically installed.
+
+Run in this directory to build and run the app:
+
+```
+docker compose up
+```
+
+## Test
+```
+pip install pytest
+pytest
+```
+
+General development docs: [development.md](./development.md).
+
+This includes using Docker Compose, custom local domains, `.env` configurations, etc.
+
+## Release Notes
+
+Check the file [release-notes.md](./release-notes.md).
+
+## License
+
+The Full Stack FastAPI Template is licensed under the terms of the MIT license.
