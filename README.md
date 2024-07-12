@@ -60,7 +60,7 @@ docker compose up
 pip install pytest
 pytest
 ```
-
+## Development
 General development docs: [development.md](./development.md).
 
 This includes using Docker Compose, custom local domains, `.env` configurations, etc.
@@ -71,4 +71,4 @@ Check the file [release-notes.md](./release-notes.md).
 
 ## License
 
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+The IdeaLog API Project is licensed under the terms of the MIT license.
