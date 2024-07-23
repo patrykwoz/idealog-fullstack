@@ -3,6 +3,7 @@ import logging
 from sqlmodel import Session
 
 from app.core.db import engine, init_db
+from app.core.config import settings
 
 from dotenv import load_dotenv
 import os
