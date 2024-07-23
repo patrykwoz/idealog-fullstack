@@ -1,0 +1,55 @@
+#!/bin/bash
+set -e
+
+# Create the user and grant privileges postgres superuser
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    DO \$\$
+    BEGIN
+        IF NOT EXISTS (
+            SELECT FROM pg_catalog.pg_roles
+            WHERE rolname = '$POSTGRES_USER') THEN
+            CREATE ROLE $POSTGRES_USER WITH SUPERUSER LOGIN PASSWORD '$POSTGRES_PASSWORD';
+        END IF;
+    END
+    \$\$;
+EOSQL
+
+# Create the database if it doesn't exist
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+    DO \$\$
+    BEGIN
+        IF NOT EXISTS (
+            SELECT FROM pg_database
+            WHERE datname = '$POSTGRES_DB') THEN
+            CREATE DATABASE "$POSTGRES_DB";
+        END IF;
+    END
+    \$\$;
+EOSQL
+
+# #create table users
+# psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+#     CREATE TABLE users (
+#         id SERIAL PRIMARY KEY,
+#         email VARCHAR(255) NOT NULL,
+#         hashed_password VARCHAR(255) NOT NULL,
+#         full_name VARCHAR(255) NOT NULL,
+#         is_active BOOLEAN NOT NULL,
+#         is_superuser BOOLEAN NOT NULL,
+#         image_url VARCHAR(255),
+#     );
+# EOSQL
+
+# #insert superuser from env variables FIRST_SUPERUSER and FIRST_SUPERUSER_PASSWORD
+# psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+#     DO \$\$
+#     BEGIN
+#         IF NOT EXISTS (
+#             SELECT FROM users
+#             WHERE email = '$FIRST_SUPERUSER') THEN
+#             INSERT INTO users (email, hashed_password, full_name, is_active, is_superuser)
+#             VALUES ('$FIRST_SUPERUSER', '$FIRST_SUPERUSER_PASSWORD', '$FIRST_SUPERUSER', TRUE, TRUE);
+#         END IF;
+#     END
+#     \$\$;
+# EOSQL

@@ -4,6 +4,11 @@ from sqlmodel import Session
 
 from app.core.db import engine, init_db
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 

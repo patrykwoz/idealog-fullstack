@@ -1,17 +1,18 @@
 services:
   db:
+    image: postgres
     env_file:
       - .env
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
     restart: always
     networks:
       - default
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: idealogapi
+    
   backend:
     env_file:
         - .env
@@ -19,7 +20,10 @@ services:
     networks:
       - default
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealogapi
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=idealogapi
+
     build:
       context: .
       dockerfile: Dockerfile.backend
@@ -32,5 +36,3 @@ networks:
   default:
     driver: bridge
 
-volumes:
-  postgres_data:
