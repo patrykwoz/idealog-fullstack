@@ -1,36 +1,53 @@
 services:
   db:
-    env_file:
-      - .env
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
+    image: postgres:14.9
     restart: always
     networks:
       - default
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - path: .env
+        required: true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+  
+  initialdata:
+    build:
+      context: .
+      dockerfile: Dockerfile.initialdata
+    env_file:
+      - path: .env
+        required: true
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    networks:
+      - default
+    restart: on-failure
+    
   backend:
     env_file:
-        - .env
+      - path: .env
+        required: true
     restart: always
     networks:
       - default
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/idealogapi
     build:
       context: .
       dockerfile: Dockerfile.backend
     ports:  
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+        restart: true
 
 networks:
   default:
     driver: bridge
-
-volumes:
-  postgres_data:
