@@ -47,7 +47,12 @@ services:
       db:
         condition: service_healthy
         restart: true
+    volumes:
+      - json_data:/json_data
 
 networks:
   default:
     driver: bridge
+
+volumes:
+  json_data:
