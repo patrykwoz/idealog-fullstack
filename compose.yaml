@@ -19,7 +19,7 @@ services:
   initialdata:
     build:
       context: .
-      dockerfile: Dockerfile.initialdata
+      dockerfile: backend/Dockerfile.initialdata
     env_file:
       - path: .env
         required: true
@@ -40,7 +40,7 @@ services:
       - default
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: backend/Dockerfile.backend
     ports:  
       - "8000:8000"
     depends_on:
