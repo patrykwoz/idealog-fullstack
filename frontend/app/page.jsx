@@ -3,8 +3,6 @@ import { pingServer } from "./lib/api_actions";
 
 export default async function Home() {
 
-
-
   let response = await pingServer();
   console.log(response.message);
 
