@@ -1,6 +1,9 @@
 
 import { auth } from "@/auth"
 import { getIdeas } from "@/app/lib/actions"
+import Canvas from "@/app/ui/workspace/canvas"
+import styles from "./styles.module.css";
+
 
 export default async function Workspace() {
     const session = await auth()
@@ -13,39 +16,22 @@ export default async function Workspace() {
         console.log(error);
     }
 
-
-
     return (
         <>
-            <main className="flex items-center justify-center md:h-screen">
+            <main className={styles.workspace}>
                 <div>
                     <h1>Welcome to the workspace, {session.user?.email}!</h1>
                 </div>
-                <div>
-                    <pre>{JSON.stringify(session, null, 2)}</pre>
-                </div>
 
                 {ideas.length > 0 && (
-                    <div>
-                        <h2  >Ideas</h2>
-                        <ul>
-                            {ideas.map((idea) => (
-                                <li key={idea.name}>
-                                    <div>
-                                        <h3>name: {idea.name} </h3>
-                                    </div>
-                                    <div>
-                                        <p>description: {idea.description}</p>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+
+                    <Canvas ideas={ideas} />
+
+
                 )}
+
+
             </main>
         </>
     );
 }
-
-
-

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { pingServer, getToken, currentUser } from "./client/api_actions";
-import Svg from "./ui/workspace/svg";
+import { pingServer, getToken, currentUser } from "@/app/client/api_actions";
+import Svg from "@/app/ui/workspace/svg";
 
 export default async function Home() {
 

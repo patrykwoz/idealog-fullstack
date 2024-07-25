@@ -5,7 +5,7 @@ export async function middleware(request) {
     let session = await auth()
     let currentUser = session?.user
 
-    if (currentUser && !request.nextUrl.pathname.startsWith('/workspace')) {
+    if (currentUser && !request.nextUrl.pathname.startsWith('/workspace') && !request.nextUrl.pathname.startsWith('/')) {
         return Response.redirect(new URL('/workspace', request.url))
     }
 
