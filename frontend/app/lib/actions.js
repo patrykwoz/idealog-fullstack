@@ -1,6 +1,7 @@
 'use server'
 
-import { signIn } from '@/auth'
+import { signIn, auth } from '@/auth'
+import { fetchIdeas, fetchIdeasNoToken } from '@/app/client/api_actions'
 
 export async function authenticate(_currentState, formData) {
     try {
@@ -22,6 +23,21 @@ export async function authenticate(_currentState, formData) {
     }
 }
 
+export async function getIdeas(){
+    const session = await auth()
+    console.log('SESSION',session);
+    const accessToken = session.user.accessToken
+    console.log('ACCESS TOKEN',accessToken);
+    try{
+        const ideas = await fetchIdeasNoToken()
+        console.log('IDEAS',ideas);
+        return ideas
+    }
+    catch(error){
+        console.log(error)
+        throw error
+    }
+}
 
 // const session = await getSession();
 // const userRole = session?.user?.role;

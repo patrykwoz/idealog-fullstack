@@ -1,3 +1,4 @@
+// export { auth as middleware} from "@/auth"
 import { auth } from "@/auth"
 
 export async function middleware(request) {
