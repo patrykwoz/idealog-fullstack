@@ -65,3 +65,21 @@ export const fetchIdeasNoToken = async () => {
     const data = await response.json();
     return data;
 }
+
+export const fetchRelations = async () => {
+    const response = await fetch(`${API_URL}/relationships`);
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const fetchNodes = async () => {
+    const response = await fetch(`${API_URL}/nodes`);
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}

@@ -7,7 +7,7 @@ function generateCordset(count) {
     ]);
 }
 
-export default function Canvas({ ideas }) {
+export default function Canvas({ ideas, relations }) {
     const cordset = generateCordset(ideas.length);
 
     return (

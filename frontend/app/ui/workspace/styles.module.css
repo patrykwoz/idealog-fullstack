@@ -10,10 +10,9 @@
     border: 1px solid gold;
 }
 
-.nodeTag{
+.nodeLabel{
     fill: black;
     font-size: 1px;
-    background-color: cyan;
     
 }
 
@@ -21,4 +20,15 @@
     fill: white;
     stroke: black;
     stroke-width: 0.025rem;
+}
+
+.link{
+    fill: blue;
+    stroke: blue;
+    stroke-width: 0.025rem;
+}
+
+.linkLabel{
+    fill: black;
+    font-size: 1px;
 }
