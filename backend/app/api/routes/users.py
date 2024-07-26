@@ -190,6 +190,7 @@ def read_user_by_id(
 )
 def update_user(
     *,
+    driver:Neo4jDriverDep,
     session: SessionDep,
     user_id: int,
     user_in: UserUpdate,
@@ -212,6 +213,9 @@ def update_user(
             )
 
     db_user = user_crud.update_user(session=session, db_user=db_user, user_in=user_in)
+    
+    dao = UserDAO(driver)
+    dao.update(db_user.full_name, db_user.email, db_user.id)
     return db_user
 
 

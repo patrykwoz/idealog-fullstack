@@ -6,8 +6,7 @@ class RelDAO:
         def get_relationships(tx, sort, order, limit, skip):
             cypher = f"""
                 MATCH (n)-[r]->(m)
-                RETURN n, r, m
-                ORDER BY n.{sort} {order}
+                RETURN n{{.name}}, {{name: r.name, type: type(r)}} AS relationship_details, m{{.name}}
                 SKIP $skip LIMIT $limit
             """
             result = tx.run(cypher, limit=limit, skip=skip)
