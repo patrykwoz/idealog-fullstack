@@ -27,8 +27,9 @@ export default async function Workspace() {
 
     return (
         <>
-            <main className={styles.workspace}>
+            <main className={styles.graphCanvas}>
                 <div>
+                    {/* turn this into a disapearing modal with absolute position */}
                     <h1>Welcome to the idealog workspace, {session.user?.email}!</h1>
                 </div>
 

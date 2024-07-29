@@ -56,7 +56,7 @@ export default function CanvasSim({ ideas, relations }) {
             .data(nodes)
             .enter().append("circle")
             .attr("class", styles.node)
-            .attr("r", 3);
+            .attr("r", 10);
 
         const nodeLabel = g.selectAll(".node-label")
             .data(nodes)
@@ -112,10 +112,10 @@ export default function CanvasSim({ ideas, relations }) {
     }, [ideas, relations]);
 
     return (
-        <div className={styles.canvas}>
-            <svg className={styles.svg} viewBox="0 0 100 50" ref={svgRef}>
+        <>
+            <svg className={styles.svg}  ref={svgRef}>
                 <g ref={gRef}></g>
             </svg>
-        </div>
+        </>
     );
 }
