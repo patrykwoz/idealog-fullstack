@@ -7,13 +7,6 @@ export default async function Home() {
   let response = await pingServer();
   console.log(response.message);
 
-  let username = process.env.FIRST_SUPERUSER;
-  let password = process.env.FIRST_SUPERUSER_PASSWORD;
-
-  let {access_token} = await getToken(username, password);
-  let meUser = await currentUser(access_token);
-  console.log(meUser);
-
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
