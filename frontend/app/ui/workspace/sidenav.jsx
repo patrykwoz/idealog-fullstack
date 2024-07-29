@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import NavLinks from './nav-links';
-import styles from "./styles.module.css";
+import styles from "./sidenav.module.css";
 
 
 export default function SideNav() {

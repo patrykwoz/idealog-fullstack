@@ -1,5 +1,3 @@
-import styles from "./styles.module.css";
-
 function generateCordset(count) {
     return Array(count).fill(0).map(() => [
         Math.random() * 80 + 10,
