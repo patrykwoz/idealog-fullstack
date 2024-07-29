@@ -16,7 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 console.log(credentials.email);
 
                 try {
-                    let {access_token} = await getToken(credentials.email, credentials.password);
+                    let { access_token } = await getToken(credentials.email, credentials.password);
                     accessToken = access_token;
                 }
                 catch (error) {
@@ -25,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     return null;
                 }
 
-                if(!accessToken) {
+                if (!accessToken) {
                     throw new Error("Access token not found.");
                     return null;
                 }
@@ -38,6 +38,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     // throw new Error("User not found.");
                     return null;
                 }
+
+                user = {
+                    ...user,
+                    accessToken,
+                };
 
                 console.log(user);
 

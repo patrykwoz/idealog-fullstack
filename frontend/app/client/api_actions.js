@@ -1,5 +1,4 @@
 'use server';
-
 const BACKEND_URL = 'http://localhost:8000';
 const API_VERSION = 'api/v1';
 const API_URL = `${BACKEND_URL}/${API_VERSION}`;
@@ -38,6 +37,46 @@ export const currentUser = async (accessToken) => {
             Authorization: `Bearer ${accessToken}`,
         },
     });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const fetchIdeas = async (accessToken) => {
+    const response = await fetch(`${API_URL}/ideas`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const fetchIdeasNoToken = async () => {
+    const response = await fetch(`${API_URL}/ideas`);
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const fetchRelations = async () => {
+    const response = await fetch(`${API_URL}/relationships`);
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const fetchNodes = async () => {
+    const response = await fetch(`${API_URL}/nodes`);
     if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
     }

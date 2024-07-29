@@ -1,0 +1,34 @@
+.canvas {
+    width: 100vw;
+    height: 90%;
+
+}
+
+.svg{
+    height: 100%;
+    width: 100%;
+    border: 1px solid gold;
+}
+
+.nodeLabel{
+    fill: black;
+    font-size: 1px;
+    
+}
+
+.node{
+    fill: white;
+    stroke: black;
+    stroke-width: 0.025rem;
+}
+
+.link{
+    fill: blue;
+    stroke: blue;
+    stroke-width: 0.025rem;
+}
+
+.linkLabel{
+    fill: black;
+    font-size: 1px;
+}

@@ -1,6 +1,7 @@
 'use server'
 
-import { signIn } from '@/auth'
+import { signIn, auth } from '@/auth'
+import { fetchIdeas, fetchIdeasNoToken, fetchRelations, fetchNodes } from '@/app/client/api_actions'
 
 export async function authenticate(_currentState, formData) {
     try {
@@ -22,6 +23,35 @@ export async function authenticate(_currentState, formData) {
     }
 }
 
+export async function getIdeas() {
+    try {
+        const ideas = await fetchIdeasNoToken()
+        return ideas
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
 
-// const session = await getSession();
-// const userRole = session?.user?.role;
+export async function getRelations() {
+    try {
+        const relations = await fetchRelations()
+        return relations
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+export async function getNodes() {
+    try {
+        const nodes = await fetchNodes()
+        return nodes
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
