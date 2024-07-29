@@ -1,5 +1,6 @@
 import SideNav from "../ui/workspace/sidenav";
-import styles from "./styles.module.css";
+import TopNav from "../ui/workspace/topnav";
+import styles from "./workspace.module.css";
 
 export const metadata = {
     title: "Idealog",
@@ -9,13 +10,13 @@ export const metadata = {
 export default function Layout({ children }) {
     return (
         <>
-            {/* TopNav */}
             <div className={styles.workspaceContainer} >
                 <div className={styles.sideNavContainer}>
                     <SideNav />
 
                 </div>
                 <div className={styles.graphCanvasContainer}>
+                    <TopNav />
                     {children}
                 </div>
             </div>

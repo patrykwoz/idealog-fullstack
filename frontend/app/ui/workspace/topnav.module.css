@@ -1,0 +1,31 @@
+.topnavContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    width: 100%;
+
+
+}
+
+.topNavLeft{
+
+}
+
+.topnavProfile{
+    display: flex;
+    margin: 10px 20px 10px 10px;
+    padding: 5px;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    background-color: grey;
+}
+
+.topnavProfile:hover{
+    cursor: pointer;
+}

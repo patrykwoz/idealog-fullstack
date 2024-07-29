@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import styles from "./styles.module.css";
+import styles from "./graph-canvas.module.css";
 
 function generateCordset(count) {
     return Array(count)
@@ -10,7 +10,7 @@ function generateCordset(count) {
         .map(() => [Math.random() * 80 + 10, Math.random() * 35 + 10]);
 }
 
-export default function CanvasSim({ ideas, relations }) {
+export default function GraphCanvas({ ideas, relations }) {
     const svgRef = useRef(null);
     const gRef = useRef(null);
 

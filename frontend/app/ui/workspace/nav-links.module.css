@@ -1,0 +1,21 @@
+.navlinksContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 65px;
+    background-color: white;
+}
+
+.navlinksButton {
+    color: grey;
+    height: 35px;
+    padding: 5px;
+    margin: 10px;
+}
+
+.navlinksButton:hover {
+    cursor: pointer;
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+}

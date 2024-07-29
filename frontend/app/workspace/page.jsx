@@ -1,9 +1,8 @@
 
 import { auth } from "@/auth"
 import { getIdeas, getRelations, getNodes } from "@/app/lib/actions"
-import Canvas from "@/app/ui/workspace/canvas"
-import CanvasSim from "@/app/ui/workspace/canvas-sim"
-import styles from "./styles.module.css";
+import GraphCanvas from "@/app/ui/workspace/graph-canvas"
+import styles from "./workspace.module.css";
 
 
 export default async function Workspace() {
@@ -28,17 +27,13 @@ export default async function Workspace() {
     return (
         <>
             <main className={styles.graphCanvas}>
-                <div>
-                    {/* turn this into a disapearing modal with absolute position */}
-                    <h1>Welcome to the idealog workspace, {session.user?.email}!</h1>
-                </div>
 
                 {/* don't forget to revalidate this component after adding an idea to the graph db */}
 
                 { nodes.length > 0 && (
 
                     // <Canvas ideas={ideas} relations={relations}/>
-                    <CanvasSim ideas={nodes} relations={relations} />
+                    <GraphCanvas ideas={nodes} relations={relations} />
 
 
                 )}
