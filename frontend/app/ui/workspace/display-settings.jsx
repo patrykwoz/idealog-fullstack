@@ -18,7 +18,7 @@ export default function DisplaySettings() {
 
                 <form action="" className={styles.displaySettingsFormItem}>
                     <label htmlFor="nodes-limit">Nodes Limit</label>
-                    <input type="number" id='nodes-limit'/>
+                    <input type="number" id='nodes-limit' min={0} defaultValue={1000}/>
                     <button className={styles.displaySettingsFormButton}>
                         < ArrowRightIcon className={styles.displaySettingsFormIcon} />
                     </button>
