@@ -1,0 +1,59 @@
+.graphEditMenuItem{
+    display: flex;
+    flex-direction: row;
+    justify-content:start;
+    align-items: center;
+    padding: 0 0 0 5px;
+    margin: 10px;
+    background-color: transparent;
+    color: black;
+
+}
+
+.graphEditMenuItemIconContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 15px 0 0;
+
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    border: 1px solid grey;
+    border-radius: 50%;
+}
+
+.graphEditIcon{
+    color: grey;
+    width: 15px;
+}
+
+
+.graphEditButton {
+    color: grey;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    display: none;
+    
+
+}
+
+.graphEditMenuItem > p {
+    width: 150px;
+}
+
+.graphEditMenuItem:hover .graphEditButton {
+    display: block;
+}
+
+.graphEditButton:hover{
+    color: black;
+}
+
+.graphEditMenuItem:hover{
+    cursor: pointer;
+    background-color: rgb(224, 224, 224);
+    border-radius: 10px;
+}
