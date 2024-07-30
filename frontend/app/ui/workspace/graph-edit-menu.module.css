@@ -4,7 +4,7 @@
     justify-content:start;
     align-items: center;
     padding: 0 0 0 5px;
-    margin: 10px;
+    margin: 0 0 0 10px;
     background-color: transparent;
     color: black;
 
@@ -20,7 +20,7 @@
     background-color: white;
     width: 25px;
     height: 25px;
-    border: 1px solid grey;
+    border: 1px solid rgb(207, 207, 207);
     border-radius: 50%;
 }
 
@@ -42,6 +42,8 @@
 
 .graphEditMenuItem > p {
     width: 150px;
+
+    font-size: 14px;
 }
 
 .graphEditMenuItem:hover .graphEditButton {

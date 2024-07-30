@@ -1,5 +1,6 @@
 import SideNav from "../ui/workspace/sidenav";
 import TopNav from "../ui/workspace/topnav";
+import BottomNav from "../ui/workspace/bottomnav";
 import styles from "./workspace.module.css";
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function Layout({ children }) {
                 <div className={styles.graphCanvasContainer}>
                     <TopNav />
                     {children}
+                    <BottomNav />
                 </div>
             </div>
 

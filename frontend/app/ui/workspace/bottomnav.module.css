@@ -1,0 +1,15 @@
+.bottomnavContainer{
+
+    /* position: absolute;
+    bottom: 0; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 0 0 0 0;
+    height: 95px;
+    min-height: 95px;
+    width: 100%;
+
+}
