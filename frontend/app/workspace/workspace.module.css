@@ -9,7 +9,8 @@
 
 .sideNavContainer {
     background-color: rgb(240, 240, 240);
-    width: 30%;
+    width: 260px;
+    min-width: 260px;
     height: 100vh;
 }
 
@@ -19,7 +20,7 @@
     align-items: center;
     justify-content: start;
     height: 100%;
-    width: 70%;
+    width: 100%;
     background-color: rgb(245, 245, 245);
 
     

@@ -4,7 +4,7 @@
     justify-content: space-between;
     width: 100%;
     height: 65px;
-    background-color: white;
+    background-color: transparent;
 }
 
 .navlinksButton {
@@ -16,6 +16,6 @@
 
 .navlinksButton:hover {
     cursor: pointer;
-    background-color: rgb(240, 240, 240);
+    background-color:  rgb(224, 224, 224);
     border-radius: 10px;
 }

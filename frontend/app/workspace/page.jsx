@@ -19,11 +19,7 @@ export default async function Workspace() {
     } catch (error) {
         console.log(error);
     }
-    console.log('IDEAS')
-    console.log(ideas);
-    console.log('NODES')
-    console.log(nodes);
-
+    
     return (
         <>
             <main className={styles.graphCanvas}>
