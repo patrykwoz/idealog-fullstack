@@ -1,0 +1,50 @@
+.graphFilterHeader{
+    margin: 35px 0 0 0;
+    padding: 0 0 0 15px;
+    font-size: small;
+    color: grey;
+    font-weight: 500;
+}
+
+.graphFilterContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    background-color: transparent;
+    color: black;
+
+    font-size: 12px;
+}
+
+.graphFilterItem{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    padding: 0 0 0 15px;
+    margin: 0 0 0 0;
+
+    width: 180px;
+
+}
+
+.graphFilterItem > label {
+    width: 100%;
+}
+
+.graphFilterCheckboxIconContainer{
+    width: 15px;
+    min-width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    border: 1px solid gray;
+    color: gray;
+}
+
+.graphFilterCheckboxIcon{
+    display: none;
+}
+
