@@ -1,0 +1,19 @@
+.profileAvatarContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+}
+
+.profileAvatarContainer img{
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+}
+
+.profileAvatarContainer:hover{
+    cursor: pointer;
+}

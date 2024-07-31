@@ -16,6 +16,8 @@
     background-color: transparent;
     color: black;
 
+    height: 100%;
+
     font-size: 12px;
 }
 
@@ -42,12 +44,16 @@
     padding: 2px 0 2px 5px;
     border-radius: 4px;
 
-    
+
 }
 
 .graphFilterItem>label:hover {
     cursor: pointer;
     background-color: rgb(224, 224, 224);
+}
+
+.graphFilterItem>label:hover .graphFilterCheckIcon {
+    color: black;
 }
 
 .graphFilterCheckboxIconContainer {
@@ -57,8 +63,6 @@
     border-radius: 4px;
     border: 1px solid gray;
     color: gray;
-
-    /* background-color: rgb(240, 240, 240); */
 }
 
 input.graphFilterCheckbox {
@@ -70,10 +74,10 @@ input.graphFilterCheckbox:checked {
     outline: 2px solid cyan;
 }
 
-.graphFilterCheckIcon{
+.graphFilterCheckIcon {
     display: none;
 }
 
-input.graphFilterCheckbox:checked + label .graphFilterCheckIcon {
+input.graphFilterCheckbox:checked+label .graphFilterCheckIcon {
     display: block;
 }
