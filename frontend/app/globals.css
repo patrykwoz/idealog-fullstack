@@ -38,6 +38,26 @@ body {
 } */
 
 .icons{
-  color:grey;
-  width: 6rem;
+  border: 2px solid magenta;
+}
+
+#modal-root{
+  /* position: relative; */
+  
+}
+
+.modalBackdrop{
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+     
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+    background-color: rgba(0, 0, 0, 0.474);
+    width: 100vw;
+    height: 100vh;
 }
