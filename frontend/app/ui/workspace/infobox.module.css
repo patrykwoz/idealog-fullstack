@@ -1,0 +1,69 @@
+.infoBoxContainer {
+
+    /* display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center; */
+
+    width: 100%;
+    height: 95px;
+    min-height: 95px;
+    max-height: 95px;
+
+    padding: 15px 25px 15px 15px;
+    margin: 0 0 0 0;
+    background-color: transparent;
+
+    color: black;
+
+    font-size: 12px;
+    box-sizing:border-box;
+}
+
+.infoBoxButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 10px;
+}
+
+.infoBoxButton:hover{
+    cursor: pointer;
+    background-color: rgb(224, 224, 224);
+}
+
+.infoBoxIcon{
+    height: 40px;
+    width: 40px;
+    padding: 4px;
+    box-sizing: border-box;
+    color: cadetblue;
+}
+
+.infoBoxTextContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding:0;
+}
+
+.infoBoxHeader{
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.infoBoxText{
+    font-size: 10px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    color: grey;
+}

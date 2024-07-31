@@ -55,13 +55,17 @@
     box-sizing: content-box;
 }
 
-.displaySettingsFormButton:hover{
-    cursor: pointer;
-    background-color: rgb(224, 224, 224);
-}
-
 .displaySettingsFormIcon{
     color: grey;
     width: 15px;
+}
 
+.displaySettingsFormButton:hover{
+    cursor: pointer;
+    background-color: rgb(224, 224, 224);
+    color: black;
+}
+
+.displaySettingsFormButton:hover .displaySettingsFormIcon{
+    color: black;
 }

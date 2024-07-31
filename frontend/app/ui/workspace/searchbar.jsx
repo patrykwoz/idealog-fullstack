@@ -17,7 +17,9 @@ export default function SearchBar() {
                     className={styles.searchbarFormInput}
                     type="text"
                     id='search'
-                    placeholder='Start typing to search your graph...' />
+                    placeholder='Start typing to search your graph...'
+                    autoComplete='off'
+                />
                 <button className={styles.searbarFormButton}>
                     <ArrowUpIcon className={styles.searchbarButtonIcon} />
                 </button>
