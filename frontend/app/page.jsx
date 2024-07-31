@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from 'next/link';
 import { pingServer, getToken, currentUser } from "@/app/client/api_actions";
 
 export default async function Home() {

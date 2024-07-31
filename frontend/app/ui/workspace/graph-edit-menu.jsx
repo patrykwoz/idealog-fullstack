@@ -7,7 +7,6 @@ import {
 } from '@heroicons/react/24/outline';
 
 import styles from "./graph-edit-menu.module.css";
-import { color } from 'd3';
 
 export default function GraphEditMenu() {
     return (
