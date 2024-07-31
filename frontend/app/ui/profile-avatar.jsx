@@ -1,51 +1,46 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { useProfileAvatar } from '@/app/ui/profile-avatar-context';
 import ProfileMenu from './workspace-modals/profile-menu';
+import SettingsModal from './workspace-modals/settings-modal';
 import styles from './profile-avatar.module.css';
 
-export default function ProfileAvatar({ user }) {
-    const [profileModalDisplayed, setProfileModalDisplayed] = useState(false);
-    const profileAvatarRef = useRef(null);
-    const profileMenuRef = useRef(null);
+export default function ProfileAvatar() {
+    const {
+        user,
+        profileMenuVisible,
+        toggleProfileMenu,
+        profileAvatarRef,
+        profileMenuRef,
+        settingsModalVisible,
+        settingsModalRef,
+    } = useProfileAvatar();
 
     const fallbackImage = "https://images.unsplash.com/photo-1601247387431-7966d811f30b?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
     const userImg = user.img ? user.img : fallbackImage;
-    const toggleProfileModal = () => {
-        setProfileModalDisplayed(!profileModalDisplayed);
-    }
-
-    const handleClickOutside = (event) => {
-        if (profileAvatarRef.current && profileMenuRef.current &&
-            !profileAvatarRef.current.contains(event.target) &&
-            !profileMenuRef.current.contains(event.target)) {
-            setProfileModalDisplayed(false);
-        }
-    }
-
-    useEffect(() => {
-        if (profileModalDisplayed) {
-            document.addEventListener('click', handleClickOutside);
-        } else {
-            document.removeEventListener('click', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [profileModalDisplayed]);
 
     return (
         <>
             <div className={styles.profileAvatarContainer}
-                onClick={toggleProfileModal}
+                onClick={toggleProfileMenu}
                 ref={profileAvatarRef}
             >
                 <img src={userImg} alt="Profile Avatar" />
             </div>
 
-            {profileModalDisplayed && (
+            {profileMenuVisible && (
                 <div ref={profileMenuRef}>
-                    <ProfileMenu user={user} />
+                    <ProfileMenu />
                 </div>
+            )}
+
+            {settingsModalVisible && createPortal(
+                <div className='modalBackdrop'>
+                    <div ref={settingsModalRef}>
+                        <SettingsModal />
+                    </div>
+                </div>,
+                document.getElementById('modal-root')
             )}
         </>
     )
