@@ -1,0 +1,8 @@
+.knowledgeModalContainer {
+    display: flex;
+    width: 100px;
+    height: 150px;
+    min-height: 150px;
+    background-color: tomato;
+    border-radius: 10px;
+}

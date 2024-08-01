@@ -39,7 +39,6 @@ export function ProfileAvatarProvider({ children, user }) {
     }
 
     useEffect(() => {
-        console.log('useEffect working');
         if (profileModalVisible || settingsModalVisible || myPlanModalVisible) {
             document.addEventListener('click', handleClickOutside);
         } else {
