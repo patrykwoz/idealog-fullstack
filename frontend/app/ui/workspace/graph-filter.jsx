@@ -8,7 +8,7 @@ import styles from "./graph-filter.module.css";
 export default function GraphFilter() {
     return (
         <>
-            <div className={styles.graphFilterContainer}>
+            <div className={`${styles.graphFilterContainer} noSelect`}>
                 <div className={styles.graphFilterHeader}>
                     <p>Filter Your Graph</p>
 

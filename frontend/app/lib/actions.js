@@ -1,7 +1,13 @@
 'use server'
 
 import { signIn, auth } from '@/auth'
-import { fetchIdeas, fetchIdeasNoToken, fetchRelations, fetchNodes } from '@/app/client/api_actions'
+import { revalidateTag } from 'next/cache'
+import {
+    fetchIdeas,
+    createIdeaApi,
+    fetchRelations,
+    fetchNodes
+} from '@/app/client/api_actions'
 
 export async function authenticate(_currentState, formData) {
     try {
@@ -24,9 +30,31 @@ export async function authenticate(_currentState, formData) {
 }
 
 export async function getIdeas() {
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+
     try {
-        const ideas = await fetchIdeasNoToken()
+        const ideas = await fetchIdeas(accessToken)
         return ideas
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+export async function createIdea(formData) {
+    const rawFormData = {
+        name: formData.get('ideaName'),
+        description: formData.get('ideaDescription'),
+    }
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+    
+    try {
+        const idea = await createIdeaApi( accessToken, rawFormData)
+        revalidateNodes();
+        return idea
     }
     catch (error) {
         console.log(error)
@@ -46,12 +74,19 @@ export async function getRelations() {
 }
 
 export async function getNodes() {
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+
     try {
-        const nodes = await fetchNodes()
+        const nodes = await fetchNodes(accessToken)
         return nodes
     }
     catch (error) {
         console.log(error)
         throw error
     }
+}
+
+export async function revalidateNodes() {
+    revalidateTag('nodes')
 }

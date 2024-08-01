@@ -1,0 +1,19 @@
+.closeButton{
+    color: grey;
+    border: none;
+    background-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.closeButton:hover{
+    background-color: rgb(204, 204, 204);
+    color: black;
+}

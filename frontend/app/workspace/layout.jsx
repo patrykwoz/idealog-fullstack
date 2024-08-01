@@ -12,7 +12,7 @@ export default function Layout({ children }) {
     return (
         <>
             <div className={styles.workspaceContainer} >
-                <div className={styles.sideNavContainer}>
+                <div className={`${styles.sideNavContainer} noSelect`}>
                     <SideNav />
 
                 </div>

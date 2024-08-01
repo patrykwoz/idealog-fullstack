@@ -14,8 +14,6 @@ export default function SideNav() {
     const cookieStore = cookies();
     let sideNavDisplayed = cookieStore.get('sideNavDisplayed');
 
-    console.log('sideNavDisplayed SIDENAV COMPONENT', sideNavDisplayed.value);
-
     return (
         <>
             {/* wrap these two in a context */}
@@ -28,6 +26,7 @@ export default function SideNav() {
 
             <DisplaySettings />
             <GraphFilter />
+
             <InfoBox />
         </>
     );

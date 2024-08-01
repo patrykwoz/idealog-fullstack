@@ -1,0 +1,14 @@
+.modalContainer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+
+    background-color: rgb(245, 245, 245);
+
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 20px;
+
+    box-shadow: 0 0 transparent, 0 0 transparent, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+}

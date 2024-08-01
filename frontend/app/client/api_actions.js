@@ -57,6 +57,23 @@ export const fetchIdeas = async (accessToken) => {
     return data;
 }
 
+export const createIdeaApi = async (accessToken, formData) => {
+    const response = await fetch(`${API_URL}/ideas`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+
 export const fetchIdeasNoToken = async () => {
     const response = await fetch(`${API_URL}/ideas`);
     if (!response.ok) {
@@ -75,8 +92,14 @@ export const fetchRelations = async () => {
     return data;
 }
 
-export const fetchNodes = async () => {
-    const response = await fetch(`${API_URL}/nodes`);
+export const fetchNodes = async (accessToken) => {
+    const response = await fetch(`${API_URL}/nodes`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            next: { tags: ['nodes'] }
+        });
     if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
     }

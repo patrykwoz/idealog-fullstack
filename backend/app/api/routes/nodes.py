@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 def read_nodes(
     driver:Neo4jDriverDep,
+    current_user: CurrentUser,
     sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
     limit: int | None = 10,
