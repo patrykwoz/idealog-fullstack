@@ -5,7 +5,8 @@ import { revalidateTag } from 'next/cache'
 import {
     fetchIdeas,
     createIdeaApi,
-    fetchRelations,
+    fetchRelationships,
+    createRelationshipApi,
     fetchNodes
 } from '@/app/client/api_actions'
 
@@ -62,9 +63,9 @@ export async function createIdea(formData) {
     }
 }
 
-export async function getRelations() {
+export async function getRelationships() {
     try {
-        const relations = await fetchRelations()
+        const relations = await fetchRelationships()
         return relations
     }
     catch (error) {
@@ -72,6 +73,28 @@ export async function getRelations() {
         throw error
     }
 }
+
+export async function createRelationship(formData) {
+    const rawFormData = {
+        name: formData.get('relationshipName'),
+        head: formData.get('relationshipHead'),
+        tail: formData.get('relationshipTail'),
+        rel_type: formData.get('relationshipType'),
+    }
+
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+    try {
+        const relation = await createRelationshipApi(accessToken,rawFormData)
+        revalidateNodes();
+        return relation
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
 
 export async function getNodes() {
     const autObj = await auth();

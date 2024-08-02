@@ -1,4 +1,4 @@
-.modalContainer{
+.modalContainer {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -11,4 +11,64 @@
 
     box-shadow: 0 0 transparent, 0 0 transparent, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
+}
+
+.modalContainer form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 0 20px;
+}
+
+.modalContainer form label {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.modalContainer form input {
+    height: 45px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    padding: 0 10px 0 10px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+
+.modalContainer form textarea{
+    height: 100px;
+    min-height: 100px;
+    min-width: 250px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+
+.modalContainer form button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    background-color: transparent;
+    color: rgb(204, 204, 204);;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 999px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+
+.modalContainer form button:hover{
+    background-color: rgb(204, 204, 204);
+    color: black;
 }

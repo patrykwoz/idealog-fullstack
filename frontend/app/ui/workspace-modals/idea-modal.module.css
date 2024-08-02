@@ -35,6 +35,10 @@
     margin-bottom: 20px;
 }
 
+/* Abstracted this away to be reusable and moved it to mdal-container.module.css 
+Will see if I might need it later when I'm done styling the rest of components, etc. */
+
+/* 
 .ideaModalForm{
     display: flex;
     flex-direction: column;
@@ -88,4 +92,4 @@
 .ideaModalButton:hover{
     background-color: rgb(204, 204, 204);
     color: black;
-}
+} */

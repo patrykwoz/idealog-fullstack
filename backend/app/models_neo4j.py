@@ -24,13 +24,13 @@ class RelBase(BaseModel):
 
 
 class RelCreate(RelBase):
-    node1: str
-    node2: str
+    head: str
+    tail: str
     rel_type: str
 
 class RelUpdate(RelBase):
-    noode1: str
-    node2: str
+    head: str
+    tail: str
     rel_type: str
 
 class RelPublic(RelBase):

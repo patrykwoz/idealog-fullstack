@@ -17,7 +17,7 @@ def read_relationships(
     driver:Neo4jDriverDep,
     sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
-    limit: int | None = 10,
+    limit: int | None = 1000,
     skip: int | None = 0) -> Any:
     """Retrieve relationships."""
     dao = RelDAO(driver)
@@ -32,8 +32,8 @@ def create_relationship(
     dao = RelDAO(driver)
     try:
         output = dao.create(
-            rel_in.node1,
-            rel_in.node2,
+            rel_in.head,
+            rel_in.tail,
             rel_in.rel_type,
             rel_in.name)
     except ConstraintError:

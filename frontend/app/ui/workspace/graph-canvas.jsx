@@ -63,7 +63,7 @@ export default function GraphCanvas({ ideas, relations }) {
             .data(nodes)
             .enter().append("text")
             .attr("class", styles.nodeLabel)
-            .text((d) => d.name.slice(0, 8));
+            .text((d) => d.name.slice(0, 10));
 
         const drag = d3.drag()
             .on("start", (event, d) => {

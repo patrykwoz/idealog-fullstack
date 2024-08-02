@@ -83,8 +83,24 @@ export const fetchIdeasNoToken = async () => {
     return data;
 }
 
-export const fetchRelations = async () => {
+export const fetchRelationships = async () => {
     const response = await fetch(`${API_URL}/relationships`);
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const createRelationshipApi = async (accessToken, formData) => {
+    const response = await fetch(`${API_URL}/relationships`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    });
     if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
     }

@@ -8,7 +8,7 @@ export default function InfoBox() {
     return (
         <>
             <div className={styles.infoBoxContainer}>
-                <div className={styles.infoBoxButton}>
+                <div className={`${styles.infoBoxButton} notAllowed`}>
                     <PuzzlePieceIcon className={styles.infoBoxIcon} />
                     <div className={styles.infoBoxTextContainer}>
                         <p className={styles.infoBoxHeader}>Subscribe now</p>

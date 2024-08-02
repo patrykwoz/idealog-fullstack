@@ -1,6 +1,6 @@
 
 import { auth } from "@/auth"
-import { getIdeas, getRelations, getNodes } from "@/app/lib/actions"
+import { getIdeas, getRelationships, getNodes } from "@/app/lib/actions"
 import GraphCanvas from "@/app/ui/workspace/graph-canvas";
 import ZoomMenu from "@/app/ui/workspace/zoom-menu";
 import styles from "./workspace.module.css";
@@ -10,12 +10,10 @@ export default async function Workspace() {
     const session = await auth()
     if (!session) return <div>Not authenticated</div>
 
-    let ideas = []
     let relations = []
     let nodes = []
     try {
-        ideas = await getIdeas();
-        relations = await getRelations();
+        relations = await getRelationships();
         nodes = await getNodes();
     } catch (error) {
         console.log(error);

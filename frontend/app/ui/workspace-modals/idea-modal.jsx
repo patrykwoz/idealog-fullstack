@@ -9,9 +9,9 @@ export default function IdeaModal() {
     const { toggleIdeaModal } = useSidenav();
 
     function handleRevalidateNodes() {
+        // Example use of revalidateNodes in a client component
         revalidateNodes();
     }
-
 
     return (
         <>
@@ -20,7 +20,7 @@ export default function IdeaModal() {
                 <div className={styles.ideaModalContainer}
                 >
                     <div className={styles.ideaModalHeader}>
-                        <p>Create a new idea</p>
+                        <p>Create a new Idea</p>
                         <CloseButton onClick={toggleIdeaModal} />
                     </div>
 
@@ -38,7 +38,6 @@ export default function IdeaModal() {
 
 
                         <label htmlFor="idea-description">Description</label>
-                        {/* <input type="text" id='idea-description' name='ideaDescription' /> */}
                         <textarea id='idea-description' name='ideaDescription' />
 
                         <button
@@ -50,7 +49,7 @@ export default function IdeaModal() {
 
                     </form>
 
-
+                    {/* Example use of manual revalidation in a client component */}
                     {/* <div onClick={handleRevalidateNodes} >Revalidate Nodes</div> */}
 
                 </div>

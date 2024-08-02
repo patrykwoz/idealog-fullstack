@@ -65,3 +65,7 @@ body {
 .noSelect{
   user-select: none;
 }
+
+.notAllowed{
+  cursor: not-allowed !important;
+}

@@ -22,7 +22,7 @@ export default function ProfileMenu() {
     return (
         <>
             <div className={styles.profileMenuContainer}>
-                <div className={styles.profileMenuItem}>
+                <div className={`${styles.profileMenuItem} notAllowed`}>
                     <SparklesIcon className={styles.profileMenuItemIcon} />
                     <p className={styles.profileMenuItemText}>
                         My Plan
