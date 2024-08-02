@@ -1,5 +1,8 @@
 'use client';
 import { useSidenav } from '@/app/ui/workspace/sidenav-context';
+import { createKnowledge } from '@/app/lib/actions';
+import ModalContainer from '../containers/modal-container';
+import CloseButton from '../buttons/close-button';
 import styles from './knowledge-modal.module.css';
 
 export default function KnowledgeModal() {
@@ -9,12 +12,57 @@ export default function KnowledgeModal() {
     return (
         <>
 
-            <div className={styles.knowledgeModalContainer}
-            >
-                <p>Knowledge Modal</p>
-                <div onClick={toggleKnowledgeModal}>x</div>
+            <ModalContainer>
 
-            </div>
+                <div className={styles.knowledgeModalContainer}
+                >
+                    <div className={styles.knowledgeModalHeader}>
+                        <p>Create a new Knowledge Source</p>
+                        <CloseButton onClick={toggleKnowledgeModal} />
+                    </div>
+
+                    <div className={styles.knowledgeModalDivider}></div>
+
+                    <form action={createKnowledge} className={styles.knowledgeModalForm}>
+
+                        <label htmlFor="knowledge-title">Title</label>
+                        <input
+                            type="text"
+                            id='knowledge-title'
+                            name='knowledgeTitle'
+                            autoComplete='off'
+                        />
+
+                        <label htmlFor="knowledge-url">Url</label>
+                        <input
+                            type="text"
+                            id='knowledge-url'
+                            name='knowledgeUrl'
+                            autoComplete='off'
+                        />
+
+                        <label htmlFor="knowledge-summary">Summary</label>
+                        <textarea id='knowledge-summary' name='knowledgeSummary' />
+
+                        <label htmlFor="knowledge-text">Full text</label>
+                        <textarea id='knowledge-text' name='knowledgeText' />
+
+
+
+                        <button
+                            type="submit"
+                            className={styles.knowledgeModalButton}
+                        >
+                            Create
+                        </button>
+
+                    </form>
+
+                    {/* Example use of manual revalidation in a client component */}
+                    {/* <div onClick={handleRevalidateNodes} >Revalidate Nodes</div> */}
+
+                </div>
+            </ModalContainer>
 
         </>
     )

@@ -14,21 +14,24 @@ export default function SideNav() {
     const cookieStore = cookies();
     let sideNavDisplayed = cookieStore.get('sideNavDisplayed');
 
-    console.log('sideNavDisplayed SIDENAV COMPONENT', sideNavDisplayed.value);
-
     return (
         <>
             {/* wrap these two in a context */}
             {/* render modals inside - try keeping this a server component */}
             <SidenavProvider>
-                <NavLinks />
-                <GraphEditMenu />
+                <div className={`${styles.sidenavContent}`}>
+
+                    <NavLinks />
+                    <GraphEditMenu />
+
+
+
+                    <DisplaySettings />
+                    <GraphFilter />
+
+                    <InfoBox />
+                </div>
             </SidenavProvider>
-
-
-            <DisplaySettings />
-            <GraphFilter />
-            <InfoBox />
         </>
     );
-}
+} 

@@ -8,14 +8,11 @@ import styles from "./graph-filter.module.css";
 export default function GraphFilter() {
     return (
         <>
-            <div className={styles.graphFilterContainer}>
+            <div className={`${styles.graphFilterContainer} noSelect`}>
                 <div className={styles.graphFilterHeader}>
                     <p>Filter Your Graph</p>
 
                 </div>
-                {/* map the type of objects in the graph, e.g. ideas
-                knowledges sources, users, etc. ... */}
-
                 <div action="" className={styles.graphFilterContainer}>
 
                     <div className={styles.graphFilterItem}>
@@ -28,6 +25,7 @@ export default function GraphFilter() {
                         />
                         <label htmlFor="ideasFilter" className={styles.graphFilterCheckboxLabel}>
                             Ideas
+                            {/* consider adding count of nodes displayed */}
                             <div className={styles.graphFilterCheckboxIconContainer}>
                                 <CheckIcon className={styles.graphFilterCheckIcon} />
                             </div>
@@ -45,6 +43,7 @@ export default function GraphFilter() {
                         />
                         <label htmlFor="knowledgeSourcesFilter" className={styles.graphFilterCheckboxLabel}>
                             Knowledge Sources
+                            {/* consider adding count of nodes displayed */}
                             <div className={styles.graphFilterCheckboxIconContainer}>
                                 <CheckIcon className={styles.graphFilterCheckIcon} />
                             </div>
@@ -57,7 +56,6 @@ export default function GraphFilter() {
                             className={styles.graphFilterCheckbox}
                             type="checkbox"
                             id='usersFilter'
-                            defaultChecked
                             hidden
                         />
                         <label htmlFor="usersFilter" className={styles.graphFilterCheckboxLabel}>
@@ -86,22 +84,10 @@ export default function GraphFilter() {
                         </label>
                     </div>
 
-
-                    {/* <button className={styles.graphFilterFormButton} hidden>
-                        < ArrowRightIcon className={styles.graphFilterFormIcon} />
-                    </button> */}
+                    {/* map the type of objects in the graph, e.g. ideas
+                    knowledges sources, users, etc. ... */}
 
                 </div>
-
-
-
-
-
-
-
-
-
-
             </div>
         </>
     );

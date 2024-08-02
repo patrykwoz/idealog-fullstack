@@ -13,30 +13,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 let user = null;
                 let accessToken = null;
 
-                console.log(credentials.email);
-
                 try {
                     let { access_token } = await getToken(credentials.email, credentials.password);
                     accessToken = access_token;
                 }
                 catch (error) {
-                    // console.log(error);
                     throw new Error("Invalid credentials.");
-                    return null;
                 }
 
                 if (!accessToken) {
                     throw new Error("Access token not found.");
-                    return null;
                 }
 
                 try {
                     user = await currentUser(accessToken);
                 }
                 catch (error) {
-                    // console.log(error);
-                    // throw new Error("User not found.");
-                    return null;
+                    throw new Error("User not found.");
                 }
 
                 user = {
@@ -46,9 +39,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 console.log(user);
 
-                return user
+                return { ...credentials, ...user, accessToken };
             },
         }),
     ],
+    callbacks: {
+        jwt({token, user}){
+            if (user) {
+                token.accessToken = user.accessToken;
+                token.fullName = user.full_name;
+                token.imageUrl = user.image_url;
+            }
+            return token;
+        },
+        session({session, token}){
+            session.accessToken = token.accessToken;
+            session.user.fullName = token.fullName;
+            session.user.imageUrl = token.imageUrl;
+            return session;
+        }
+    }
 })
 

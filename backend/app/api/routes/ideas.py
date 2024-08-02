@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 def read_ideas(
     driver:Neo4jDriverDep,
+    current_user: CurrentUser,
     sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
     limit: int | None = 10,
@@ -54,6 +55,7 @@ def create_idea(
 @router.put("/{id}")
 def update_idea(
     driver:Neo4jDriverDep,
+    current_user: CurrentUser,
     idea_in: IdeaUpdate) -> Any:
     """Update an idea."""
     dao = IdeaDAO(driver)
@@ -65,6 +67,7 @@ def update_idea(
 @router.delete("/{name}")
 def delete_idea(
     driver:Neo4jDriverDep,
+    current_user: CurrentUser,
     name:str) -> Any:
     """Delete an idea."""
     dao = IdeaDAO(driver)

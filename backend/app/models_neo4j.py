@@ -24,14 +24,32 @@ class RelBase(BaseModel):
 
 
 class RelCreate(RelBase):
-    node1: str
-    node2: str
+    head: str
+    tail: str
     rel_type: str
 
 class RelUpdate(RelBase):
-    noode1: str
-    node2: str
+    head: str
+    tail: str
     rel_type: str
 
 class RelPublic(RelBase):
+    pass
+
+
+#KNOWLEDGE SOURCES
+class KnowledgeBase(BaseModel):
+    name: str
+
+class KnowledgeCreate(KnowledgeBase):
+    summary: str
+    full_text: str
+    url: str
+
+class KnowledgeUpdate(KnowledgeBase):
+    summary: str
+    full_text: str
+    url: str
+
+class KnowledgePublic(KnowledgeBase):
     pass

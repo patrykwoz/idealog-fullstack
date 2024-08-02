@@ -61,3 +61,11 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+.noSelect{
+  user-select: none;
+}
+
+.notAllowed{
+  cursor: not-allowed !important;
+}

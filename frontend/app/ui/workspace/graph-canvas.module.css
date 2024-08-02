@@ -7,13 +7,18 @@
 .nodeLabel{
     fill: black;
     font-size: 6px;
-    
+    user-select: none;
 }
 
 .node{
     fill: white;
     stroke: black;
     stroke-width: 1px;
+    user-select: none;
+}
+
+.node:hover{
+    cursor: pointer;
 }
 
 .link{
@@ -25,4 +30,5 @@
 .linkLabel{
     fill: black;
     font-size: 6px;
+    user-select: none;
 }

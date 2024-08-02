@@ -15,6 +15,11 @@ export default function GraphCanvas({ ideas, relations }) {
     const svgRef = useRef(null);
     const gRef = useRef(null);
 
+    // filter out user nodes and relations
+    ideas = ideas.filter((idea) => !idea[0].labels.includes("User"));
+    relations = relations.filter((relation) => !relation[0].labels.includes("User"));
+
+
     useEffect(() => {
         if (ideas.length === 0 || relations.length === 0) return;
 
@@ -63,7 +68,7 @@ export default function GraphCanvas({ ideas, relations }) {
             .data(nodes)
             .enter().append("text")
             .attr("class", styles.nodeLabel)
-            .text((d) => d.name.slice(0, 8));
+            .text((d) => d.name.slice(0, 10));
 
         const drag = d3.drag()
             .on("start", (event, d) => {

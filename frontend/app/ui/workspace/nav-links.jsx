@@ -4,7 +4,11 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useSidenav } from './sidenav-context';
 import IdeaModal from '../workspace-modals/idea-modal';
-import { PencilSquareIcon, PowerIcon, PlusCircleIcon, Bars4Icon } from '@heroicons/react/24/outline';
+import {
+    PlusCircleIcon,
+    Bars4Icon,
+    BoltIcon,
+} from '@heroicons/react/24/outline';
 import styles from "./nav-links.module.css";
 
 
@@ -17,40 +21,44 @@ export default function NavLinks() {
 
     } = useSidenav();
 
-    const [sideNavDisplayed, setSideNavDisplayed] = useState(false);
+    // const [sideNavDisplayed, setSideNavDisplayed] = useState(false);
 
-    useEffect(() => {
-        fetch('/api')
-            .then(res => res.json())
-            .then(data => setSideNavDisplayed(data.value === 'true'));
-    }, []);
+    // useEffect(() => {
+    //     fetch('/api')
+    //         .then(res => res.json())
+    //         .then(data => setSideNavDisplayed(data.value === 'true'));
+    // }, []);
 
-    function toggleSideNav() {
-        fetch('/api', {
-            method: 'POST'
-        })
-            .then(res => res.json())
-            .then(data => setSideNavDisplayed(data.value));
-    }
+    // function toggleSideNav() {
+    //     fetch('/api', {
+    //         method: 'POST'
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => setSideNavDisplayed(data.value));
+    // }
 
-    useEffect(() => {
-        console.log('sideNavDisplayed changed:', sideNavDisplayed);
-    }, [sideNavDisplayed]);
+    // useEffect(() => {
+    //     console.log('sideNavDisplayed changed:', sideNavDisplayed);
+    // }, [sideNavDisplayed]);
 
     return (
         <>
             <div className={styles.navlinksContainer}>
                 <Bars4Icon
                     className={styles.navlinksButton}
-                    onClick={toggleSideNav}
+                // onClick={toggleSideNav}
                 />
 
-                <PlusCircleIcon
-                    className={styles.navlinksButton}
-                    onClick={toggleIdeaModal}
+                <div>
+                    <BoltIcon
+                        className={`${styles.navlinksButton} notAllowed`}
+                    />
 
-                />
-
+                    <PlusCircleIcon
+                        className={styles.navlinksButton}
+                        onClick={toggleIdeaModal}
+                    />
+                </div>
             </div>
 
             {ideaModalVisible && createPortal(
