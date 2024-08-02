@@ -1,0 +1,9 @@
+.sidenavContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(240, 240, 240);
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+}

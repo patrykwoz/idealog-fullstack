@@ -4,7 +4,11 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useSidenav } from './sidenav-context';
 import IdeaModal from '../workspace-modals/idea-modal';
-import { PlusCircleIcon, Bars4Icon } from '@heroicons/react/24/outline';
+import {
+    PlusCircleIcon,
+    Bars4Icon,
+    BoltIcon,
+} from '@heroicons/react/24/outline';
 import styles from "./nav-links.module.css";
 
 
@@ -42,15 +46,19 @@ export default function NavLinks() {
             <div className={styles.navlinksContainer}>
                 <Bars4Icon
                     className={styles.navlinksButton}
-                    // onClick={toggleSideNav}
+                // onClick={toggleSideNav}
                 />
 
-                <PlusCircleIcon
-                    className={styles.navlinksButton}
-                    onClick={toggleIdeaModal}
+                <div>
+                    <BoltIcon
+                        className={`${styles.navlinksButton} notAllowed`}
+                    />
 
-                />
-
+                    <PlusCircleIcon
+                        className={styles.navlinksButton}
+                        onClick={toggleIdeaModal}
+                    />
+                </div>
             </div>
 
             {ideaModalVisible && createPortal(

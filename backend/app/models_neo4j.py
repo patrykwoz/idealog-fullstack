@@ -35,3 +35,21 @@ class RelUpdate(RelBase):
 
 class RelPublic(RelBase):
     pass
+
+
+#KNOWLEDGE SOURCES
+class KnowledgeBase(BaseModel):
+    name: str
+
+class KnowledgeCreate(KnowledgeBase):
+    summary: str
+    full_text: str
+    url: str
+
+class KnowledgeUpdate(KnowledgeBase):
+    summary: str
+    full_text: str
+    url: str
+
+class KnowledgePublic(KnowledgeBase):
+    pass

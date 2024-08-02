@@ -19,15 +19,19 @@ export default function SideNav() {
             {/* wrap these two in a context */}
             {/* render modals inside - try keeping this a server component */}
             <SidenavProvider>
-                <NavLinks />
-                <GraphEditMenu />
+                <div className={`${styles.sidenavContent}`}>
+
+                    <NavLinks />
+                    <GraphEditMenu />
+
+
+
+                    <DisplaySettings />
+                    <GraphFilter />
+
+                    <InfoBox />
+                </div>
             </SidenavProvider>
-
-
-            <DisplaySettings />
-            <GraphFilter />
-
-            <InfoBox />
         </>
     );
-}
+} 

@@ -7,7 +7,7 @@ class NodeDAO():
         def get_nodes(tx, sort, order, limit, skip):
             cypher = f"""
                 MATCH (n)
-                RETURN n
+                RETURN n {{.*, labels: labels(n) }} AS node_with_labels
                 ORDER BY n.{sort} {order}
                 SKIP $skip LIMIT $limit
             """

@@ -66,7 +66,7 @@ def create_user(*, driver:Neo4jDriverDep, session: SessionDep, user_in: UserCrea
 
     user = user_crud.create_user(session=session, user_create=user_in)
     dao = UserDAO(driver)
-    dao.create(user.full_name, user.email, user.id)
+    dao.create(user.full_name, user.email, user.image_url, user.id)
 
     if settings.emails_enabled and user_in.email:
         email_data = generate_new_account_email(
@@ -82,7 +82,7 @@ def create_user(*, driver:Neo4jDriverDep, session: SessionDep, user_in: UserCrea
 
 @router.patch("/me", response_model=UserPublic)
 def update_user_me(
-    *, session: SessionDep, user_in: UserUpdateMe, current_user: CurrentUser
+    *, driver:Neo4jDriverDep, session: SessionDep, user_in: UserUpdateMe, current_user: CurrentUser
 ) -> Any:
     """
     Update own user.
@@ -99,6 +99,8 @@ def update_user_me(
     session.add(current_user)
     session.commit()
     session.refresh(current_user)
+    dao = UserDAO(driver)
+    dao.update(current_user.full_name, current_user.email, current_user.image_url, current_user.id)
     return current_user
 
 

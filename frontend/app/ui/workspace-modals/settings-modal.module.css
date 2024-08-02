@@ -1,8 +1,131 @@
-.settingsContainer {
+.settingsModalContainer {
     display: flex;
-    width: 100px;
-    height: 150px;
+    flex-direction: column;
+    /* width: 250px; */
+    height: 100%;
     min-height: 150px;
-    background-color: tomato;
+    background-color: transparent;
+
+    box-sizing: border-box;
+    
+}
+
+.settingsModalHeader{
+    position: relative;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 20px 0 20px;
+}
+
+.settingsModalHeader p{
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0 30px 0 0;
+    color: black;
+}
+
+.settingsModalDivider{
+    width: 100%;
+    height: 1px;
+    background-color: rgb(207, 207, 207);
+    margin-bottom: 20px;
+}
+
+.settingsContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.settingsMenu{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+    background-color: transparent;
+    padding: 0 15px 20px 0;
+}
+
+.settingsRight{
+    display: flex;
+    width: 300px;
+    height: 100%;
+    min-height: 100px;
+    background-color: transparent;
+    padding: 0 20px 0 0;
+
+}
+
+
+.settingsMenuItem{
+    display: flex;
+    flex-direction: row;
+    justify-content:start;
+    align-items: center;
+    padding: 0 0 0 5px;
+    margin: 0 0 0 10px;
+    background-color: transparent;
+    color: black;
+}
+
+.settingsMenuItemIconContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 15px 0 0;
+
+    background-color: transparent;
+    width: 25px;
+    height: 25px;
+
+}
+
+.settingstIcon{
+    color: grey;
+    width: 15px;
+}
+
+
+.settingsButton {
+    color: grey;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    display: none;
+    
+
+}
+
+.settingsMenuItem > p {
+    width: 150px;
+
+    font-size: 14px;
+}
+
+.settingsMenuItem:hover .settingsButton {
+    display: block;
+}
+
+.settingsButton:hover{
+    color: black;
+}
+
+.settingsMenuItem:hover{
+    cursor: pointer;
+    background-color: rgb(224, 224, 224);
+    border-radius: 10px;
+}
+
+.settingsMenuItemActive{
+    background-color: rgb(224, 224, 224);
     border-radius: 10px;
 }

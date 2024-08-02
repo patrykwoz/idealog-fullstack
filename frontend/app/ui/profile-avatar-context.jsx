@@ -1,12 +1,19 @@
 'use client';
 import { createContext, useState, useRef, useContext, useEffect } from "react";
 
+
 const ProfileAvatarContext = createContext();
 
 export function ProfileAvatarProvider({ children, user }) {
     const [profileModalVisible, setProfileMenuVisible] = useState(false);
     const [settingsModalVisible, setSettingsModalVisible] = useState(false);
     const [myPlanModalVisible, setMyPlanModalVisible] = useState(false);
+
+    const [generalVisible, setGeneralVisible] = useState(false);
+    const [personalInfoVisible, setPersonalInfoVisible] = useState(true);
+    const [securityVisible, setSecurityVisible] = useState(false);
+
+    
 
     const profileMenuRef = useRef(null);
     const settingsModalRef = useRef(null);
@@ -24,6 +31,24 @@ export function ProfileAvatarProvider({ children, user }) {
     const toggleMyPlanModal = () => {
         setMyPlanModalVisible(!myPlanModalVisible);
         setProfileMenuVisible(false);
+    }
+
+    const toggleGeneral = () => {
+        setGeneralVisible(true);
+        setPersonalInfoVisible(false);
+        setSecurityVisible(false);
+    }
+
+    const togglePersonalInfo = () => {
+        setGeneralVisible(false);
+        setPersonalInfoVisible(true);
+        setSecurityVisible(false);
+    }
+
+    const toggleSecurity = () => {
+        setGeneralVisible(false);
+        setPersonalInfoVisible(false);
+        setSecurityVisible(true);
     }
 
     const handleClickOutside = (event) => {
@@ -55,12 +80,18 @@ export function ProfileAvatarProvider({ children, user }) {
             profileMenuVisible: profileModalVisible,
             settingsModalVisible,
             myPlanModalVisible,
+            generalVisible,
+            personalInfoVisible,
+            securityVisible,
             profileMenuRef,
             settingsModalRef,
             myPlanModalRef,
             toggleProfileMenu,
             toggleSettingsModal,
-            toggleMyPlanModal
+            toggleMyPlanModal,
+            toggleGeneral,
+            togglePersonalInfo,
+            toggleSecurity,
         }}>
             {children}
         </ProfileAvatarContext.Provider>

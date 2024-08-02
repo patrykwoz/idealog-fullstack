@@ -37,6 +37,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     accessToken,
                 };
 
+                console.log(user);
+
                 return { ...credentials, ...user, accessToken };
             },
         }),
@@ -45,11 +47,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         jwt({token, user}){
             if (user) {
                 token.accessToken = user.accessToken;
+                token.fullName = user.full_name;
+                token.imageUrl = user.image_url;
             }
             return token;
         },
         session({session, token}){
             session.accessToken = token.accessToken;
+            session.user.fullName = token.fullName;
+            session.user.imageUrl = token.imageUrl;
             return session;
         }
     }
