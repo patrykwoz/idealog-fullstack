@@ -69,3 +69,7 @@ body {
 .notAllowed{
   cursor: not-allowed !important;
 }
+
+.noPointerEvents{
+  pointer-events: none;
+}

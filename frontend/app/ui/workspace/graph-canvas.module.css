@@ -32,3 +32,9 @@
     font-size: 6px;
     user-select: none;
 }
+
+.highlightNode{
+    fill: white;
+    stroke: orangered;
+    stroke-width: 1px;
+}

@@ -63,6 +63,16 @@
     
 }
 
+.searchBarButtonHighlight{
+    cursor: pointer;
+    background-color: black;
+}
+
+/* .searchbarFormInput:focus + .searbarFormButton{
+    cursor: pointer;
+    background-color: black;
+} */
+
 @media (min-width: 1200px){
     .searchbarForm{
         width: 768px;

@@ -3,19 +3,22 @@ class NodeDAO():
     def __init__(self, driver):
         self.driver = driver
 
-    def all(self, sort, order, limit, skip):
-        def get_nodes(tx, sort, order, limit, skip):
+    def all(self, search, sort, order, limit, skip):
+        def get_nodes(tx, search, sort, order, limit, skip):
             cypher = f"""
                 MATCH (n)
+                WHERE toLower(n.name) CONTAINS toLower($search)
+                OR toLower(n.description) CONTAINS toLower($search)
+                OR toLower(n.summary) CONTAINS toLower($search)
                 RETURN n {{.*, labels: labels(n) }} AS node_with_labels
                 ORDER BY n.{sort} {order}
                 SKIP $skip LIMIT $limit
             """
-            result = tx.run(cypher, limit=limit, skip=skip)
+            result = tx.run(cypher, search=search, limit=limit, skip=skip)
             return [record for record in result]
 
         with self.driver.session() as session:
-            return session.execute_read(get_nodes, sort, order, limit, skip)
+            return session.execute_read(get_nodes, search, sort, order, limit, skip)
     
     # TODO: actually change this to accept a dictionary of properties to update and a list of labels
     def update(self, name, label):
