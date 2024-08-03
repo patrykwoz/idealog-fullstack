@@ -17,7 +17,8 @@ export default function NavLinks() {
     const {
         toggleIdeaModal,
         ideaModalRef,
-        ideaModalVisible
+        ideaModalVisible,
+        toggleSideNav,
 
     } = useSidenav();
 
@@ -46,7 +47,7 @@ export default function NavLinks() {
             <div className={styles.navlinksContainer}>
                 <Bars4Icon
                     className={styles.navlinksButton}
-                // onClick={toggleSideNav}
+                onClick={toggleSideNav}
                 />
 
                 <div>

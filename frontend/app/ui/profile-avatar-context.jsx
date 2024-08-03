@@ -13,8 +13,6 @@ export function ProfileAvatarProvider({ children, user }) {
     const [personalInfoVisible, setPersonalInfoVisible] = useState(true);
     const [securityVisible, setSecurityVisible] = useState(false);
 
-    
-
     const profileMenuRef = useRef(null);
     const settingsModalRef = useRef(null);
     const myPlanModalRef = useRef(null);

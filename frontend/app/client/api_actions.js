@@ -141,8 +141,11 @@ export const createKnowledgeApi = async (accessToken, formData) => {
     return data;
 }
 
-export const fetchNodes = async (accessToken) => {
-    const response = await fetch(`${API_URL}/nodes`,
+export const fetchNodes = async (accessToken, queryParams = {}) => {
+    const queryString = new URLSearchParams(queryParams).toString();
+    const url = `${API_URL}/nodes${queryString ? `?${queryString}` : ''}`;
+
+    const response = await fetch(url,
         {
             headers: {
                 Authorization: `Bearer ${accessToken}`,

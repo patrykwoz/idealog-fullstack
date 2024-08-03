@@ -6,4 +6,19 @@
     width: 260px;
     min-width: 260px;
     height: 100vh;
+
+    z-index: 1;
+}
+
+.sidenavDisplayed{
+    display: none;
+}
+
+@media (max-width: 650px){
+    .sidenavContent{
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-shadow: 0 0 transparent, 0 0 transparent, 0 4px 6px 4px rgba(0, 0, 0, 0.1), 0 2px 4px 4px rgba(0, 0, 0, 0.06);
+    }
 }

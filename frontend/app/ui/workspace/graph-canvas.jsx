@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-
+import { useSidenav } from "./sidenav-context";
 import styles from "./graph-canvas.module.css";
 
 function generateCordset(count) {
@@ -12,12 +12,25 @@ function generateCordset(count) {
 }
 
 export default function GraphCanvas({ ideas, relations }) {
+    let { filterLabels } = useSidenav();
+    console.log('filter labels',filterLabels);
+
     const svgRef = useRef(null);
     const gRef = useRef(null);
 
+    // TODO: let cypher and neo4j handle this
+    relations = relations.filter((relation) => {
+        const head = relation[0].name;
+        const tail = relation[2].name;
+        return ideas.some((idea) => idea[0].name === head) && ideas.some((idea) => idea[0].name === tail);
+    });
+
     // filter out user nodes and relations
-    ideas = ideas.filter((idea) => !idea[0].labels.includes("User"));
-    relations = relations.filter((relation) => !relation[0].labels.includes("User"));
+    // const filterLabels = ['User', 'Idea', 'KnowledgeSource'];
+    filterLabels = [];
+
+    ideas = ideas.filter((idea) => !idea[0].labels.some(label => filterLabels.includes(label)));
+    relations = relations.filter((relation) => !relation[0].labels.some(label => filterLabels.includes(label)));
 
 
     useEffect(() => {
@@ -119,7 +132,7 @@ export default function GraphCanvas({ ideas, relations }) {
 
     return (
         <>
-            <svg className={styles.svg}  ref={svgRef}>
+            <svg className={styles.svg} ref={svgRef}>
                 <g ref={gRef}></g>
             </svg>
         </>

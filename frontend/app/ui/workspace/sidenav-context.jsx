@@ -4,13 +4,21 @@ import { createContext, useState, useRef, useContext, useEffect } from "react";
 const SidenavContext = createContext();
 
 export function SidenavProvider({ children, user }) {
+    const [sideNavDisplayed, setSideNavDisplayed] = useState(true);
+
     const [ideaModalVisible, setIdeaModalVisible] = useState(false);
     const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false);
     const [relationshipModalVisible, setRelationshipModalVisible] = useState(false);
 
+    const [filterLabels, setFilterLabels] = useState([]);
+
     const ideaModalRef = useRef(null);
     const knowledgeModalRef = useRef(null);
     const relationshipModalRef = useRef(null);
+
+    const toggleSideNav = () => {
+        setSideNavDisplayed(!sideNavDisplayed);
+    }
 
     const toggleIdeaModal = () => {
         setIdeaModalVisible(!ideaModalVisible);
@@ -22,6 +30,14 @@ export function SidenavProvider({ children, user }) {
 
     const toggleRelationshipModal = () => {
         setRelationshipModalVisible(!relationshipModalVisible);
+    }
+
+    const addFilterLabel = (label) => {
+        setFilterLabels([...filterLabels, label]);
+    }
+
+    const removeFilterLabel = (label) => {
+        setFilterLabels(filterLabels.filter((filterLabel) => filterLabel !== label));
     }
 
     const handleClickOutside = (event) => {
@@ -50,15 +66,20 @@ export function SidenavProvider({ children, user }) {
     return (
         <SidenavContext.Provider value={{
             user,
+            sideNavDisplayed,
             ideaModalVisible,
             knowledgeModalVisible,
             relationshipModalVisible,
+            filterLabels,
             ideaModalRef,
             knowledgeModalRef,
             relationshipModalRef,
+            toggleSideNav,
             toggleIdeaModal,
             toggleKnowledgeModal,
-            toggleRelationshipModal
+            toggleRelationshipModal,
+            addFilterLabel,
+            removeFilterLabel
         }}>
             {children}
         </SidenavContext.Provider>

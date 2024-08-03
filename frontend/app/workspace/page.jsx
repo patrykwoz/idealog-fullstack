@@ -6,15 +6,12 @@ import ZoomMenu from "@/app/ui/workspace/zoom-menu";
 import styles from "./workspace.module.css";
 
 
-export default async function Workspace() {
-    const session = await auth()
-    if (!session) return <div>Not authenticated</div>
-
+export default async function Workspace({searchParams}) {
     let relations = []
     let nodes = []
     try {
         relations = await getRelationships();
-        nodes = await getNodes();
+        nodes = await getNodes(searchParams);
     } catch (error) {
         console.log(error);
     }
