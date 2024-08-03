@@ -3,8 +3,9 @@
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    width: 768px;
-    min-width: 250px;
+    /* width: 768px; */
+    min-width: 350px;
+
     max-width: 768px;
     height: 60px;
     padding: 0 10px 0 10px;
@@ -60,4 +61,10 @@
     border-radius:50%;
     color: rgb(240, 240, 240);
     
+}
+
+@media (min-width: 1200px){
+    .searchbarForm{
+        width: 768px;
+    }
 }

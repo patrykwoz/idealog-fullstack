@@ -1,3 +1,6 @@
+'use client';
+import {useState, useEffect} from 'react';
+import { useSidenav } from './sidenav-context';
 import {
     CheckIcon,
     ArrowRightIcon,
@@ -6,6 +9,15 @@ import {
 import styles from "./graph-filter.module.css";
 
 export default function GraphFilter() {
+    const { filterLabels, addFilterLabel, removeFilterLabel } = useSidenav();
+
+    async function submitFilterLabels(formData){
+        const rawFormData = {
+            limit: formData.get('ideasFilter'),
+        }
+
+    }
+
     return (
         <>
             <div className={`${styles.graphFilterContainer} noSelect`}>
@@ -13,13 +25,14 @@ export default function GraphFilter() {
                     <p>Filter Your Graph</p>
 
                 </div>
-                <div action="" className={styles.graphFilterContainer}>
+                <form action="" className={styles.graphFilterContainer}>
 
                     <div className={styles.graphFilterItem}>
                         <input
                             className={styles.graphFilterCheckbox}
                             type="checkbox"
                             id='ideasFilter'
+                            name='ideasFilter'
                             defaultChecked
                             hidden
                         />
@@ -38,6 +51,7 @@ export default function GraphFilter() {
                             className={styles.graphFilterCheckbox}
                             type="checkbox"
                             id='knowledgeSourcesFilter'
+                            name='knowledgeSourcesFilter'
                             defaultChecked
                             hidden
                         />
@@ -56,6 +70,7 @@ export default function GraphFilter() {
                             className={styles.graphFilterCheckbox}
                             type="checkbox"
                             id='usersFilter'
+                            name='usersFilter'
                             hidden
                         />
                         <label htmlFor="usersFilter" className={styles.graphFilterCheckboxLabel}>
@@ -73,6 +88,7 @@ export default function GraphFilter() {
                             className={styles.graphFilterCheckbox}
                             type="checkbox"
                             id="entitiesFilter"
+                            name='entitiesFilter'
                             hidden
                         />
                         <label htmlFor="entitiesFilter" className={styles.graphFilterCheckboxLabel}>
@@ -87,7 +103,7 @@ export default function GraphFilter() {
                     {/* map the type of objects in the graph, e.g. ideas
                     knowledges sources, users, etc. ... */}
 
-                </div>
+                </form>
             </div>
         </>
     );

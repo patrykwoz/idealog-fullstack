@@ -145,12 +145,12 @@ export async function createKnowledge(formData) {
 
 
 
-export async function getNodes() {
+export async function getNodes(queryParams={}) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
 
     try {
-        const nodes = await fetchNodes(accessToken)
+        const nodes = await fetchNodes(accessToken, queryParams)
         return nodes
     }
     catch (error) {
