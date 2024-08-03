@@ -16,10 +16,11 @@ router = APIRouter()
 def read_nodes(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,
+    search: Annotated[str | None, Query(max_length=50)] = "",
     sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
     limit: int | None = 1000,
     skip: int | None = 0) -> Any:
     dao = NodeDAO(driver)
-    output = dao.all(sort, order, limit, skip)
+    output = dao.all(search, sort, order, limit, skip)
     return jsonable_encoder(output)

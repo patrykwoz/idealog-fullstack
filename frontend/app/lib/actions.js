@@ -159,6 +159,46 @@ export async function getNodes(queryParams={}) {
     }
 }
 
+// export async function searchNodes(formData) {
+//     const autObj = await auth();
+//     const accessToken = autObj.accessToken;
+
+//     const queryParams = {
+//         search: formData.get('search'),
+//     }
+
+//     try {
+//         console.log(queryParams);
+//         const nodes = await fetchNodes(accessToken, queryParams)
+//         console.log(nodes);
+//         return nodes
+//     }
+//     catch (error) {
+//         console.log(error)
+//         throw error
+//     }
+// }
+
+export async function searchNodes(value) {
+        const autObj = await auth();
+        const accessToken = autObj.accessToken;
+    
+        const queryParams = {
+            search: value,
+        }
+    
+        try {
+            console.log(queryParams);
+            const nodes = await fetchNodes(accessToken, queryParams)
+            console.log(nodes);
+            return nodes
+        }
+        catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
 export async function revalidateNodes() {
     revalidateTag('nodes')
 }
