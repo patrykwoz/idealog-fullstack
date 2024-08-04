@@ -21,8 +21,10 @@ export default function SearchBar() {
     async function handleSubmit(e){
         e.preventDefault();
         const searchInput = document.getElementById('search').value;
+        if (searchInput.trim().length === 0) {
+            return;
+        }
         const nodes = await searchNodes(searchInput);
-
         const nodeNames = nodes.map(node => node[0].name);
 
         addSearchedNodes(nodeNames);
@@ -32,10 +34,8 @@ export default function SearchBar() {
         setSearchInput(e.target.value);
     }
 
-
     return (
         <>
-
             <form className={styles.searchbarForm}
             onSubmit={handleSubmit}>
                 <label htmlFor='search' className={styles.searchbarFormLabel}>
@@ -58,7 +58,6 @@ export default function SearchBar() {
                     <ArrowUpIcon className={`${styles.searchbarButtonIcon} `} />
                 </button>
             </form>
-
         </>
     );
 }

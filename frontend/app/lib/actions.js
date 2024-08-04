@@ -1,7 +1,9 @@
 'use server'
 
-import { signIn, auth } from '@/auth'
-import { revalidateTag } from 'next/cache'
+import { signIn, signOut, auth } from '@/auth'
+import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import {
     updateUserApi,
     fetchIdeas,
@@ -12,9 +14,37 @@ import {
     createKnowledgeApi,
 } from '@/app/client/api_actions'
 
-export async function authenticate(_currentState, formData) {
+// export async function authenticate(_currentState, formData) {
+//     try {
+//         await signIn('credentials', formData)
+//     } catch (error) {
+//         if (error) {
+//             switch (error.type) {
+//                 case 'CredentialsSignin':
+//                     return 'Invalid credentials.'
+//                 case 'CallbackRouteError':
+//                     return 'Access token not found.'
+//                 case 'Bad Request':
+//                     return 'User not found.'
+//                 default:
+//                     return 'Something went wrong.'
+//             }
+//         }
+//         throw error
+//     }
+// }
+
+export async function login(formData) {
     try {
-        await signIn('credentials', formData)
+        console.log('hello from login');
+        const signinObj = {
+            email: formData.get('email'),
+            password: formData.get('password'),
+            redirect: false,};
+        
+        const response = await signIn("credentials", signinObj);
+        console.log('response',response);
+        
     } catch (error) {
         if (error) {
             switch (error.type) {
@@ -30,6 +60,17 @@ export async function authenticate(_currentState, formData) {
         }
         throw error
     }
+    redirect('/workspace');
+}
+
+export async function logout() {
+    try {
+        await signOut({redirect: false})
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+    redirect('/auth/login');
 }
 
 export async function updateUser(formData) {
@@ -143,9 +184,7 @@ export async function createKnowledge(formData) {
     }
 }
 
-
-
-export async function getNodes(queryParams={}) {
+export async function getNodes(queryParams = {}) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
 
@@ -180,27 +219,23 @@ export async function getNodes(queryParams={}) {
 // }
 
 export async function searchNodes(value) {
-        const autObj = await auth();
-        const accessToken = autObj.accessToken;
-    
-        const queryParams = {
-            search: value,
-        }
-    
-        try {
-            console.log(queryParams);
-            const nodes = await fetchNodes(accessToken, queryParams)
-            console.log(nodes);
-            return nodes
-        }
-        catch (error) {
-            console.log(error)
-            throw error
-        }
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+
+    const queryParams = {
+        search: value,
     }
+
+    try {
+        const nodes = await fetchNodes(accessToken, queryParams)
+        return nodes
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
 
 export async function revalidateNodes() {
     revalidateTag('nodes')
 }
-
-
