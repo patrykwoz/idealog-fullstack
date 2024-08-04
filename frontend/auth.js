@@ -37,8 +37,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     accessToken,
                 };
 
-                console.log(user);
-
                 return { ...credentials, ...user, accessToken };
             },
         }),
@@ -57,7 +55,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             session.user.fullName = token.fullName;
             session.user.imageUrl = token.imageUrl;
             return session;
+        },
+        redirect({url, baseUrl}){
+            return baseUrl;
         }
-    }
+    },
+    pages: {
+        signIn: '/auth/login',
+    },
 })
 

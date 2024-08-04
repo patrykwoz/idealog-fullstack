@@ -1,5 +1,6 @@
 'use client';
 import { useProfileAvatar } from '@/app/ui/profile-avatar-context';
+import { logout } from '@/app/lib/actions';
 import Link from 'next/link'
 import {
     SparklesIcon,
@@ -19,6 +20,10 @@ export default function ProfileMenu() {
         profileMenuRef,
     } = useProfileAvatar();
 
+    async function handleLogout() {
+        await logout();
+    }
+
     return (
         <>
             <div className={styles.profileMenuContainer}>
@@ -37,7 +42,9 @@ export default function ProfileMenu() {
                     </p>
                 </div>
                 <div className={styles.profileMenuDivider}></div>
-                <div className={styles.profileMenuItem}>
+                <div className={styles.profileMenuItem}
+                    onClick={handleLogout}
+                    >
                     <PowerIcon className={styles.profileMenuItemIcon} />
                     <p className={styles.profileMenuItemText}>Log out</p>
                 </div>
