@@ -33,14 +33,16 @@ export default function GraphCanvas({ ideas, relations }) {
 
     async function handleNodeClick(event, d) {
         const eventCurrentTarget = event.currentTarget;
+        const childCircle = d3.select(eventCurrentTarget).select("circle").node();
+        console.log(childCircle);
         const { cx, cy } = eventCurrentTarget;
-        let cxValue = cx.baseVal.value;
-        let cyValue = cy.baseVal.value;
+        let cxValue = eventCurrentTarget.transform.baseVal[0].matrix.e;
+        let cyValue = eventCurrentTarget.transform.baseVal[0].matrix.f;
 
         event.stopPropagation();
-        d3.select(eventCurrentTarget)
-            .classed(styles.highlightNode, !d3.select(eventCurrentTarget)
-                .classed(styles.highlightNode));
+        // d3.select(eventCurrentTarget)
+        //     .classed(styles.highlightNode, !d3.select(eventCurrentTarget)
+        //         .classed(styles.highlightNode));
 
         const nodeWithDetail = await getNode(d.name);
         setSelectedNode(nodeWithDetail);
@@ -52,7 +54,7 @@ export default function GraphCanvas({ ideas, relations }) {
 
         //remove highlight from other nodes and add to the clicked node
         d3.selectAll(`.${styles.node}`).classed(styles.highlightNode, false);
-        d3.select(eventCurrentTarget).classed(styles.highlightNode, true);
+        d3.select(eventCurrentTarget).select("circle").classed(styles.highlightNode, true);
 
         setNodeDetailModalVisible(prevState => {
             return !prevState;
@@ -198,12 +200,12 @@ export default function GraphCanvas({ ideas, relations }) {
         const node = g.selectAll(".node")
             .data(nodes)
             .enter().append("g")
-            .attr("class", "node");
+            .attr("class", "node")
+            .on("click", handleNodeClick);
 
         node.append("circle")
             .attr("class", d => `${styles.node} ${searchedNodes.includes(d.name) ? styles.highlightNode : ''}`)
-            .attr("r", 20)
-            .on("click", handleNodeClick);
+            .attr("r", 20);
 
         node.append("text")
             .attr("class", styles.nodeLabel)
