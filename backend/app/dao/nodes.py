@@ -10,7 +10,7 @@ class NodeDAO():
                 WHERE toLower(n.name) CONTAINS toLower($search)
                 OR toLower(n.description) CONTAINS toLower($search)
                 OR toLower(n.summary) CONTAINS toLower($search)
-                RETURN n {{.*, labels: labels(n) }} AS node_with_labels
+                RETURN n {{.*, labels: labels(n), neo4j_id: id(n) }} AS node_with_labels
                 ORDER BY n.{sort} {order}
                 SKIP $skip LIMIT $limit
             """
@@ -46,3 +46,15 @@ class NodeDAO():
 
         with self.driver.session() as session:
             return session.execute_write(update_node, name, label)
+
+    def create(self, name, description, label):
+        def create_node(tx, name, description, label):
+            cypher = f"""
+                CREATE (n:{label} {{name: $name, description: $description}})
+                RETURN n
+            """
+            result = tx.run(cypher, name=name, description=description)
+            return result.single()["n"]
+
+        with self.driver.session() as session:
+            return session.execute_write(create_node, name, description, label)

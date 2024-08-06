@@ -1,4 +1,5 @@
 from pydantic import EmailStr, BaseModel
+from typing import List, Dict, Any
 
 #IDEAS
 class IdeaBase(BaseModel):
@@ -40,11 +41,16 @@ class RelPublic(RelBase):
 #KNOWLEDGE SOURCES
 class KnowledgeBase(BaseModel):
     name: str
+    entities: Dict[str, Dict[str, str]] = None
+    relations: List[Dict[str, Any]] = None
 
 class KnowledgeCreate(KnowledgeBase):
     summary: str
     full_text: str
     url: str
+    use_ml: bool = False
+    
+
 
 class KnowledgeUpdate(KnowledgeBase):
     summary: str
