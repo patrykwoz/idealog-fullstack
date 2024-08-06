@@ -34,7 +34,7 @@ export default function GraphCanvas({ ideas, relations }) {
     async function handleNodeClick(event, d) {
         const eventCurrentTarget = event.currentTarget;
         const childCircle = d3.select(eventCurrentTarget).select("circle").node();
-        console.log(childCircle);
+        
         const { cx, cy } = eventCurrentTarget;
         let cxValue = eventCurrentTarget.transform.baseVal[0].matrix.e;
         let cyValue = eventCurrentTarget.transform.baseVal[0].matrix.f;
@@ -44,7 +44,7 @@ export default function GraphCanvas({ ideas, relations }) {
         //     .classed(styles.highlightNode, !d3.select(eventCurrentTarget)
         //         .classed(styles.highlightNode));
 
-        const nodeWithDetail = await getNode(d.name);
+        const nodeWithDetail = await getNode(d.id);
         setSelectedNode(nodeWithDetail);
 
         setModalPosition({
@@ -204,7 +204,7 @@ export default function GraphCanvas({ ideas, relations }) {
             .on("click", handleNodeClick);
 
         node.append("circle")
-            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.neo4j_id) ? styles.highlightNode : ''}`)
+            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.id) ? styles.highlightNode : ''}`)
             .attr("r", 20);
 
         node.append("text")

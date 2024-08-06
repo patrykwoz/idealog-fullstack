@@ -2,7 +2,6 @@
 
 import { signIn, signOut, auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import { NextResponse } from 'next/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import {
     updateUserApi,
@@ -15,37 +14,15 @@ import {
     createKnowledgeApi,
 } from '@/app/client/api_actions'
 
-// export async function authenticate(_currentState, formData) {
-//     try {
-//         await signIn('credentials', formData)
-//     } catch (error) {
-//         if (error) {
-//             switch (error.type) {
-//                 case 'CredentialsSignin':
-//                     return 'Invalid credentials.'
-//                 case 'CallbackRouteError':
-//                     return 'Access token not found.'
-//                 case 'Bad Request':
-//                     return 'User not found.'
-//                 default:
-//                     return 'Something went wrong.'
-//             }
-//         }
-//         throw error
-//     }
-// }
-
 export async function login(formData) {
     try {
-        console.log('hello from login');
         const signinObj = {
             email: formData.get('email'),
             password: formData.get('password'),
             redirect: false,
         };
 
-        const response = await signIn("credentials", signinObj);
-        console.log('response', response);
+        await signIn("credentials", signinObj);
 
     } catch (error) {
         if (error) {
@@ -176,7 +153,6 @@ export async function createKnowledge(formData) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
     try {
-        // console.log('CREATE KNOWLEDGE FUNC ACT rawFormData', rawFormData)
         const knowledge = await createKnowledgeApi(accessToken, rawFormData)
         revalidateNodes();
         return knowledge
@@ -191,8 +167,6 @@ export async function getNodes(queryParams = {}) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
 
-    console.log('GET NODES FUNC ACT queryParams', queryParams)
-
     try {
         const nodes = await fetchNodes(accessToken, queryParams)
         return nodes
@@ -203,11 +177,11 @@ export async function getNodes(queryParams = {}) {
     }
 }
 
-export async function getNode(nodeName) {
+export async function getNode(neo4jId) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
     try {
-        const node = await fetchNode(accessToken, nodeName)
+        const node = await fetchNode(accessToken, neo4jId)
         return node[0]
     }
     catch (error) {

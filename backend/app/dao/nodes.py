@@ -10,7 +10,7 @@ class NodeDAO():
                 WHERE toLower(n.name) CONTAINS toLower($search)
                 OR toLower(n.description) CONTAINS toLower($search)
                 OR toLower(n.summary) CONTAINS toLower($search)
-                RETURN n {{.*, labels: labels(n), neo4j_id: id(n) }} AS node_with_labels
+                RETURN n {{.*, labels: labels(n), neo4j_id: elementId(n) }} AS node_with_labels
                 ORDER BY n.{sort} {order}
                 SKIP $skip LIMIT $limit
             """
@@ -20,17 +20,18 @@ class NodeDAO():
         with self.driver.session() as session:
             return session.execute_read(get_nodes, search, sort, order, limit, skip)
     
-    def get(self, name):
-        def get_node(tx, name):
+    def get(self, neo4j_id):
+        def get_node(tx, neo4j_id):
             cypher = f"""
-                MATCH (n {{name: $name}})
-                RETURN n {{.*, labels: labels(n) }} AS node_with_labels
+                MATCH (n)
+                WHERE elementId(n) = $neo4j_id
+                RETURN n {{.*, labels: labels(n), neo4j_id: elementId(n) }} AS node_with_labels
             """
-            result = tx.run(cypher, name=name)
+            result = tx.run(cypher, neo4j_id=neo4j_id)
             return result.single()
 
         with self.driver.session() as session:
-            return session.execute_read(get_node, name)
+            return session.execute_read(get_node, neo4j_id)
 
 
     # TODO: actually change this to accept a dictionary of properties to update and a list of labels
