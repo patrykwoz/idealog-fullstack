@@ -1,4 +1,5 @@
 'use client';
+import { revalidateNodes } from '@/app/lib/actions';
 import { useSidenav } from './sidenav-context';
 import {
     CheckIcon,
@@ -14,8 +15,11 @@ export default function GraphFilter() {
         const { name, checked } = e.target;
         if (checked) {
             addFilterLabel(name);
+            revalidateNodes();
+
         } else {
             removeFilterLabel(name);
+            revalidateNodes();
         }
     };
 

@@ -24,3 +24,12 @@ def read_nodes(
     dao = NodeDAO(driver)
     output = dao.all(search, sort, order, limit, skip)
     return jsonable_encoder(output)
+
+@router.get("/{name}")
+def read_node(
+    name: str,
+    driver:Neo4jDriverDep,
+    current_user: CurrentUser) -> Any:
+    dao = NodeDAO(driver)
+    output = dao.get(name)
+    return jsonable_encoder(output)

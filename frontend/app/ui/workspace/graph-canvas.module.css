@@ -8,6 +8,7 @@
     fill: black;
     font-size: 6px;
     user-select: none;
+    pointer-events: none;
 }
 
 .node{
@@ -15,6 +16,7 @@
     stroke: black;
     stroke-width: 1px;
     user-select: none;
+    z-index: 2;
 }
 
 .node:hover{
@@ -22,19 +24,25 @@
 }
 
 .link{
-    fill: blue;
-    stroke: blue;
-    stroke-width: 1px;
+    
+    fill: none;
+    stroke: darkgray;
+    stroke-width: 1.0;
+    pointer-events: none;
 }
 
 .linkLabel{
-    fill: black;
-    font-size: 6px;
+    fill: grey;
     user-select: none;
+    font-size: 8px;
 }
 
 .highlightNode{
     fill: white;
     stroke: orangered;
     stroke-width: 1px;
+}
+
+.arrowhead{
+    fill: gray;
 }

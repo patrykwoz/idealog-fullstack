@@ -1,17 +1,12 @@
 'use client';
 import { useSidenav } from '@/app/ui/workspace/sidenav-context';
-import { revalidateNodes, createIdea } from '@/app/lib/actions';
+import { createIdea } from '@/app/lib/actions';
 import ModalContainer from '../containers/modal-container';
 import CloseButton from '../buttons/close-button';
 import styles from './idea-modal.module.css';
 
 export default function IdeaModal() {
     const { toggleIdeaModal } = useSidenav();
-
-    function handleRevalidateNodes() {
-        // Example use of revalidateNodes in a client component
-        revalidateNodes();
-    }
 
     return (
         <>
@@ -48,9 +43,6 @@ export default function IdeaModal() {
                         </button>
 
                     </form>
-
-                    {/* Example use of manual revalidation in a client component */}
-                    {/* <div onClick={handleRevalidateNodes} >Revalidate Nodes</div> */}
 
                 </div>
             </ModalContainer>

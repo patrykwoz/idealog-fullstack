@@ -158,3 +158,16 @@ export const fetchNodes = async (accessToken, queryParams = {}) => {
     const data = await response.json();
     return data;
 }
+
+export const fetchNode = async (accessToken, nodeName) => {
+    const response = await fetch(`${API_URL}/nodes/${nodeName}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}

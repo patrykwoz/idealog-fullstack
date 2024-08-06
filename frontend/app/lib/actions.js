@@ -11,6 +11,7 @@ import {
     fetchRelationships,
     createRelationshipApi,
     fetchNodes,
+    fetchNode,
     createKnowledgeApi,
 } from '@/app/client/api_actions'
 
@@ -40,11 +41,12 @@ export async function login(formData) {
         const signinObj = {
             email: formData.get('email'),
             password: formData.get('password'),
-            redirect: false,};
-        
+            redirect: false,
+        };
+
         const response = await signIn("credentials", signinObj);
-        console.log('response',response);
-        
+        console.log('response', response);
+
     } catch (error) {
         if (error) {
             switch (error.type) {
@@ -65,7 +67,7 @@ export async function login(formData) {
 
 export async function logout() {
     try {
-        await signOut({redirect: false})
+        await signOut({ redirect: false })
     } catch (error) {
         console.log(error)
         throw error
@@ -123,7 +125,6 @@ export async function createIdea(formData) {
     try {
         const idea = await createIdeaApi(accessToken, rawFormData)
         revalidateNodes();
-        return idea
     }
     catch (error) {
         console.log(error)
@@ -188,6 +189,8 @@ export async function getNodes(queryParams = {}) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
 
+    console.log('GET NODES FUNC ACT queryParams', queryParams)
+
     try {
         const nodes = await fetchNodes(accessToken, queryParams)
         return nodes
@@ -198,25 +201,18 @@ export async function getNodes(queryParams = {}) {
     }
 }
 
-// export async function searchNodes(formData) {
-//     const autObj = await auth();
-//     const accessToken = autObj.accessToken;
-
-//     const queryParams = {
-//         search: formData.get('search'),
-//     }
-
-//     try {
-//         console.log(queryParams);
-//         const nodes = await fetchNodes(accessToken, queryParams)
-//         console.log(nodes);
-//         return nodes
-//     }
-//     catch (error) {
-//         console.log(error)
-//         throw error
-//     }
-// }
+export async function getNode(nodeName) {
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+    try {
+        const node = await fetchNode(accessToken, nodeName)
+        return node[0]
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
+}
 
 export async function searchNodes(value) {
     const autObj = await auth();
