@@ -1,142 +1,11 @@
-// 'use client';
-
-// import { useEffect, useRef } from "react";
-// import * as d3 from "d3";
-// import { useSidenav } from "./sidenav-context";
-// import styles from "./graph-canvas.module.css";
-
-// function generateCordset(count) {
-//     return Array(count)
-//         .fill(0)
-//         .map(() => [Math.random() * 80 + 10, Math.random() * 35 + 10]);
-// }
-
-// export default function GraphCanvas({ ideas, relations }) {
-//     let { filterLabels, searchedNodes } = useSidenav();
-
-//     const svgRef = useRef(null);
-//     const gRef = useRef(null);
-
-//     ideas = ideas.filter((idea) => !idea[0].labels.some(label => !filterLabels.includes(label)));
-//     relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
-
-//     relations = relations.filter((relation) => {
-//         const head = relation[0].name;
-//         const tail = relation[2].name;
-//         return ideas.some((idea) => idea[0].name === head) && ideas.some((idea) => idea[0].name === tail);
-//     });
-
-//     useEffect(() => {
-//         if (ideas.length === 0 || relations.length === 0) return;
-
-//         const svg = d3.select(svgRef.current);
-//         const g = d3.select(gRef.current);
-
-//         g.selectAll("*").remove();
-
-//         const nodes = ideas.map((idea, index) => ({
-//             id: idea[0].name,
-//             name: idea[0].name,
-//             x: generateCordset(ideas.length)[index][0],
-//             y: generateCordset(ideas.length)[index][1]
-//         }));
-
-//         const links = relations.map((relation) => ({
-//             source: relation[0].name,
-//             target: relation[2].name,
-//             type: relation[1].type
-//         }));
-
-//         const simulation = d3.forceSimulation(nodes)
-//             .force("link", d3.forceLink(links).id((d) => d.id))
-//             .force("charge", d3.forceManyBody().strength(-200))
-//             .force("center", d3.forceCenter(50, 25));
-
-//         const link = g.selectAll(".link")
-//             .data(links)
-//             .enter().append("line")
-//             .attr("class", styles.link);
-
-//         const linkLabel = g.selectAll(".link-label")
-//             .data(links)
-//             .enter().append("text")
-//             .attr("class", styles.linkLabel)
-//             .text((d) => d.type);
-
-//         const node = g.selectAll(".node")
-//             .data(nodes)
-//             .enter().append("circle")
-//             .attr("class", d => `${styles.node} ${searchedNodes.includes(d.name) ? styles.highlighNode : ''}`)
-//             .attr("r", 10);
-
-//         const nodeLabel = g.selectAll(".node-label")
-//             .data(nodes)
-//             .enter().append("text")
-//             .attr("class", styles.nodeLabel)
-//             .text((d) => d.name.slice(0, 10));
-
-//         const drag = d3.drag()
-//             .on("start", (event, d) => {
-//                 if (!event.active) simulation.alphaTarget(0.3).restart();
-//                 d.fx = d.x;
-//                 d.fy = d.y;
-//             })
-//             .on("drag", (event, d) => {
-//                 d.fx = event.x;
-//                 d.fy = event.y;
-//             })
-//             .on("end", (event, d) => {
-//                 if (!event.active) simulation.alphaTarget(0);
-//                 d.fx = null;
-//                 d.fy = null;
-//             });
-
-//         node.call(drag);
-
-//         simulation.on("tick", () => {
-//             link
-//                 .attr("x1", (d) => d.source.x)
-//                 .attr("y1", (d) => d.source.y)
-//                 .attr("x2", (d) => d.target.x)
-//                 .attr("y2", (d) => d.target.y);
-
-//             node
-//                 .attr("cx", (d) => d.x)
-//                 .attr("cy", (d) => d.y);
-
-//             nodeLabel
-//                 .attr("x", (d) => d.x)
-//                 .attr("y", (d) => d.y);
-
-//             linkLabel
-//                 .attr("x", (d) => (d.source.x + d.target.x) / 2)
-//                 .attr("y", (d) => (d.source.y + d.target.y) / 2);
-//         });
-
-//         const zoom = d3.zoom()
-//             .scaleExtent([0.5, 5])
-//             .on("zoom", (event) => {
-//                 g.attr("transform", event.transform);
-//             });
-
-//         svg.call(zoom);
-//     }, [ideas, relations, searchedNodes]);
-
-//     return (
-//         <>
-//             <svg className={styles.svg} ref={svgRef}>
-//                 <g ref={gRef}></g>
-//             </svg>
-//         </>
-//     );
-// }
-
 'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useSidenav } from "./sidenav-context";
+import { getNode } from '@/app/lib/actions';
 import styles from "./graph-canvas.module.css";
+import NodeDetailModal from "../workspace-modals/node-detail-modal";
 
 function generateCordset(count) {
     return Array(count)
@@ -145,30 +14,149 @@ function generateCordset(count) {
 }
 
 export default function GraphCanvas({ ideas, relations }) {
-    let { filterLabels, searchedNodes } = useSidenav();
+    const [selectedNode, setSelectedNode] = useState(null);
+    const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
-    // console.log('searchedNodes', searchedNodes);
+    const {
+        filterLabels,
+        searchedNodes,
+        nodeDetailModalVisible,
+        setNodeDetailModalVisible,
+        sideNavDisplayed,
+        nodeDetailModalRef,
+        toggleNodeDetailModal,
+    } = useSidenav();
 
     const svgRef = useRef(null);
     const gRef = useRef(null);
     const zoomRef = useRef(d3.zoom());
 
-    ideas = ideas.filter((idea) => !idea[0].labels.some(label => !filterLabels.includes(label)));
-    relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
+    async function handleNodeClick(event, d) {
+        const eventCurrentTarget = event.currentTarget;
+        const { cx, cy } = eventCurrentTarget;
+        let cxValue = cx.baseVal.value;
+        let cyValue = cy.baseVal.value;
 
-    relations = relations.filter((relation) => {
-        const head = relation[0].name;
-        const tail = relation[2].name;
-        return ideas.some((idea) => idea[0].name === head) && ideas.some((idea) => idea[0].name === tail);
-    });
+        event.stopPropagation();
+        d3.select(eventCurrentTarget)
+            .classed(styles.highlightNode, !d3.select(eventCurrentTarget)
+                .classed(styles.highlightNode));
+
+        const nodeWithDetail = await getNode(d.name);
+        setSelectedNode(nodeWithDetail);
+
+        setModalPosition({
+            top: cyValue + 25,
+            left: cxValue - 25
+        });
+
+        //remove highlight from other nodes and add to the clicked node
+        d3.selectAll(`.${styles.node}`).classed(styles.highlightNode, false);
+        d3.select(eventCurrentTarget).classed(styles.highlightNode, true);
+
+        setNodeDetailModalVisible(prevState => {
+            return !prevState;
+        });
+    }
+
+    function removeHighlight() {
+        d3.selectAll(`.${styles.highlightNode}`).classed(styles.highlightNode, false);
+    }
+
+    function formatLinks(links) {
+        if (!links || !(links && links.length > 0)) {
+            return [];
+        }
+
+        links.forEach((link, index) => {
+            link.id = `link-${index}`;
+
+            const same = links.filter((d) => d.source === link.target && d.target === link.source);
+            const sameSelf = links.filter((d) => d.source === link.source && d.target === link.target);
+            const all = sameSelf.concat(same);
+
+            all.forEach((item, index) => {
+                item.sameIndex = index + 1;
+                item.sameTotal = all.length;
+                item.sameTotalHalf = item.sameTotal / 2;
+                item.sameUneven = item.sameTotal % 2 !== 0;
+                item.sameMiddleLink = item.sameUneven === true && Math.ceil(item.sameTotalHalf) === item.sameIndex;
+                item.sameLowerHalf = item.sameIndex <= item.sameTotalHalf;
+                item.sameArcDirection = 1;
+                item.sameIndexCorrected = item.sameLowerHalf ? item.sameIndex : item.sameIndex - Math.ceil(item.sameTotalHalf);
+            });
+        });
+
+        const maxSame = links.concat().sort((a, b) => b.sameTotal - a.sameTotal)[0].sameTotal;
+
+        links.forEach((link) => {
+            link.maxSameHalf = Math.round(maxSame / 2);
+        });
+
+        return links;
+    }
+
+    function linkArc(d) {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dr = Math.sqrt(dx * dx + dy * dy);
+        const unevenCorrection = d.sameUneven ? 0 : 0.5;
+        const curvature = 2;
+        let arc = (1.0 / curvature) * ((dr * d.maxSameHalf) / (d.sameIndexCorrected - unevenCorrection));
+
+        if (d.sameMiddleLink) {
+            arc = 0;
+        }
+
+        return `M${d.source.x},${d.source.y}A${arc},${arc} 0 0,${d.sameArcDirection} ${d.target.x},${d.target.y}`;
+    }
+
+    function splitText(text) {
+        if (text.length <= 9) {
+            return [text];
+        } else if (text.length > 9 && text.length <= 17) {
+            const middle = Math.ceil(text.length / 2);
+            const before = text.slice(0, middle);
+            const after = text.slice(middle);
+            return [before, after];
+        } else {
+            const middle = Math.ceil(9);
+            const before = text.slice(0, middle);
+            const after = text.slice(middle, 17) + "...";
+            
+            return [before, after];
+        }
+    }
 
     useEffect(() => {
+        ideas = ideas.filter((idea) => !idea[0].labels.some(label => !filterLabels.includes(label)));
+        relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
+
+        relations = relations.filter((relation) => {
+            const head = relation[0].name;
+            const tail = relation[2].name;
+            return ideas.some((idea) => idea[0].name === head) && ideas.some((idea) => idea[0].name === tail);
+        });
+
         if (ideas.length === 0 || relations.length === 0) return;
 
         const svg = d3.select(svgRef.current);
         const g = d3.select(gRef.current);
 
         g.selectAll("*").remove();
+
+        svg.append("defs").append("marker")
+            .attr("id", "arrowhead")
+            .attr("class", styles.arrowhead)
+            .attr("viewBox", "-0 -5 10 10")
+            .attr("refX", 44)
+            .attr("refY", 0)
+            .attr("orient", "auto")
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("xoverflow", "visible")
+            .append("svg:path")
+            .attr("d", "M 0,-5 L 10 ,0 L 0,5");
 
         const nodes = ideas.map((idea, index) => ({
             id: idea[0].name,
@@ -177,39 +165,66 @@ export default function GraphCanvas({ ideas, relations }) {
             y: generateCordset(ideas.length)[index][1]
         }));
 
-        const links = relations.map((relation) => ({
+        const links = formatLinks(relations.map((relation) => ({
             source: relation[0].name,
             target: relation[2].name,
             type: relation[1].type
-        }));
+        })));
 
         const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d) => d.id))
+            .force("link", d3.forceLink(links).id((d) => d.id).distance(160))
             .force("charge", d3.forceManyBody().strength(-200))
-            .force("center", d3.forceCenter(50, 25));
+            .force("center", d3.forceCenter(50, 25))
+            .force("collision", d3.forceCollide().radius(55));
 
         const link = g.selectAll(".link")
             .data(links)
-            .enter().append("line")
-            .attr("class", styles.link);
+            .enter().append("g")
+            .attr("class", "link");
 
-        const linkLabel = g.selectAll(".link-label")
-            .data(links)
-            .enter().append("text")
+        link.append("path")
+            .attr("id", (d, i) => `linkPath${i}`)
+            .attr("class", styles.link)
+            .attr("marker-end", "url(#arrowhead)")
+            .attr("d", linkArc);
+
+        link.append("text")
             .attr("class", styles.linkLabel)
+            .append("textPath")
+            .attr("startOffset", "50%")
+            .attr("text-anchor", "middle")
             .text((d) => d.type);
 
         const node = g.selectAll(".node")
             .data(nodes)
-            .enter().append("circle")
-            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.name) ? styles.highlightNode : ''}`)
-            .attr("r", 10);
+            .enter().append("g")
+            .attr("class", "node");
 
-        const nodeLabel = g.selectAll(".node-label")
-            .data(nodes)
-            .enter().append("text")
+        node.append("circle")
+            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.name) ? styles.highlightNode : ''}`)
+            .attr("r", 20)
+            .on("click", handleNodeClick);
+
+        node.append("text")
             .attr("class", styles.nodeLabel)
-            .text((d) => d.name.slice(0, 10));
+            .attr("text-anchor", "middle")
+            .selectAll("tspan")
+            .data(d => {
+                const lines = splitText(d.name);
+                const totalLines = lines.length;
+                return lines.map((line, i) => ({
+                    text: line,
+                    lineIndex: i,
+                    totalLines: totalLines
+                }));
+            })
+            .enter().append("tspan")
+            .attr("x", 0)
+            .attr("dy", (d, i) => {
+                if(d.totalLines === 1) return "0.4em";
+                if(d.totalLines === 2) return i === 0 ? "-0.4em" : "1.3em";
+            })
+            .text(d => d.text);
 
         const drag = d3.drag()
             .on("start", (event, d) => {
@@ -230,23 +245,11 @@ export default function GraphCanvas({ ideas, relations }) {
         node.call(drag);
 
         simulation.on("tick", () => {
-            link
-                .attr("x1", (d) => d.source.x)
-                .attr("y1", (d) => d.source.y)
-                .attr("x2", (d) => d.target.x)
-                .attr("y2", (d) => d.target.y);
+            link.select("path").attr("d", linkArc);
 
-            node
-                .attr("cx", (d) => d.x)
-                .attr("cy", (d) => d.y);
+            node.attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-            nodeLabel
-                .attr("x", (d) => d.x)
-                .attr("y", (d) => d.y);
-
-            linkLabel
-                .attr("x", (d) => (d.source.x + d.target.x) / 2)
-                .attr("y", (d) => (d.source.y + d.target.y) / 2);
+            link.select("textPath").attr("xlink:href", (d, i) => `#linkPath${i}`);
         });
 
         zoomRef.current
@@ -256,40 +259,28 @@ export default function GraphCanvas({ ideas, relations }) {
             });
 
         svg.call(zoomRef.current);
-    }, [ideas, relations]);
+        svg.on("click", removeHighlight);
 
-    useEffect(() => {
-        const svg = d3.select(svgRef.current);
-        const g = d3.select(gRef.current);
-
-        const matchedNodes = g.selectAll(".node")
-            .filter(d => searchedNodes.includes(d.name));
-
-        if (matchedNodes.empty()) return;
-
-        const [[x0, y0], [x1, y1]] = matchedNodes.nodes().reduce((bounds, node) => {
-            const bbox = node.getBBox();
-            bounds[0][0] = Math.min(bounds[0][0], bbox.x);
-            bounds[0][1] = Math.min(bounds[0][1], bbox.y);
-            bounds[1][0] = Math.max(bounds[1][0], bbox.x + bbox.width);
-            bounds[1][1] = Math.max(bounds[1][1], bbox.y + bbox.height);
-            return bounds;
-        }, [[Infinity, Infinity], [-Infinity, -Infinity]]);
-
-        const dx = x1 - x0;
-        const dy = y1 - y0;
-        const x = (x0 + x1) / 2;
-        const y = (y0 + y1) / 2;
-        const scale = Math.max(0.5, Math.min(5, 0.9 / Math.max(dx / svgRef.current.clientWidth, dy / svgRef.current.clientHeight)));
-        const transform = d3.zoomIdentity.translate(svgRef.current.clientWidth / 2, svgRef.current.clientHeight / 2).scale(scale).translate(-x, -y);
-
-        svg.transition().duration(750).call(zoomRef.current.transform, transform);
-    }, [searchedNodes]);
+    }, [ideas, relations, searchedNodes]);
 
     return (
         <>
             <svg className={styles.svg} ref={svgRef}>
-                <g ref={gRef}></g>
+                <g ref={gRef}>
+                    {nodeDetailModalVisible && (
+                        <foreignObject
+                            x={modalPosition.left}
+                            y={modalPosition.top}
+                            width="300"
+                            height="200"
+                            className={styles.modalContainer}
+                        >
+                            <div ref={nodeDetailModalRef}>
+                                <NodeDetailModal nodeWithDetail={selectedNode} />
+                            </div>
+                        </foreignObject>
+                    )}
+                </g>
             </svg>
         </>
     );

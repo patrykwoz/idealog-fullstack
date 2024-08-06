@@ -1,0 +1,133 @@
+.nodeDetailModalContainer p {
+    margin: 0;
+    padding: 0;
+}
+
+
+.nodeDetailModalContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(245, 245, 245);
+
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+
+    box-shadow: 0 0 transparent, 0 0 transparent, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    z-index: 2;
+
+}
+
+.nodeDetailModalHeader {
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0 0;
+    padding: 0 3px 0 2px;
+}
+
+.nodeDetailModalHeader p {
+    font-size: 7px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    color: black;
+}
+
+.nodeDetailModalContentHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    font-weight: 400;
+    font-size: 7px;
+    padding: 0;
+    margin: 0 0 4px 0;
+}
+
+.nodeDetailModalDivider {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(207, 207, 207);
+    margin-bottom: 2px;
+}
+
+.nodeDetailModalContentItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+
+}
+
+
+.nodeDetailModalContentDetails {}
+
+/* form stylilng begins */
+
+.nodeDetailModalContainer form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2px 0 2px;
+}
+
+.nodeDetailModalContainer form label {
+    width: 45px;
+    font-size: 6px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 1px;
+}
+
+.nodeDetailModalContainer form input {
+    height: 10px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 2px;
+    padding: 0 2px 0 2px;
+    font-size: 6px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+
+.nodeDetailModalContainer form textarea {
+    height: 10px;
+    min-height: 10px;
+    min-width: 65px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 6px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+
+.nodeDetailModalContainer form button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15px;
+    background-color: transparent;
+    color: rgb(204, 204, 204);
+    ;
+    font-size: 8px;
+    font-weight: 500;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 999px;
+    cursor: pointer;
+    margin-top: 2px;
+    margin-bottom: 2px;
+
+}
+
+
+.nodeDetailModalContainer form button:hover {
+    background-color: rgb(204, 204, 204);
+    color: black;
+}

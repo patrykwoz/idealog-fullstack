@@ -9,6 +9,7 @@ export function SidenavProvider({ children, user }) {
     const [ideaModalVisible, setIdeaModalVisible] = useState(false);
     const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false);
     const [relationshipModalVisible, setRelationshipModalVisible] = useState(false);
+    const [nodeDetailModalVisible, setNodeDetailModalVisible] = useState(false);
 
     const [filterLabels, setFilterLabels] = useState(['Idea', 'KnowledgeSource']);
     const [searchedNodes, setSearchedNodes] = useState([]);
@@ -16,6 +17,7 @@ export function SidenavProvider({ children, user }) {
     const ideaModalRef = useRef(null);
     const knowledgeModalRef = useRef(null);
     const relationshipModalRef = useRef(null);
+    const nodeDetailModalRef = useRef(null);
 
     const toggleSideNav = () => {
         setSideNavDisplayed(!sideNavDisplayed);
@@ -33,6 +35,10 @@ export function SidenavProvider({ children, user }) {
         setRelationshipModalVisible(!relationshipModalVisible);
     }
 
+    const toggleNodeDetailModal = () => {
+        setNodeDetailModalVisible(!nodeDetailModalVisible);
+    }
+
     const addFilterLabel = (label) => {
         setFilterLabels([...filterLabels, label]);
     }
@@ -42,7 +48,7 @@ export function SidenavProvider({ children, user }) {
     }
 
     const addSearchedNodes = (nodes) => {
-        setSearchedNodes([ ...nodes]);
+        setSearchedNodes([...nodes]);
     }
 
     const removeSearchedNodes = (nodes) => {
@@ -59,13 +65,16 @@ export function SidenavProvider({ children, user }) {
         if (relationshipModalRef.current && !relationshipModalRef.current.contains(event.target)) {
             setRelationshipModalVisible(false);
         }
+        if (nodeDetailModalRef.current && !nodeDetailModalRef.current.contains(event.target)) {
+            setNodeDetailModalVisible(false);
+        }
     }
 
     // if user clicks somewhere on the .graphCanvas main element setSearchedNodes to empty array
     // to remove the search results from the graph
 
     useEffect(() => {
-        if (ideaModalVisible || knowledgeModalVisible || relationshipModalVisible) {
+        if (ideaModalVisible || knowledgeModalVisible || relationshipModalVisible || nodeDetailModalVisible) {
             document.addEventListener('click', handleClickOutside);
         } else {
             document.removeEventListener('click', handleClickOutside);
@@ -73,7 +82,7 @@ export function SidenavProvider({ children, user }) {
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
-    }, [ideaModalVisible, knowledgeModalVisible, relationshipModalVisible]);
+    }, [ideaModalVisible, knowledgeModalVisible, relationshipModalVisible, nodeDetailModalVisible]);
 
     return (
         <SidenavContext.Provider value={{
@@ -82,15 +91,19 @@ export function SidenavProvider({ children, user }) {
             ideaModalVisible,
             knowledgeModalVisible,
             relationshipModalVisible,
+            nodeDetailModalVisible,
+            setNodeDetailModalVisible,
             filterLabels,
             searchedNodes,
             ideaModalRef,
             knowledgeModalRef,
             relationshipModalRef,
+            nodeDetailModalRef,
             toggleSideNav,
             toggleIdeaModal,
             toggleKnowledgeModal,
             toggleRelationshipModal,
+            toggleNodeDetailModal,
             addFilterLabel,
             removeFilterLabel,
             addSearchedNodes,

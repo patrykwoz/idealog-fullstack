@@ -19,28 +19,9 @@ export default function NavLinks() {
         ideaModalRef,
         ideaModalVisible,
         toggleSideNav,
+        sideNavDisplayed,
 
     } = useSidenav();
-
-    // const [sideNavDisplayed, setSideNavDisplayed] = useState(false);
-
-    // useEffect(() => {
-    //     fetch('/api')
-    //         .then(res => res.json())
-    //         .then(data => setSideNavDisplayed(data.value === 'true'));
-    // }, []);
-
-    // function toggleSideNav() {
-    //     fetch('/api', {
-    //         method: 'POST'
-    //     })
-    //         .then(res => res.json())
-    //         .then(data => setSideNavDisplayed(data.value));
-    // }
-
-    // useEffect(() => {
-    //     console.log('sideNavDisplayed changed:', sideNavDisplayed);
-    // }, [sideNavDisplayed]);
 
     return (
         <>
