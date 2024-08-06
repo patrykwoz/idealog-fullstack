@@ -55,6 +55,13 @@ if settings.BACKEND_CORS_ORIGINS:
 def root():
     return {"message": "Hello World"}
 
+from celeryapp.tasks import add
+@app.get("/add")
+def add_numbers():
+    add.delay(1, 2)
+    return {"message": "Task added to queue"}
+
+
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
