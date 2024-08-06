@@ -135,9 +135,9 @@ export default function GraphCanvas({ ideas, relations }) {
         relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
 
         relations = relations.filter((relation) => {
-            const head = relation[0].name;
-            const tail = relation[2].name;
-            return ideas.some((idea) => idea[0].name === head) && ideas.some((idea) => idea[0].name === tail);
+            const head = relation[0].neo4j_id;
+            const tail = relation[2].neo4j_id;
+            return ideas.some((idea) => idea[0].neo4j_id === head) && ideas.some((idea) => idea[0].neo4j_id === tail);
         });
 
         if (ideas.length === 0 || relations.length === 0) return;
@@ -161,15 +161,15 @@ export default function GraphCanvas({ ideas, relations }) {
             .attr("d", "M 0,-5 L 10 ,0 L 0,5");
 
         const nodes = ideas.map((idea, index) => ({
-            id: idea[0].name,
+            id: idea[0].neo4j_id,
             name: idea[0].name,
             x: generateCordset(ideas.length)[index][0],
             y: generateCordset(ideas.length)[index][1]
         }));
 
         const links = formatLinks(relations.map((relation) => ({
-            source: relation[0].name,
-            target: relation[2].name,
+            source: relation[0].neo4j_id,
+            target: relation[2].neo4j_id,
             type: relation[1].type
         })));
 
@@ -204,7 +204,7 @@ export default function GraphCanvas({ ideas, relations }) {
             .on("click", handleNodeClick);
 
         node.append("circle")
-            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.name) ? styles.highlightNode : ''}`)
+            .attr("class", d => `${styles.node} ${searchedNodes.includes(d.neo4j_id) ? styles.highlightNode : ''}`)
             .attr("r", 20);
 
         node.append("text")

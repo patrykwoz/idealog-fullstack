@@ -35,8 +35,23 @@ class KnowledgeDAO:
         with self.driver.session() as session:
             return session.execute_read(get_knowledge_source)
         
-    def create(self, name, summary, full_text, url, owner_email, owner_sql_id):
-        def create_knowledge_source(tx, name,summary, full_text, url, owner_email, owner_sql_id):
+    def create(self,
+               name,
+               summary,
+               full_text, url,
+               owner_email,
+               owner_sql_id,
+               entities,
+               relations):
+        def create_knowledge_source(tx,
+                                    name,
+                                    summary,
+                                    full_text,
+                                    url,
+                                    owner_email,
+                                    owner_sql_id,
+                                    entities,
+                                    relations):
             cypher = """
                 CREATE (knowledge_source:KnowledgeSource {
                     name: $name,
@@ -61,7 +76,39 @@ class KnowledgeDAO:
                 url=url,
                 owner_email=owner_email,
                 owner_sql_id=owner_sql_id)
-            return result.single()["knowledge_source"]
+            knowledge_source =  result.single()["knowledge_source"]
+
+            # Create entities
+            for entity_name, entity_data in entities.items():
+                entity_cypher = """
+                    MATCH (knowledge_source:KnowledgeSource {name: $name})
+                    CREATE (entity:Entity {
+                        name: $entity_name,
+                        url: $entity_data.url,
+                        summary: $entity_data.summary,
+                        created_at: timestamp(),
+                        updated_at: timestamp() 
+                    })
+                    MERGE (knowledge_source)-[:HAS_ENTITY]->(entity)
+                """
+                tx.run(
+                    entity_cypher,
+                    name=name,
+                    entity_name=entity_name,
+                    entity_data=entity_data)
+            
+            # Create relations
+            for relation in relations:
+                relation_cypher = """
+                    MATCH (head:Entity {name: $head}), (tail:Entity {name: $tail})
+                    MERGE (head)-[r:%s]->(tail)
+                """ % relation["type"].replace(" ", "_").upper()
+                tx.run(
+                    relation_cypher,
+                    head=relation["head"],
+                    tail=relation["tail"])
+            
+            return knowledge_source
         
         with self.driver.session() as session:
             return session.execute_write(
@@ -71,5 +118,7 @@ class KnowledgeDAO:
                 full_text,
                 url,
                 owner_email,
-                owner_sql_id)
+                owner_sql_id,
+                entities,
+                relations)
         

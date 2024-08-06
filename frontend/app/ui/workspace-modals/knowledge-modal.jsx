@@ -1,12 +1,17 @@
 'use client';
+import { useState } from 'react';
 import { useSidenav } from '@/app/ui/workspace/sidenav-context';
 import { createKnowledge } from '@/app/lib/actions';
 import ModalContainer from '../containers/modal-container';
 import CloseButton from '../buttons/close-button';
+import {
+    BoltIcon,
+} from '@heroicons/react/24/outline';
 import styles from './knowledge-modal.module.css';
 
 export default function KnowledgeModal() {
     const { toggleKnowledgeModal } = useSidenav();
+
 
 
     return (
@@ -23,7 +28,25 @@ export default function KnowledgeModal() {
 
                     <div className={styles.knowledgeModalDivider}></div>
 
+
+
                     <form action={createKnowledge} className={styles.knowledgeModalForm}>
+
+
+                        <input
+                            type="checkbox"
+                            name="useMl"
+                            id="useMl"
+                            className={styles.knowledgeModalCheckbox}
+                            hidden/>
+
+                        <label htmlFor="useMl">
+                            <div
+                                className={`${styles.knowledgeModalControlItem}`}
+                            >
+                                <BoltIcon />
+                            </div>
+                        </label>
 
                         <label htmlFor="knowledge-title">Title</label>
                         <input

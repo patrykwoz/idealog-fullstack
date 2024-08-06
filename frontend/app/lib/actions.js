@@ -170,11 +170,13 @@ export async function createKnowledge(formData) {
         url: formData.get('knowledgeUrl'),
         summary: formData.get('knowledgeSummary'),
         full_text: formData.get('knowledgeText'),
+        use_ml: formData.get('useMl') === 'on',
     }
 
     const autObj = await auth();
     const accessToken = autObj.accessToken;
     try {
+        // console.log('CREATE KNOWLEDGE FUNC ACT rawFormData', rawFormData)
         const knowledge = await createKnowledgeApi(accessToken, rawFormData)
         revalidateNodes();
         return knowledge
