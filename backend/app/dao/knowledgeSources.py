@@ -78,8 +78,11 @@ class KnowledgeDAO:
                 owner_sql_id=owner_sql_id)
             knowledge_source =  result.single()["knowledge_source"]
 
+            if not entities:
+                return knowledge_source
             # Create entities
             for entity_name, entity_data in entities.items():
+                entity_name = entity_name.lower()
                 entity_cypher = """
                     MATCH (knowledge_source:KnowledgeSource {name: $name})
                     CREATE (entity:Entity {

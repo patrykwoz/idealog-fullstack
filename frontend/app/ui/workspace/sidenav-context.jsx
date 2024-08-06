@@ -11,7 +11,7 @@ export function SidenavProvider({ children, user }) {
     const [relationshipModalVisible, setRelationshipModalVisible] = useState(false);
     const [nodeDetailModalVisible, setNodeDetailModalVisible] = useState(false);
 
-    const [filterLabels, setFilterLabels] = useState(['Idea', 'KnowledgeSource']);
+    const [filterLabels, setFilterLabels] = useState(['Idea', 'KnowledgeSource', 'User']);
     const [searchedNodes, setSearchedNodes] = useState([]);
 
     const ideaModalRef = useRef(null);

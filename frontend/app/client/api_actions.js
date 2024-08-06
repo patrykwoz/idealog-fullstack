@@ -101,7 +101,10 @@ export const fetchIdeasNoToken = async () => {
 }
 
 export const fetchRelationships = async () => {
-    const response = await fetch(`${API_URL}/relationships`);
+    const response = await fetch(`${API_URL}/relationships`,
+        {
+            next: { tags: ['relationships'] }
+        });
     if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
     }
@@ -159,8 +162,8 @@ export const fetchNodes = async (accessToken, queryParams = {}) => {
     return data;
 }
 
-export const fetchNode = async (accessToken, nodeName) => {
-    const response = await fetch(`${API_URL}/nodes/${nodeName}`, {
+export const fetchNode = async (accessToken, neo4jId) => {
+    const response = await fetch(`${API_URL}/nodes/${neo4jId}`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },

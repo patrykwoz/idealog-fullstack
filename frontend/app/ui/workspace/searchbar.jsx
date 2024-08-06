@@ -25,9 +25,9 @@ export default function SearchBar() {
             return;
         }
         const nodes = await searchNodes(searchInput);
-        const nodeNames = nodes.map(node => node[0].name);
+        const nodeNeo4jIds = nodes.map(node => node[0].neo4j_id);
 
-        addSearchedNodes(nodeNames);
+        addSearchedNodes(nodeNeo4jIds);
     }
 
     const handleChange = (e) => {
