@@ -274,7 +274,7 @@ export default function GraphCanvas({ ideas, relations }) {
                             x={modalPosition.left}
                             y={modalPosition.top}
                             width="300"
-                            height="200"
+                            height="400"
                             className={styles.modalContainer}
                         >
                             <div ref={nodeDetailModalRef}>
