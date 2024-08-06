@@ -22,6 +22,12 @@ export default function NodeDetailModal({ nodeWithDetail }) {
 
                 <div className={styles.nodeDetailModalDivider}></div>
 
+                <div className={styles.nodeDetailModalContentHeader}>{nodeWithDetail.name}</div>
+
+                <div className={styles.nodeDetailModalLabels}>{nodeWithDetail.labels.map(
+                    label => <span key={label} className={styles.nodeDetailModalLabel}>{label}</span>
+                )}</div>
+
                 <form onSubmit={handleSubmit} className={styles.nodeDetailModalContent}>
                     <div className={styles.nodeDetailModalContentDetails}>
                         {sortedEntries.map(([key, value]) => (
