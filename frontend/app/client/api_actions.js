@@ -101,7 +101,10 @@ export const fetchIdeasNoToken = async () => {
 }
 
 export const fetchRelationships = async () => {
-    const response = await fetch(`${API_URL}/relationships`);
+    const response = await fetch(`${API_URL}/relationships`,
+        {
+            next: { tags: ['relationships'] }
+        });
     if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
     }

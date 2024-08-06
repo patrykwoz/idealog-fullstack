@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useSidenav } from "./sidenav-context";
-import { getNode } from '@/app/lib/actions';
+import { getNode, revalidateRelationships } from '@/app/lib/actions';
 import styles from "./graph-canvas.module.css";
 import NodeDetailModal from "../workspace-modals/node-detail-modal";
 
@@ -134,6 +134,7 @@ export default function GraphCanvas({ ideas, relations }) {
         ideas = ideas.filter((idea) => !idea[0].labels.some(label => !filterLabels.includes(label)));
         relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
 
+        
         relations = relations.filter((relation) => {
             const head = relation[0].neo4j_id;
             const tail = relation[2].neo4j_id;

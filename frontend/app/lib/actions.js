@@ -209,5 +209,9 @@ export async function searchNodes(value) {
 }
 
 export async function revalidateNodes() {
-    revalidateTag('nodes')
+    revalidateTag('nodes');
+}
+
+export async function revalidateRelationships() {
+    revalidateTag('relationships');
 }
