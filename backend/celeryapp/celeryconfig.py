@@ -17,6 +17,11 @@ class CelerySettings(BaseSettings):
     )
     CELERY_BROKER_URL: str
     CELERY_RESULT_BACKEND: str
+    STACKHERO_RABBITMQ_AMQP_PORT_TLS: int
+    STACKHERO_RABBITMQ_AMQP_URL_TLS: str
+    STACKHERO_RABBITMQ_HOST: str
+    STACKHERO_RABBITMQ_PASSWORD: str
+    STACKHERO_RABBITMQ_USER: str
 
 
 celery_settings = CelerySettings()

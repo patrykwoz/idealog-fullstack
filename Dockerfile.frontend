@@ -2,16 +2,13 @@ FROM node:20.15.1
 
 WORKDIR /frontend
 
-COPY package*.json ./
+COPY frontend/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY frontend .
 
-COPY .env.local ./
-
-# ARG API_URL
-# ENV API_URL=$BUILD_API_URL
+COPY frontend/.env.local ./
 
 RUN npm run build
 

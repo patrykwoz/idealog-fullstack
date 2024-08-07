@@ -38,7 +38,7 @@ services:
 
   initialdata:
     build:
-      context: ./backend
+      context: ./
       dockerfile: Dockerfile.initialdata
     env_file:
       - .env.compose
@@ -57,7 +57,7 @@ services:
     networks:
       - default
     build:
-      context: ./backend
+      context: ./
       dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
@@ -75,7 +75,7 @@ services:
     networks:
       - default
     build:
-      context: ./backend
+      context: ./
       dockerfile: Dockerfile.celery
     depends_on:
       db:
@@ -92,10 +92,8 @@ services:
     networks:
       - default
     build:
-      context: ./frontend
+      context: ./
       dockerfile: Dockerfile.frontend
-      args:
-        - BUILD_API_URL=http://localhost:8000/api/v1
     ports:
       - "3000:3000"
 
