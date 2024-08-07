@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - .env.compose
     healthcheck:
       test:
         [
@@ -28,7 +28,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     env_file:
-      - .env
+      - .env.compose
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmqctl node_health_check" ]
       interval: 10s
@@ -41,7 +41,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.initialdata
     env_file:
-      - .env
+      - .env.compose
     depends_on:
       db:
         condition: service_healthy
@@ -52,7 +52,7 @@ services:
 
   backend:
     env_file:
-      - .env
+      - .env.compose
     restart: always
     networks:
       - default
@@ -70,7 +70,7 @@ services:
 
   celery_worker:
     env_file:
-      - .env
+      - .env.compose
     restart: always
     networks:
       - default
@@ -94,6 +94,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
+      args:
+        - BUILD_API_URL=http://localhost:8000/api/v1
     ports:
       - "3000:3000"
 

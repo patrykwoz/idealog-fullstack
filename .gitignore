@@ -24,6 +24,9 @@ coverage.xml
 
 # Environments
 .env
+.env.local
+.env.compose
+.env.production
 .venv
 env/
 venv/

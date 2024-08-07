@@ -1,19 +1,7 @@
 'use server';
-const BACKEND_URL = 'http://localhost:8000';
-const API_VERSION = 'api/v1';
-const API_URL = `${BACKEND_URL}/${API_VERSION}`;
-
-//just ping the server and expect hellow world json back
-export const pingServer = async () => {
-    const response = await fetch(`${BACKEND_URL}`);
-    if (!response.ok) {
-        console.log(response.statusText);
-    }
-    const data = await response.json();
-    return data;
-};
-
+const API_URL = process.env.API_URL;
 export const getToken = async (email, password) => {
+    console.log('GET TOKEN API_URL:', API_URL);
     const response = await fetch(`${API_URL}/login/access-token`, {
         method: 'POST',
         headers: {
