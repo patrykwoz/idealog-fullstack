@@ -7,22 +7,41 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - path: .env
-        required: true
+      - .env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 10s
-  
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    restart: always
+    networks:
+      - default
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmqctl node_health_check" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
   initialdata:
     build:
       context: ./backend
       dockerfile: Dockerfile.initialdata
     env_file:
-      - path: .env
-        required: true
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -30,18 +49,17 @@ services:
     networks:
       - default
     restart: on-failure
-    
+
   backend:
     env_file:
-      - path: .env
-        required: true
+      - .env
     restart: always
     networks:
       - default
     build:
       context: ./backend
       dockerfile: Dockerfile.backend
-    ports:  
+    ports:
       - "8000:8000"
     depends_on:
       db:
@@ -49,6 +67,23 @@ services:
         restart: true
     volumes:
       - json_data:/json_data
+
+  celery_worker:
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - default
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.celery
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+      rabbitmq:
+        condition: service_healthy
+        restart: true
 
 networks:
   default:

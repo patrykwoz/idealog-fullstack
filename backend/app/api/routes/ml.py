@@ -17,7 +17,6 @@ class JSONData(BaseModel):
 
 def write_json_to_file(json_data: dict, filename: str) -> None:
     try:
-        #directory = "/mnt/c/filewritingtests" if os.path.exists("/mnt/c") else "/filewritingtests"
         directory = "/json_data"
         os.makedirs(directory, exist_ok=True)
         

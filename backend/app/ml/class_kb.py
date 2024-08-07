@@ -5,11 +5,18 @@ import json
 import pdb
 import time
 from fastapi.encoders import jsonable_encoder
+from functools import lru_cache
+from celery.contrib import rdb
 
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("Babelscape/rebel-large")
-model = AutoModelForSeq2SeqLM.from_pretrained("Babelscape/rebel-large")
+@lru_cache(maxsize=1)
+def get_model_and_tokenizer():
+    tokenizer = AutoTokenizer.from_pretrained("Babelscape/rebel-large")
+    model = AutoModelForSeq2SeqLM.from_pretrained("Babelscape/rebel-large")
+    return model, tokenizer
+
+model, tokenizer = get_model_and_tokenizer()
 
 def extract_relations_from_model_output(text):
     relations = []
