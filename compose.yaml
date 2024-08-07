@@ -84,6 +84,18 @@ services:
       rabbitmq:
         condition: service_healthy
         restart: true
+  
+  frontend:
+    env_file:
+      - ./frontend/.env.local
+    restart: always
+    networks:
+      - default
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
 
 networks:
   default:

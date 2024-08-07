@@ -8,7 +8,7 @@ from app.api.routes import (
     nodes,
     knowledge_sources,
     relationships,
-    ml)
+    knowledge_graphs,)
 
 api_router = APIRouter()
 api_router.include_router(login.router, tags=["login"])
@@ -18,4 +18,4 @@ api_router.include_router(ideas.router, prefix="/ideas", tags=["ideas"])
 api_router.include_router(nodes.router, prefix="/nodes", tags=["nodes"])
 api_router.include_router(knowledge_sources.router, prefix="/knowledge_sources", tags=["knowledge_sources"])
 api_router.include_router(relationships.router, prefix="/relationships", tags=["relationships"])
-# api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
+# api_router.include_router(knowledge_graphs.router, prefix="/knowledge_graphs", tags=["knowledge_graphs"])

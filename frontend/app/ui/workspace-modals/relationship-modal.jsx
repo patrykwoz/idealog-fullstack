@@ -8,7 +8,6 @@ import styles from './relationship-modal.module.css';
 export default function RelationshipModal() {
     const { toggleRelationshipModal } = useSidenav();
 
-
     return (
         <>
 

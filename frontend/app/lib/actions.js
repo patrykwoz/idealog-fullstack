@@ -131,9 +131,10 @@ export async function createRelationship(formData) {
     const autObj = await auth();
     const accessToken = autObj.accessToken;
     try {
-        const relation = await createRelationshipApi(accessToken, rawFormData)
+        const response = await createRelationshipApi(accessToken, rawFormData)
         revalidateNodes();
-        return relation
+        revalidateRelationships();
+        return response
     }
     catch (error) {
         console.log(error)

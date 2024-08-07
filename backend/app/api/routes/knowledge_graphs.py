@@ -1,7 +1,6 @@
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import col, delete, func, select
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 
 from app.crud import user_crud
 from app.api.deps import (
@@ -11,14 +10,11 @@ from app.api.deps import (
 )
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
-from app.models_sql import (
-    IdeaCreate
-)
 from app.utils import generate_new_account_email, send_email
 
 import json
 
-from app.ml.class_kb import from_text_to_kb
+from celeryapp.ml.class_kb import from_text_to_kb
 
 from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
