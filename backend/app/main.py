@@ -18,7 +18,7 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     tag = route.tags[0] if route.tags else "default"
     return f"{tag}-{route.name}"
 
-# TODO: Talk with mentor whether this is necessary
+# TODO: Talk to mentor whether this is necessary
 # @asynccontextmanager
 # async def lifespan(app: FastAPI):
 #     neo4j_driver.init_driver(
@@ -58,8 +58,13 @@ def root():
 from celeryapp.tasks import add
 @app.get("/add")
 def add_numbers():
-    add.delay(1, 2)
-    return {"message": "Task added to queue"}
+    task = add.delay(1, 2)
+    return {"task_id": task.id}
+
+@app.get("/task/{task_id}")
+def get_task_result(task_id):
+    task = add.AsyncResult(task_id)
+    return {"task_status": task.status, "task_result": task.result}
 
 
 app.include_router(api_router, prefix=settings.API_V1_STR)

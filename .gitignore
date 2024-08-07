@@ -44,3 +44,5 @@ docker-compose.override.yml
 
 # Other
 prompt.md
+
+supervisord.conf

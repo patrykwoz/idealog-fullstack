@@ -1,14 +1,13 @@
 from typing import Any, Annotated
 
-from fastapi import APIRouter, HTTPException, FastAPI, Query
-from sqlmodel import func, select
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.knowledgeSources import KnowledgeDAO
 from app.models_neo4j import KnowledgeCreate
 
-from app.ml.class_kb import from_text_to_kb
+from celeryapp.ml_tasks import createKnowledgeSource
 
 from neo4j.exceptions import ConstraintError, CypherTypeError
 
@@ -27,34 +26,52 @@ def read_knowledge_sources(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
+# @router.post("/")
+# def create_knowledge_source(
+#     driver:Neo4jDriverDep,
+#     current_user: CurrentUser,
+#     knowledge_in: KnowledgeCreate) -> Any:
+#     """Create a knowledge_source."""
+#     dao = KnowledgeDAO(driver)
+#     try:
+#         if knowledge_in.use_ml:
+#             #use ml model to process the text and extract entities and relations
+#             kb = from_text_to_kb(
+#                 text=knowledge_in.full_text,
+#                 article_url=knowledge_in.url,
+#                 article_title=knowledge_in.name)
+#             kb_data = kb.to_json()
+#             knowledge_in.entities = kb_data.get('entities', {})
+#             knowledge_in.relations = kb_data.get('relations', [])
+            
+#         output = dao.create(
+#             knowledge_in.name,
+#             knowledge_in.summary,
+#             knowledge_in.full_text,
+#             knowledge_in.url,
+#             current_user.email,
+#             current_user.id,
+#             knowledge_in.entities,
+#             knowledge_in.relations,
+#         )
+#     except ConstraintError:
+#         raise HTTPException(status_code=400, detail="Knowledge Source already exists")
+#     return jsonable_encoder(output)
+
 @router.post("/")
 def create_knowledge_source(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,
     knowledge_in: KnowledgeCreate) -> Any:
     """Create a knowledge_source."""
-    dao = KnowledgeDAO(driver)
-    try:
-        if knowledge_in.use_ml:
-            #use ml model to process the text and extract entities and relations
-            kb = from_text_to_kb(
-                text=knowledge_in.full_text,
-                article_url=knowledge_in.url,
-                article_title=knowledge_in.name)
-            kb_data = kb.to_json()
-            knowledge_in.entities = kb_data.get('entities', {})
-            knowledge_in.relations = kb_data.get('relations', [])
-            
-        output = dao.create(
-            knowledge_in.name,
-            knowledge_in.summary,
-            knowledge_in.full_text,
-            knowledge_in.url,
-            current_user.email,
-            current_user.id,
-            knowledge_in.entities,
-            knowledge_in.relations,
-        )
-    except ConstraintError:
-        raise HTTPException(status_code=400, detail="Knowledge Source already exists")
-    return jsonable_encoder(output)
+    knowledge_data = knowledge_in.dict()
+    print(knowledge_data)
+    task = createKnowledgeSource.delay(
+        current_user.id,
+        current_user.email,
+        knowledge_data
+    )
+    print(task.backend)
+
+
+    return {"task_id": task.id}
