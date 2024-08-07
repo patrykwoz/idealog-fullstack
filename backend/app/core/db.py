@@ -8,7 +8,9 @@ from app.models_sql import (
     Message, Token, TokenPayload, NewPassword
     )
 
-engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
+print(settings.DATABASE_URL)
+
+engine = create_engine(str(settings.DATABASE_URL))
 
 def init_db(session: Session) -> None:
     from sqlmodel import SQLModel

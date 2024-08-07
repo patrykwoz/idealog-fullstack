@@ -8,8 +8,10 @@ from celeryapp.celeryconfig import celery_settings
 # broker='amqp://',
 # backend='rpc://',
 
-broker_url = celery_settings.CELERY_BROKER_URL
-backend_url = celery_settings.CELERY_RESULT_BACKEND
+broker_url = celery_settings.STACKHERO_RABBITMQ_AMQP_URL_TLS
+backend_url = celery_settings.STACKHERO_RABBITMQ_AMQP_URL_TLS
+
+print(broker_url)
 
 app = Celery('celeryapp',
              broker=broker_url,

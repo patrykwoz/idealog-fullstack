@@ -12,4 +12,4 @@ RUN python --version
 COPY backend/app /code/app
 COPY backend/celeryapp /code/celeryapp
 
-CMD ["sh", "-c", "uvicorn app.main:app"]
+CMD ["sh", "-c", "celery -A celeryapp worker --pool threads -l INFO"]

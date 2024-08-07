@@ -3,11 +3,11 @@ FROM python:${PYTHON_VERSION} as base
 
 WORKDIR /code
 
-COPY backend/requirements_initialdata.txt /code/requirements_initialdata.txt
+COPY ./requirements_initialdata.txt /code/requirements_initialdata.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements_initialdata.txt
 
-COPY backend/app /code/app
+COPY ./app /code/app
 
 ENV PYTHONPATH=/code
 

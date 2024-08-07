@@ -38,7 +38,7 @@ services:
 
   initialdata:
     build:
-      context: ./
+      context: ./backend
       dockerfile: Dockerfile.initialdata
     env_file:
       - .env.compose
@@ -68,7 +68,7 @@ services:
     volumes:
       - json_data:/json_data
 
-  celery_worker:
+  web:
     env_file:
       - .env.compose
     restart: always
@@ -76,7 +76,7 @@ services:
       - default
     build:
       context: ./
-      dockerfile: Dockerfile.celery
+      dockerfile: Dockerfile.worker
     depends_on:
       db:
         condition: service_healthy

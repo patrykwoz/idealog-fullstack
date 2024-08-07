@@ -12,6 +12,4 @@ COPY frontend/.env.local ./
 
 RUN npm run build
 
-EXPOSE 3000
-
 CMD ["npm", "run", "start"]
