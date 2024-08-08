@@ -2,8 +2,8 @@
 const BASE_URL = process.env.BASE_BACKEND_URL;
 const API_PATH = process.env.API_PATH;
 const API_URL = `${BASE_URL}${API_PATH}`;
+
 export const getToken = async (email, password) => {
-    console.log('GET TOKEN API_URL:', API_URL);
     const response = await fetch(`${API_URL}/login/access-token`, {
         method: 'POST',
         headers: {
@@ -15,7 +15,7 @@ export const getToken = async (email, password) => {
         }).toString(),
     });
     if (!response.ok) {
-        console.log(response.statusText);
+        throw new Error(`Error: ${response.statusText}`);
     }
     const data = await response.json();
     return data;
@@ -23,8 +23,10 @@ export const getToken = async (email, password) => {
 
 export const currentUser = async (accessToken) => {
     const response = await fetch(`${API_URL}/users/me`, {
+        method: 'GET',
         headers: {
             Authorization: `Bearer ${accessToken}`,
+            'content-type': 'application/json',
         },
     });
     if (!response.ok) {
@@ -53,8 +55,10 @@ export const updateUserApi = async (accessToken, formData) => {
 
 export const fetchIdeas = async (accessToken) => {
     const response = await fetch(`${API_URL}/ideas`, {
+        method: 'GET',
         headers: {
             Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
         },
     });
     if (!response.ok) {
@@ -80,19 +84,16 @@ export const createIdeaApi = async (accessToken, formData) => {
     return data;
 }
 
-
-export const fetchIdeasNoToken = async () => {
-    const response = await fetch(`${API_URL}/ideas`);
-    if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
-}
-
-export const fetchRelationships = async () => {
+export const fetchRelationships = async (accessToken) => {
     const response = await fetch(`${API_URL}/relationships`,
         {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'origin': 'https://idealog-frontend-97cf882a694a.herokuapp.com/',
+            },
             next: { tags: ['relationships'] }
         });
     if (!response.ok) {
@@ -138,12 +139,21 @@ export const fetchNodes = async (accessToken, queryParams = {}) => {
     const queryString = new URLSearchParams(queryParams).toString();
     const url = `${API_URL}/nodes${queryString ? `?${queryString}` : ''}`;
 
-    console.log('URL:',url);  
+    const responseConfig = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'accept': 'application/json',
+            'origin': 'https://idealog-frontend-97cf882a694a.herokuapp.com/',
+        },
+    };
 
     const response = await fetch(url,
         {
+            method: 'GET',
             headers: {
-                Authorization: `Bearer ${accessToken}`,
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
             },
             next: { tags: ['nodes'] }
         });
@@ -156,8 +166,10 @@ export const fetchNodes = async (accessToken, queryParams = {}) => {
 
 export const fetchNode = async (accessToken, neo4jId) => {
     const response = await fetch(`${API_URL}/nodes/${neo4jId}`, {
+        method: 'GET',
         headers: {
             Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
         },
     });
     if (!response.ok) {

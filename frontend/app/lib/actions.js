@@ -110,8 +110,10 @@ export async function createIdea(formData) {
 }
 
 export async function getRelationships() {
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
     try {
-        const relations = await fetchRelationships()
+        const relations = await fetchRelationships(accessToken)
         return relations
     }
     catch (error) {

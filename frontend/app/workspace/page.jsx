@@ -1,6 +1,5 @@
 
-import { auth } from "@/auth"
-import { getIdeas, getRelationships, getNodes } from "@/app/lib/actions"
+import { getRelationships, getNodes } from "@/app/lib/actions"
 import GraphCanvas from "@/app/ui/workspace/graph-canvas";
 import ZoomMenu from "@/app/ui/workspace/zoom-menu";
 import styles from "./workspace.module.css";
