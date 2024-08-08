@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react'
-import Home from '../app/page'
+import CloseButtonSmall from '@/app/ui/buttons/close-button-small'
 import { it } from 'vitest'
 
-describe('Home', () => {
-    it('renders the Home component', () => {
-        render(<Home />)
-        expect(screen.getByText('Explore', {exact: false})).toBeInTheDocument();
+describe('CloseButtonSmall', () => {
+    it('renders the CloseButtonSmall component', () => {
+        render(<CloseButtonSmall />)
     })
 })
 

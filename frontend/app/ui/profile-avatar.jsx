@@ -3,9 +3,6 @@ import { createPortal } from 'react-dom';
 import { useProfileAvatar } from '@/app/ui/profile-avatar-context';
 import ProfileMenu from './workspace-modals/profile-menu';
 import SettingsModal from './workspace-modals/settings-modal';
-import {
-    UserCircleIcon,
-} from '@heroicons/react/24/outline';
 import styles from './profile-avatar.module.css';
 
 export default function ProfileAvatar() {

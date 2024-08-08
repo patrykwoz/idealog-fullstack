@@ -1,23 +1,24 @@
 'use client';
 import { useState, useEffect } from 'react';
-import {useProfileAvatar} from '@/app/ui/profile-avatar-context';
+import { getCurrentUser } from '../lib/actions';
 
 export default function UpdateUser({ updateUser }) {
-    const { user } = useProfileAvatar();
-
-    const [fullName, setFullName] = useState(user.fullName);
-    const [email, setEmail] = useState(user.email);
-    const [imageUrl, setImageUrl] = useState(user.imageUrl);
+    const [user, setUser] = useState(null);
+    const [fullName, setFullName] = useState(user?.full_name);
+    const [email, setEmail] = useState(user?.email);
+    const [imageUrl, setImageUrl] = useState(user?.image_url);
 
     useEffect(() => {
-        setFullName(user.fullName);
-        setEmail(user.email);
-        setImageUrl(user.imageUrl);
-    }
-    , [user]);
-
-
-
+        const fetchUser = async () => {
+            const userData = await getCurrentUser();
+            console.log(userData);
+            setUser(userData);
+            setFullName(userData.full_name);
+            setEmail(userData.email);
+            setImageUrl(userData.image_url);
+        }
+        fetchUser();
+    }, [])
 
     return (
         <>
@@ -26,18 +27,16 @@ export default function UpdateUser({ updateUser }) {
                 <input
                     type="text"
                     name="userFullName"
-                    id="userFullName" 
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    />
+                    id="userFullName"
+                    defaultValue={fullName}
+                />
                 <label htmlFor="userEmail">Email</label>
-                <input 
+                <input
                     type="email"
                     name="userEmail"
                     id="userEmail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
+                    defaultValue={email}
+                />
                 {/* image */}
                 {/* <label htmlFor="userImage">Image</label>
                 <input type="file" name="userImage" id="userImage" /> */}
@@ -48,16 +47,10 @@ export default function UpdateUser({ updateUser }) {
                     type="text"
                     name="userImageUrl"
                     id="userImageUrl"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)} 
-                    />
-
+                    defaultValue={imageUrl}
+                />
                 <button type="submit">Save</button>
-
-
             </form>
         </>
     )
-
-
 }

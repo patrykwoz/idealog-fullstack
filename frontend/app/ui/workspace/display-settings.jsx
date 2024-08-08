@@ -3,8 +3,6 @@ import {useState, useEffect} from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 import {
-    PencilSquareIcon,
-    ArrowRightCircleIcon,
     ArrowRightIcon,
 } from '@heroicons/react/24/outline';
 
@@ -23,10 +21,6 @@ export default function DisplaySettings() {
     }
     , [nodesLimit, router]);
 
-    // const handleNodesLimitChange = (e) => {
-    //     setNodesLimit(e.target.value);
-    // }
-
     async function submitNodesLimit(formData){
         const rawFormData = {
             limit: formData.get('nodes-limit'),
@@ -41,8 +35,6 @@ export default function DisplaySettings() {
                     <p>Graph Display Settings</p>
 
                 </div>
-                {/* number of nodes, auto generated / added manuallyl by user, public/private */}
-
                 <form action={submitNodesLimit} className={styles.displaySettingsFormItem}>
                     <label htmlFor="nodes-limit">Nodes Limit</label>
                     <input
@@ -51,23 +43,12 @@ export default function DisplaySettings() {
                         name='nodes-limit'
                         min={10}
                         defaultValue={1000}
-                        // onChange={handleNodesLimitChange}
                         />
                     <button className={styles.displaySettingsFormButton}>
                         < ArrowRightIcon className={styles.displaySettingsFormIcon} />
                     </button>
 
                 </form>
-
-
-
-
-
-
-
-
-
-
             </div>
         </>
     );

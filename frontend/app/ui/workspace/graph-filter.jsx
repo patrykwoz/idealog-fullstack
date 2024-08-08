@@ -111,9 +111,6 @@ export default function GraphFilter() {
                         </label>
                     </div>
 
-                    {/* map the type of objects in the graph, e.g. ideas
-                    knowledges sources, users, etc. ... */}
-
                 </div>
             </div>
         </>
