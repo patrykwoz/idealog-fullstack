@@ -1,7 +1,7 @@
 from .celery import app
 
 from app.dao.knowledgeSources import KnowledgeDAO
-from app.ml.class_kb import from_text_to_kb
+from celeryapp.ml.class_kb import from_text_to_kb
 from app.models_neo4j import KnowledgeCreate
 
 from app.core.neo4j_db import neo4j_driver

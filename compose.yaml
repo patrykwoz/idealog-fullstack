@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - .env.compose
     healthcheck:
       test:
         [
@@ -28,7 +28,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     env_file:
-      - .env
+      - .env.compose
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmqctl node_health_check" ]
       interval: 10s
@@ -41,7 +41,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.initialdata
     env_file:
-      - .env
+      - .env.compose
     depends_on:
       db:
         condition: service_healthy
@@ -52,13 +52,13 @@ services:
 
   backend:
     env_file:
-      - .env
+      - .env.compose
     restart: always
     networks:
       - default
     build:
       context: ./backend
-      dockerfile: Dockerfile.backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
@@ -68,15 +68,15 @@ services:
     volumes:
       - json_data:/json_data
 
-  celery_worker:
+  web:
     env_file:
-      - .env
+      - .env.compose
     restart: always
     networks:
       - default
     build:
       context: ./backend
-      dockerfile: Dockerfile.celery
+      dockerfile: Dockerfile.worker
     depends_on:
       db:
         condition: service_healthy
@@ -84,6 +84,18 @@ services:
       rabbitmq:
         condition: service_healthy
         restart: true
+  
+  frontend:
+    env_file:
+      - ./frontend/.env.local
+    restart: always
+    networks:
+      - default
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
 
 networks:
   default:

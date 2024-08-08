@@ -18,7 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     accessToken = access_token;
                 }
                 catch (error) {
-                    throw new Error("Invalid credentials.");
+                    throw new Error(`Invalid credentials. ${error}`);
                 }
 
                 if (!accessToken) {
@@ -41,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
+    trustHost: true,
     callbacks: {
         jwt({token, user}){
             if (user) {

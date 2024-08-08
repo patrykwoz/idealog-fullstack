@@ -1,15 +1,18 @@
 from celery import Celery
 import os
+from celeryapp.celeryconfig import celery_settings
 
-broker_url = os.getenv('CELERY_BROKER_URL', 'amqp://rabbitmq:5672//')
-backend_url = os.getenv('CELERY_RESULT_BACKEND', 'rpc://')
+# broker_url = os.getenv('CELERY_BROKER_URL', 'amqp://rabbitmq:5672//')
+# backend_url = os.getenv('CELERY_RESULT_BACKEND', 'rpc://')
 
 # broker='amqp://',
 # backend='rpc://',
 
+broker_url = celery_settings.CELERY_BROKER_URL
+backend_url = celery_settings.CELERY_RESULT_BACKEND 
+
 app = Celery('celeryapp',
-             broker=broker_url,
-             backend=backend_url,
+             broker_url=broker_url,
              include=['celeryapp.tasks', 'celeryapp.ml_tasks'])
 
 app.conf.update(

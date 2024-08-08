@@ -1,19 +1,9 @@
 'use server';
-const BACKEND_URL = 'http://localhost:8000';
-const API_VERSION = 'api/v1';
-const API_URL = `${BACKEND_URL}/${API_VERSION}`;
-
-//just ping the server and expect hellow world json back
-export const pingServer = async () => {
-    const response = await fetch(`${BACKEND_URL}`);
-    if (!response.ok) {
-        console.log(response.statusText);
-    }
-    const data = await response.json();
-    return data;
-};
-
+const BASE_URL = process.env.BASE_BACKEND_URL;
+const API_PATH = process.env.API_PATH;
+const API_URL = `${BASE_URL}${API_PATH}`;
 export const getToken = async (email, password) => {
+    console.log('GET TOKEN API_URL:', API_URL);
     const response = await fetch(`${API_URL}/login/access-token`, {
         method: 'POST',
         headers: {
@@ -147,6 +137,8 @@ export const createKnowledgeApi = async (accessToken, formData) => {
 export const fetchNodes = async (accessToken, queryParams = {}) => {
     const queryString = new URLSearchParams(queryParams).toString();
     const url = `${API_URL}/nodes${queryString ? `?${queryString}` : ''}`;
+
+    console.log('URL:',url);  
 
     const response = await fetch(url,
         {
