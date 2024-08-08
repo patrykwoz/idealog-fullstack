@@ -2,13 +2,13 @@ FROM node:20.15.1
 
 WORKDIR /frontend
 
-COPY frontend/package*.json ./
+COPY ./package*.json ./
 
 RUN npm install
 
-COPY frontend .
+COPY . .
 
-COPY frontend/.env.local ./
+COPY ./.env.local ./
 
 RUN npm run build
 
