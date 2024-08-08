@@ -40,9 +40,6 @@ export default function GraphCanvas({ ideas, relations }) {
         let cyValue = eventCurrentTarget.transform.baseVal[0].matrix.f;
 
         event.stopPropagation();
-        // d3.select(eventCurrentTarget)
-        //     .classed(styles.highlightNode, !d3.select(eventCurrentTarget)
-        //         .classed(styles.highlightNode));
 
         const nodeWithDetail = await getNode(d.id);
         setSelectedNode(nodeWithDetail);
@@ -52,7 +49,6 @@ export default function GraphCanvas({ ideas, relations }) {
             left: cxValue - 25
         });
 
-        //remove highlight from other nodes and add to the clicked node
         d3.selectAll(`.${styles.node}`).classed(styles.highlightNode, false);
         d3.select(eventCurrentTarget).select("circle").classed(styles.highlightNode, true);
 

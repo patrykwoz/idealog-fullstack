@@ -25,9 +25,10 @@ export default function SettingsModal() {
         toggleSecurity,
     } = useProfileAvatar();
 
+    
+
     return (
         <>
-
             <ModalContainer>
 
                 <div className={styles.settingsModalContainer}
@@ -43,9 +44,6 @@ export default function SettingsModal() {
                         <div className={styles.settingsMenu}>
 
                             <div className={`${styles.settingsMenuItem} notAllowed ${generalVisible ? styles.settingsMenuItemActive : ''}`}
-
-
-                            // onClick={toggleGeneral}
                             >
                                 <div className={styles.settingsMenuItemIconContainer}>
                                     <Cog6ToothIcon className={styles.settingsIcon} />
@@ -71,8 +69,6 @@ export default function SettingsModal() {
                                 <p>Security</p>
 
                             </div>
-
-
                         </div>
                         <div className={styles.settingsRight}>
                             {/* { generalDisplayed && <GeneralSettings /> }
@@ -82,17 +78,10 @@ export default function SettingsModal() {
 
                             {generalVisible && <div>General</div>}
                             {personalInfoVisible && <UpdateUser updateUser={updateUser} />}
-                                
-                                    
-                                
                             {securityVisible && <div>Security</div>}
 
                         </div>
-
-
                     </div>
-
-
                 </div>
             </ModalContainer>
 

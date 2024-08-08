@@ -12,6 +12,7 @@ import {
     fetchNodes,
     fetchNode,
     createKnowledgeApi,
+    currentUser,
 } from '@/app/client/api_actions'
 
 export async function login(formData) {
@@ -71,9 +72,17 @@ export async function updateUser(formData) {
     }
 }
 
-export async function currentUser() {
+export async function getCurrentUser() {
     const autObj = await auth();
-    console.log(autObj);
+    const accessToken = autObj.accessToken;
+    try {
+        const user = await currentUser(accessToken)
+        return user
+    }
+    catch (error) {
+        console.log(error)
+        throw error
+    }
 }
 
 
@@ -110,8 +119,11 @@ export async function createIdea(formData) {
 }
 
 export async function getRelationships() {
+    const autObj = await auth();
+    const accessToken = autObj.accessToken;
+
     try {
-        const relations = await fetchRelationships()
+        const relations = await fetchRelationships(accessToken)
         return relations
     }
     catch (error) {

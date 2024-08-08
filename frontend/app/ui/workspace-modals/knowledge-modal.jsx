@@ -27,9 +27,6 @@ export default function KnowledgeModal() {
                     </div>
 
                     <div className={styles.knowledgeModalDivider}></div>
-
-
-
                     <form action={createKnowledge} className={styles.knowledgeModalForm}>
 
 
@@ -80,9 +77,6 @@ export default function KnowledgeModal() {
                         </button>
 
                     </form>
-
-                    {/* Example use of manual revalidation in a client component */}
-                    {/* <div onClick={handleRevalidateNodes} >Revalidate Nodes</div> */}
 
                 </div>
             </ModalContainer>

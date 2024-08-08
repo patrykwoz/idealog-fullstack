@@ -1,7 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import Link from 'next/link';
 import { useSidenav } from './sidenav-context';
 import IdeaModal from '../workspace-modals/idea-modal';
 import {
@@ -19,7 +17,6 @@ export default function NavLinks() {
         ideaModalRef,
         ideaModalVisible,
         toggleSideNav,
-        sideNavDisplayed,
 
     } = useSidenav();
 
