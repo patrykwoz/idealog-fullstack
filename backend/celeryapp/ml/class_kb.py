@@ -6,7 +6,6 @@ import pdb
 import time
 from fastapi.encoders import jsonable_encoder
 from functools import lru_cache
-from celery.contrib import rdb
 
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
