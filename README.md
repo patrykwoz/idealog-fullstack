@@ -1,6 +1,12 @@
 # IdeaLog Project
 **Idea**Log  is an application designed to capture, track, and organize research ideas, experiments, and projects. It provides users with a platform to build relationships between various objects such as ideas, papers, experiments, and sketches. The goal is to create a comprehensive knowledge graph of interconnected ideas and resources.
 
+Check out the backend documentation [here](https://idealog-backend-f4da4e49a677.herokuapp.com/docs).
+
+Explore the deployed frontend [here](https://idealog-frontend-97cf882a694a.herokuapp.com/).
+
+**Note:** The deployed version doesn't have ML capabilities enabled right now. To try them out, you'll need to download the repo and run it locally. See the development notes for more details.
+
 ## Technology Stack and Features
 
 - ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
@@ -53,12 +59,22 @@ Run in this directory to build and run the app:
 ```
 docker compose up
 ```
+Ensure to rename the example .env files and update the placeholder values with your specific configuration settings. Additionally, obtaining a free Neo4j Aura instance is crucial for the full functionality and proper experience of this project.
 
 ## Test
+
+### Backend
 ```
 pip install pytest
 pytest
 ```
+
+### Fronted
+
+```
+npm run test
+```
+
 ## Development
 General development docs: [development.md](./development.md).
 
