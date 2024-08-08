@@ -68,7 +68,7 @@ services:
     volumes:
       - json_data:/json_data
 
-  web:
+  worker:
     env_file:
       - .env.compose
     restart: always
@@ -87,12 +87,12 @@ services:
   
   frontend:
     env_file:
-      - ./frontend/.env.local
+      - ./frontend/.env.compose.local
     restart: always
     networks:
       - default
     build:
-      context: ./
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
