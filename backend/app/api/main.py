@@ -7,8 +7,7 @@ from app.api.routes import (
     ideas,
     nodes,
     knowledge_sources,
-    relationships,
-    knowledge_graphs,)
+    relationships)
 
 api_router = APIRouter()
 api_router.include_router(login.router, tags=["login"])

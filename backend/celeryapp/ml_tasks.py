@@ -1,7 +1,7 @@
 from .celery import app
 
 from app.dao.knowledgeSources import KnowledgeDAO
-from celeryapp.ml.class_kb import from_text_to_kb
+# from celeryapp.ml.class_kb import from_text_to_kb
 from app.models_neo4j import KnowledgeCreate
 
 from app.core.neo4j_db import neo4j_driver
@@ -25,13 +25,15 @@ def createKnowledgeSource(
         if knowledge_in.use_ml:
             #use ml model to process the text and extract entities and relations
 
-            kb = from_text_to_kb(
-                text=knowledge_in.full_text,
-                article_url=knowledge_in.url,
-                article_title=knowledge_in.name)
-            kb_data = kb.to_json()
-            knowledge_in.entities = kb_data.get('entities', {})
-            knowledge_in.relations = kb_data.get('relations', [])
+            # kb = from_text_to_kb(
+            #     text=knowledge_in.full_text,
+            #     article_url=knowledge_in.url,
+            #     article_title=knowledge_in.name)
+            # kb_data = kb.to_json()
+            # knowledge_in.entities = kb_data.get('entities', {})
+            # knowledge_in.relations = kb_data.get('relations', [])
+            knowledge_in.entities = {}
+            knowledge_in.relations = []
             
         output = dao.create(
             knowledge_in.name,
