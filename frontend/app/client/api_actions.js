@@ -1,5 +1,7 @@
 'use server';
-const API_URL = process.env.API_URL;
+const BASE_URL = process.env.BASE_BACKEND_URL;
+const API_PATH = process.env.API_PATH;
+const API_URL = `${BASE_URL}${API_PATH}`;
 export const getToken = async (email, password) => {
     console.log('GET TOKEN API_URL:', API_URL);
     const response = await fetch(`${API_URL}/login/access-token`, {
@@ -135,6 +137,8 @@ export const createKnowledgeApi = async (accessToken, formData) => {
 export const fetchNodes = async (accessToken, queryParams = {}) => {
     const queryString = new URLSearchParams(queryParams).toString();
     const url = `${API_URL}/nodes${queryString ? `?${queryString}` : ''}`;
+
+    console.log('URL:',url);  
 
     const response = await fetch(url,
         {

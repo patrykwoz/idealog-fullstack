@@ -8,14 +8,11 @@ from celeryapp.celeryconfig import celery_settings
 # broker='amqp://',
 # backend='rpc://',
 
-broker_url = celery_settings.STACKHERO_RABBITMQ_AMQP_URL_TLS
-backend_url = celery_settings.STACKHERO_RABBITMQ_AMQP_URL_TLS
-
-print(broker_url)
+broker_url = celery_settings.CELERY_BROKER_URL
+backend_url = celery_settings.CELERY_RESULT_BACKEND 
 
 app = Celery('celeryapp',
-             broker=broker_url,
-             backend=backend_url,
+             broker_url=broker_url,
              include=['celeryapp.tasks', 'celeryapp.ml_tasks'])
 
 app.conf.update(

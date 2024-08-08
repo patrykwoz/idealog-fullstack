@@ -3,13 +3,13 @@ FROM python:${PYTHON_VERSION} as base
 
 WORKDIR /code
 
-COPY backend/requirements.txt /code/requirements.txt
+COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 RUN python --version
 
-COPY backend/app /code/app
-COPY backend/celeryapp /code/celeryapp
+COPY ./app /code/app
+COPY ./celeryapp /code/celeryapp
 
 CMD ["sh", "-c", "celery -A celeryapp worker --pool threads -l INFO"]
