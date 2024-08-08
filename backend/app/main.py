@@ -38,7 +38,6 @@ app = FastAPI(
     generate_unique_id_function=custom_generate_unique_id
 )
 
-# Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -49,23 +48,6 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-
-@app.get("/")
-def root():
-    return {"message": "Hello World"}
-
-from celeryapp.tasks import add
-@app.get("/add")
-def add_numbers():
-    task = add.delay(1, 2)
-    return {"task_id": task.id}
-
-@app.get("/task/{task_id}")
-def get_task_result(task_id):
-    task = add.AsyncResult(task_id)
-    return {"task_status": task.status, "task_result": task.result}
-
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 

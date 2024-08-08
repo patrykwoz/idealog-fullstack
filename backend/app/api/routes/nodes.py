@@ -1,18 +1,15 @@
 from typing import Any, Annotated
 
-from fastapi import APIRouter, HTTPException, FastAPI, Query
-from sqlmodel import func, select
+from fastapi import APIRouter, Query
 from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.nodes import NodeDAO
 # from app.models_neo4j import NodeCreate, NodeUpdate
 
-from neo4j.exceptions import ConstraintError, CypherTypeError
-
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def read_nodes(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,

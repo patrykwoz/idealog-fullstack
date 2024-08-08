@@ -7,7 +7,6 @@ from app.utils import generate_test_email, send_email
 
 router = APIRouter()
 
-
 @router.post(
     "/test-email/",
     dependencies=[Depends(get_current_active_superuser)],

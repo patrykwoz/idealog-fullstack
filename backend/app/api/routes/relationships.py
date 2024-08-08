@@ -1,7 +1,6 @@
 from typing import Any, Annotated
 
-from fastapi import APIRouter, HTTPException, FastAPI, Query
-from sqlmodel import func, select
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
@@ -12,8 +11,9 @@ from neo4j.exceptions import ConstraintError, CypherTypeError
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def read_relationships(
+    current_user: CurrentUser,
     driver:Neo4jDriverDep,
     sort: Annotated[str | None, Query(max_length=50)] = "name",
     order: Annotated[str | None, Query] ="ASC",
@@ -24,8 +24,9 @@ def read_relationships(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
-@router.post("/")
+@router.post("")
 def create_relationship(
+    current_user: CurrentUser,
     driver:Neo4jDriverDep,
     rel_in: RelCreate) -> Any:
     """Create a relationship."""

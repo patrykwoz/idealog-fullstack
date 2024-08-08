@@ -13,7 +13,7 @@ from neo4j.exceptions import ConstraintError, CypherTypeError
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def read_knowledge_sources(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,
@@ -26,7 +26,7 @@ def read_knowledge_sources(
     output = dao.all(sort, order, limit, skip)
     return jsonable_encoder(output)
 
-@router.post("/")
+@router.post("")
 def create_knowledge_source(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,

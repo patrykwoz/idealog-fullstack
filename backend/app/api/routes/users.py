@@ -1,8 +1,7 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
-# TODO: move sqlmodel operation to user_crud
-from sqlmodel import col, delete, func, select
+from sqlmodel import func, select
 
 from app.crud import user_crud
 from app.dao.users import UserDAO
@@ -32,7 +31,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/",
+    "",
     dependencies=[Depends(get_current_active_superuser)],
     response_model=UsersPublic,
 )
@@ -51,7 +50,7 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
 
 
 @router.post(
-    "/", dependencies=[Depends(get_current_active_superuser)], response_model=UserPublic
+    "", dependencies=[Depends(get_current_active_superuser)], response_model=UserPublic
 )
 def create_user(*, driver:Neo4jDriverDep, session: SessionDep, user_in: UserCreate) -> Any:
     """

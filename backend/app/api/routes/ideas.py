@@ -1,18 +1,17 @@
 from typing import Any, Annotated
 
-from fastapi import APIRouter, HTTPException, FastAPI, Query
-from sqlmodel import func, select
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
 
 from app.api.deps import Neo4jDriverDep, CurrentUser
 from app.dao.ideas import IdeaDAO
 from app.models_neo4j import IdeaCreate, IdeaUpdate
 
-from neo4j.exceptions import ConstraintError, CypherTypeError
+from neo4j.exceptions import ConstraintError
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def read_ideas(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,
@@ -33,7 +32,7 @@ def read_idea(
     output = dao.get(name)
     return jsonable_encoder(output)
 
-@router.post("/")
+@router.post("")
 def create_idea(
     driver:Neo4jDriverDep,
     current_user: CurrentUser,

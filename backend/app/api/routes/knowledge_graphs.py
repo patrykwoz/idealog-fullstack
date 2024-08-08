@@ -1,16 +1,8 @@
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks
 
-from app.crud import user_crud
-from app.api.deps import (
-    CurrentUser,
-    SessionDep,
-    get_current_active_superuser,
-)
-from app.core.config import settings
-from app.core.security import get_password_hash, verify_password
-from app.utils import generate_new_account_email, send_email
+from app.api.deps import (CurrentUser)
 
 import json
 
@@ -41,12 +33,9 @@ def create_kb_and_save(
     write_json_to_file(kb_data, filename)
     return kb_data
 
-@router.get("/")
-def root():
-    return {"message": "Hello World"}
-
 @router.post("/extract")
 def extract(
+    current_user: CurrentUser,
     text: str,
     article_url: str,
     article_title: str = None):
@@ -55,6 +44,7 @@ def extract(
 
 @router.post("/extract_and_save")
 def extract_and_save(
+    current_user: CurrentUser,
     text: str,
     article_url: str,
     background_tasks: BackgroundTasks,
