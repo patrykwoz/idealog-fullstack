@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: row;
     width: 100vw;
-    height: 100vh;
+    height: var(--window-inner-height);
     background-color: green;
 
 }
@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 240, 240);
-    height: 100vh;
+    height: 100%;
 }
 
 .graphCanvasContainer {

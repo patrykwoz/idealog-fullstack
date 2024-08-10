@@ -13,7 +13,7 @@ export const metadata = {
 
 export default async function Layout({ children }) {
     const session = await auth();
-    const user = session.user;
+    const user = session.user;    
 
     return (
         <>

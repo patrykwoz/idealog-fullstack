@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --window-inner-height: 100vh;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,7 +19,7 @@
 
 body {
   overflow: hidden;
-  height: 100vh;
+  height: var(--window-inner-height);
   width: 100vw;
   margin: 0;
   padding: 0;

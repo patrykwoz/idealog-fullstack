@@ -5,9 +5,13 @@
     background-color: rgb(240, 240, 240);
     width: 260px;
     min-width: 260px;
-    height: 100vh;
+    height: 100%;
 
     z-index: 1;
+}
+
+.sideNavHeightSetter{
+    height:100vh;
 }
 
 .sidenavDisplayed{
@@ -21,4 +25,10 @@
         left: 0;
         box-shadow: 0 0 transparent, 0 0 transparent, 0 4px 6px 4px rgba(0, 0, 0, 0.1), 0 2px 4px 4px rgba(0, 0, 0, 0.06);
     }
+}
+
+.sidenavScrollContainer{
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
