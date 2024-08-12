@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 export default function Error({ error, reset }) {
     useEffect(() => {
-        console.error(error)
+        console.error("Error in the workspace")
     }, [error])
 
     return (

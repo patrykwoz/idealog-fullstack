@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 export default function GlobalError({ error, reset }) {
     useEffect(() => {
-        console.error(error)
+        console.error("Global error occured")
     }, [error])
 
     return (
