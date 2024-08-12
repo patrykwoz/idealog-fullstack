@@ -39,3 +39,8 @@ def create_knowledge_source(
         knowledge_data
     )
     return {"task_id": task.id}
+
+@router.get("/task/{task_id}")
+def task_status(task_id: str) -> Any:
+    task = createKnowledgeSource.AsyncResult(task_id)
+    return {"status": task.status, "info": task.info}

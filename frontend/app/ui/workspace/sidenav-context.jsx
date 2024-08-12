@@ -10,6 +10,7 @@ export function SidenavProvider({ children, user }) {
     const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false);
     const [relationshipModalVisible, setRelationshipModalVisible] = useState(false);
     const [nodeDetailModalVisible, setNodeDetailModalVisible] = useState(false);
+    const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
     const [filterLabels, setFilterLabels] = useState(['Idea', 'KnowledgeSource', 'User']);
     const [searchedNodes, setSearchedNodes] = useState([]);
@@ -18,6 +19,7 @@ export function SidenavProvider({ children, user }) {
     const knowledgeModalRef = useRef(null);
     const relationshipModalRef = useRef(null);
     const nodeDetailModalRef = useRef(null);
+    const loadingModalRef = useRef(null);
 
     const toggleSideNav = () => {
         setSideNavDisplayed(!sideNavDisplayed);
@@ -37,6 +39,10 @@ export function SidenavProvider({ children, user }) {
 
     const toggleNodeDetailModal = () => {
         setNodeDetailModalVisible(!nodeDetailModalVisible);
+    }
+
+    const toggleLoadingModal = () => {
+        setLoadingModalVisible(!loadingModalVisible);
     }
 
     const addFilterLabel = (label) => {
@@ -93,17 +99,20 @@ export function SidenavProvider({ children, user }) {
             relationshipModalVisible,
             nodeDetailModalVisible,
             setNodeDetailModalVisible,
+            loadingModalVisible,
             filterLabels,
             searchedNodes,
             ideaModalRef,
             knowledgeModalRef,
             relationshipModalRef,
             nodeDetailModalRef,
+            loadingModalRef,
             toggleSideNav,
             toggleIdeaModal,
             toggleKnowledgeModal,
             toggleRelationshipModal,
             toggleNodeDetailModal,
+            toggleLoadingModal,
             addFilterLabel,
             removeFilterLabel,
             addSearchedNodes,

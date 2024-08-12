@@ -6,7 +6,8 @@ broker_url = celery_settings.CELERY_BROKER_URL
 backend_url = celery_settings.CELERY_RESULT_BACKEND 
 
 app = Celery('celeryapp',
-             broker_url=broker_url,
+             broker_url=broker_url,                        
+             backend=backend_url,
              include=['celeryapp.tasks', 'celeryapp.ml_tasks'])
 
 app.conf.update(

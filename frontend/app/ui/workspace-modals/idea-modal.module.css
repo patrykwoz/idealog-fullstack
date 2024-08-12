@@ -1,7 +1,6 @@
 .ideaModalContainer {
     display: flex;
     flex-direction: column;
-    /* width: 250px; */
     height: 100%;
     min-height: 150px;
     background-color: transparent;

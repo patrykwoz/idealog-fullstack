@@ -1,0 +1,15 @@
+.LoadingModal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--window-inner-height);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.247);
+
+    z-index: 10;
+}

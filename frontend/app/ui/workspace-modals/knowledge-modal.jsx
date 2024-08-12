@@ -4,6 +4,7 @@ import { useSidenav } from '@/app/ui/workspace/sidenav-context';
 import { createKnowledge } from '@/app/lib/actions';
 import ModalContainer from '../containers/modal-container';
 import CloseButton from '../buttons/close-button';
+import LoadingModal from './loading-modal';
 import {
     BoltIcon,
 } from '@heroicons/react/24/outline';
@@ -12,18 +13,21 @@ import styles from './knowledge-modal.module.css';
 export default function KnowledgeModal() {
     const { toggleKnowledgeModal } = useSidenav();
     const [showError, setShowError] = useState(false);
+    const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setLoadingModalVisible(true);
+        
         const formData = new FormData(e.target);
 
         let knowleldgeTitle = formData.get('knowledgeTitle');
 
         if (knowleldgeTitle.length > 1) {
-
             await createKnowledge(formData);
-            toggleKnowledgeModal();
 
+            toggleKnowledgeModal();
+            setLoadingModalVisible(false);
         } else {
             setShowError(true);
         }
@@ -31,9 +35,7 @@ export default function KnowledgeModal() {
 
     return (
         <>
-
             <ModalContainer>
-
                 <div className={styles.knowledgeModalContainer}
                 >
                     <div className={styles.knowledgeModalHeader}>
@@ -43,8 +45,6 @@ export default function KnowledgeModal() {
 
                     <div className={styles.knowledgeModalDivider}></div>
                     <form onSubmit={handleSubmit} className={styles.knowledgeModalForm}>
-
-
                         <input
                             type="checkbox"
                             name="useMl"
@@ -84,8 +84,6 @@ export default function KnowledgeModal() {
                         <label htmlFor="knowledge-text">Full text</label>
                         <textarea id='knowledge-text' name='knowledgeText' />
 
-
-
                         <button
                             type="submit"
                             className={styles.knowledgeModalButton}
@@ -94,10 +92,10 @@ export default function KnowledgeModal() {
                         </button>
 
                     </form>
-
                 </div>
             </ModalContainer>
 
+            {loadingModalVisible && <LoadingModal />}
         </>
     )
 }

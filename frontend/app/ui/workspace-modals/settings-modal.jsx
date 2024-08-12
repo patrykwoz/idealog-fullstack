@@ -26,8 +26,6 @@ export default function SettingsModal() {
         toggleSecurity,
     } = useProfileAvatar();
 
-    
-
     return (
         <>
             <ModalContainer>

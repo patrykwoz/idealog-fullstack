@@ -151,6 +151,19 @@ export const createKnowledgeApi = async (accessToken, formData) => {
     };
 }
 
+export const fetchCreateKnowledgeTaskResult = async (accessToken, taskId) => {
+    const response = await fetch(`${API_URL}/knowledge_sources/task/${taskId}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
 export const fetchNodes = async (accessToken, queryParams = {}) => {
     const queryString = new URLSearchParams(queryParams).toString();
     const url = `${API_URL}/nodes${queryString ? `?${queryString}` : ''}`;
@@ -181,3 +194,4 @@ export const fetchNode = async (accessToken, neo4jId) => {
     const data = await response.json();
     return data;
 }
+

@@ -12,6 +12,7 @@ import {
     fetchNodes,
     fetchNode,
     createKnowledgeApi,
+    fetchCreateKnowledgeTaskResult,
     currentUser,
 } from '@/app/client/api_actions'
 
@@ -146,6 +147,7 @@ export async function createRelationship(formData) {
     const accessToken = autObj.accessToken;
     try {
         const response = await createRelationshipApi(accessToken, rawFormData)
+
         revalidateRelationships();
         revalidateNodes();
         return response
@@ -162,22 +164,35 @@ export async function createKnowledge(formData) {
         summary: formData.get('knowledgeSummary'),
         full_text: formData.get('knowledgeText'),
         use_ml: formData.get('useMl') === 'on',
-    }
-    const autObj = await auth();
-    const accessToken = autObj.accessToken;
+    };
+    const authObj = await auth();
+    const accessToken = authObj.accessToken;
+
     try {
-        const response = await createKnowledgeApi(accessToken, rawFormData)
-        if (response.success) {
-            revalidateRelationships();
-            revalidateNodes();
-            return response
+        const response = await createKnowledgeApi(accessToken, rawFormData);
+        let taskResult;
+        let attempts = 0;
+        const maxAttempts = 50;
+
+        while (attempts < maxAttempts) {
+            taskResult = await fetchCreateKnowledgeTaskResult(accessToken, response.data.task_id);
+            if (taskResult.status === "SUCCESS") {
+                break;
+            }
+            attempts += 1;
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        else {
-            return response
+
+        if (taskResult.status !== "success") {
+            console.warn('Task did not succeed after 10 attempts.');
         }
-    }
-    catch (error) {
+
+        revalidateWorkspace();
+        return response;
+
+    } catch (error) {
         console.error('Error creating knowledge source');
+        return { success: false, error };
     }
 }
 
@@ -224,9 +239,14 @@ export async function searchNodes(value) {
 }
 
 export async function revalidateNodes() {
+    console.log('revalidating nodes');
     revalidateTag('nodes');
 }
 
 export async function revalidateRelationships() {
     revalidateTag('relationships');
+}
+
+export async function revalidateWorkspace() {
+    revalidatePath('/workspace');
 }
