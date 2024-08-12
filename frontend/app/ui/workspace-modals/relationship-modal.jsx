@@ -8,6 +8,16 @@ import styles from './relationship-modal.module.css';
 export default function RelationshipModal() {
     const { toggleRelationshipModal } = useSidenav();
 
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+
+        await createRelationship(formData);
+
+        toggleRelationshipModal();
+    }
+
     return (
         <>
 
@@ -22,7 +32,7 @@ export default function RelationshipModal() {
 
                     <div className={styles.relationshipModalDivider}></div>
 
-                    <form action={createRelationship} className={styles.relationshipModalForm}>
+                    <form onSubmit={handleSubmit} className={styles.relationshipModalForm}>
 
                         <label htmlFor="relationship-name">Name</label>
                         <input
