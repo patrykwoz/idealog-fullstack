@@ -24,7 +24,7 @@
     font-size: 14px;
     font-weight: 500;
     color: black;
-    margin-bottom: 5px;
+    margin: 5px 0 5px 0;
 }
 
 .modalContainer form input {
@@ -34,11 +34,11 @@
     padding: 0 10px 0 10px;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 
-.modalContainer form textarea{
+.modalContainer form textarea {
     height: 100px;
     min-height: 100px;
     min-width: 250px;
@@ -51,13 +51,14 @@
 }
 
 
-.modalContainer form button{
+.modalContainer form button {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 45px;
     background-color: transparent;
-    color: rgb(204, 204, 204);;
+    color: rgb(204, 204, 204);
+    ;
     font-size: 16px;
     font-weight: 500;
     border: 1px solid rgb(204, 204, 204);
@@ -68,8 +69,16 @@
 
 }
 
+.modalContainer form span {
+    color: red;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
 
-.modalContainer form button:hover{
+}
+
+
+.modalContainer form button:hover {
     background-color: rgb(204, 204, 204);
     color: black;
 }

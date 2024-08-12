@@ -1,4 +1,5 @@
 'use client';
+
 import { useProfileAvatar } from '@/app/ui/profile-avatar-context';
 import { updateUser } from '@/app/lib/actions';
 import ModalContainer from '../containers/modal-container';

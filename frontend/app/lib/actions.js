@@ -38,7 +38,7 @@ export async function login(formData) {
                     return 'Something went wrong.'
             }
         }
-        throw error
+        console.error('Error logging in');
     }
     redirect('/workspace');
 }
@@ -47,8 +47,7 @@ export async function logout() {
     try {
         await signOut({ redirect: false })
     } catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error logging out');
     }
     redirect('/auth/login');
 }
@@ -67,9 +66,9 @@ export async function updateUser(formData) {
         await updateUserApi(accessToken, rawFormData)
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error updating user');
     }
+    revalidateTag('nodes');
 }
 
 export async function getCurrentUser() {
@@ -80,8 +79,7 @@ export async function getCurrentUser() {
         return user
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error getting current user');
     }
 }
 
@@ -95,8 +93,7 @@ export async function getIdeas() {
         return ideas
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error getting ideas');
     }
 }
 
@@ -109,12 +106,18 @@ export async function createIdea(formData) {
     const accessToken = autObj.accessToken;
 
     try {
-        const idea = await createIdeaApi(accessToken, rawFormData)
-        revalidateNodes();
+        const response = await createIdeaApi(accessToken, rawFormData)
+        if (response.success) {
+            revalidateRelationships();
+            revalidateNodes();
+            return response;
+        } else {
+            return response;
+        }
+
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error creating idea');
     }
 }
 
@@ -127,8 +130,7 @@ export async function getRelationships() {
         return relations
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error getting relationships');
     }
 }
 
@@ -144,13 +146,12 @@ export async function createRelationship(formData) {
     const accessToken = autObj.accessToken;
     try {
         const response = await createRelationshipApi(accessToken, rawFormData)
-        revalidateNodes();
         revalidateRelationships();
+        revalidateNodes();
         return response
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error creating relationship');
     }
 }
 
@@ -162,17 +163,21 @@ export async function createKnowledge(formData) {
         full_text: formData.get('knowledgeText'),
         use_ml: formData.get('useMl') === 'on',
     }
-
     const autObj = await auth();
     const accessToken = autObj.accessToken;
     try {
-        const knowledge = await createKnowledgeApi(accessToken, rawFormData)
-        revalidateNodes();
-        return knowledge
+        const response = await createKnowledgeApi(accessToken, rawFormData)
+        if (response.success) {
+            revalidateRelationships();
+            revalidateNodes();
+            return response
+        }
+        else {
+            return response
+        }
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error creating knowledge source');
     }
 }
 
@@ -185,8 +190,7 @@ export async function getNodes(queryParams = {}) {
         return nodes
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error getting nodes');
     }
 }
 
@@ -198,8 +202,7 @@ export async function getNode(neo4jId) {
         return node[0]
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error getting node');
     }
 }
 
@@ -216,8 +219,7 @@ export async function searchNodes(value) {
         return nodes
     }
     catch (error) {
-        console.log(error)
-        throw error
+        console.error('Error searching nodes');
     }
 }
 

@@ -12,7 +12,7 @@ export default async function Workspace({searchParams}) {
         relations = await getRelationships();
         nodes = await getNodes(searchParams);
     } catch (error) {
-        console.log(error);
+        console.error('Error getting nodes and relationships');
     }
 
     return (
@@ -20,7 +20,7 @@ export default async function Workspace({searchParams}) {
             <main className={styles.graphCanvas}>
                 {nodes.length > 0 && (
                     <>
-                        <GraphCanvas ideas={nodes} relations={relations} />
+                        <GraphCanvas neo4j_nodes={nodes} relations={relations} />
                         <ZoomMenu />
                     </>
                 )}

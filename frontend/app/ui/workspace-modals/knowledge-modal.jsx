@@ -11,8 +11,23 @@ import styles from './knowledge-modal.module.css';
 
 export default function KnowledgeModal() {
     const { toggleKnowledgeModal } = useSidenav();
+    const [showError, setShowError] = useState(false);
 
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
 
+        let knowleldgeTitle = formData.get('knowledgeTitle');
+
+        if (knowleldgeTitle.length > 1) {
+
+            await createKnowledge(formData);
+            toggleKnowledgeModal();
+
+        } else {
+            setShowError(true);
+        }
+    }
 
     return (
         <>
@@ -27,7 +42,7 @@ export default function KnowledgeModal() {
                     </div>
 
                     <div className={styles.knowledgeModalDivider}></div>
-                    <form action={createKnowledge} className={styles.knowledgeModalForm}>
+                    <form onSubmit={handleSubmit} className={styles.knowledgeModalForm}>
 
 
                         <input
@@ -35,7 +50,7 @@ export default function KnowledgeModal() {
                             name="useMl"
                             id="useMl"
                             className={styles.knowledgeModalCheckbox}
-                            hidden/>
+                            hidden />
 
                         <label htmlFor="useMl">
                             <div
@@ -51,7 +66,9 @@ export default function KnowledgeModal() {
                             id='knowledge-title'
                             name='knowledgeTitle'
                             autoComplete='off'
+                            minLength={1}
                         />
+                        {showError && <span>Title is required!</span>}
 
                         <label htmlFor="knowledge-url">Url</label>
                         <input

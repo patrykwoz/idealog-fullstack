@@ -74,10 +74,25 @@ export const createIdeaApi = async (accessToken, formData) => {
         body: JSON.stringify(formData),
     });
     if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        let errorDetail = 'Unknown error';
+        try {
+            const errorData = await response.json();
+            errorDetail = errorData.detail;
+        } catch (error) {
+            console.error('Error parsing error response');
+        }
+        return {
+            success: false,
+            status: response.status,
+            statusText: response.statusText,
+            detail: errorDetail,
+        }
     }
     const data = await response.json();
-    return data;
+    return {
+        success: true,
+        data
+    };
 }
 
 export const fetchRelationships = async (accessToken) => {
@@ -86,7 +101,6 @@ export const fetchRelationships = async (accessToken) => {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                
             },
             next: { tags: ['relationships'] }
         });
@@ -122,11 +136,19 @@ export const createKnowledgeApi = async (accessToken, formData) => {
         },
         body: JSON.stringify(formData),
     });
+
     if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        return {
+            success: false,
+            status: response.status,
+            statusText: response.statusText,
+        };
     }
     const data = await response.json();
-    return data;
+    return {
+        success: true,
+        data
+    };
 }
 
 export const fetchNodes = async (accessToken, queryParams = {}) => {

@@ -13,7 +13,7 @@ function generateCordset(count) {
         .map(() => [Math.random() * 80 + 10, Math.random() * 35 + 10]);
 }
 
-export default function GraphCanvas({ ideas, relations }) {
+export default function GraphCanvas({ neo4j_nodes, relations }) {
     const [selectedNode, setSelectedNode] = useState(null);
     const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
@@ -127,17 +127,17 @@ export default function GraphCanvas({ ideas, relations }) {
     }
 
     useEffect(() => {
-        ideas = ideas.filter((idea) => !idea[0].labels.some(label => !filterLabels.includes(label)));
+        neo4j_nodes = neo4j_nodes.filter((neo4j_node) => !neo4j_node[0].labels.some(label => !filterLabels.includes(label)));
         relations = relations.filter((relation) => !relation[0].labels.some(label => !filterLabels.includes(label)));
 
         
         relations = relations.filter((relation) => {
             const head = relation[0].neo4j_id;
             const tail = relation[2].neo4j_id;
-            return ideas.some((idea) => idea[0].neo4j_id === head) && ideas.some((idea) => idea[0].neo4j_id === tail);
+            return neo4j_nodes.some((neo4j_node) => neo4j_node[0].neo4j_id === head) && neo4j_nodes.some((neo4j_node) => neo4j_node[0].neo4j_id === tail);
         });
 
-        if (ideas.length === 0 || relations.length === 0) return;
+        if (neo4j_nodes.length === 0 || relations.length === 0) return;
 
         const svg = d3.select(svgRef.current);
         const g = d3.select(gRef.current);
@@ -157,11 +157,11 @@ export default function GraphCanvas({ ideas, relations }) {
             .append("svg:path")
             .attr("d", "M 0,-5 L 10 ,0 L 0,5");
 
-        const nodes = ideas.map((idea, index) => ({
-            id: idea[0].neo4j_id,
-            name: idea[0].name,
-            x: generateCordset(ideas.length)[index][0],
-            y: generateCordset(ideas.length)[index][1]
+        const nodes = neo4j_nodes.map((neo4j_node, index) => ({
+            id: neo4j_node[0].neo4j_id,
+            name: neo4j_node[0].name,
+            x: generateCordset(neo4j_nodes.length)[index][0],
+            y: generateCordset(neo4j_nodes.length)[index][1]
         }));
 
         const links = formatLinks(relations.map((relation) => ({
@@ -260,7 +260,7 @@ export default function GraphCanvas({ ideas, relations }) {
         svg.call(zoomRef.current);
         svg.on("click", removeHighlight);
 
-    }, [ideas, relations, searchedNodes]);
+    }, [neo4j_nodes, relations, searchedNodes]);
 
     return (
         <>
